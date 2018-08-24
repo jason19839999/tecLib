@@ -11,7 +11,8 @@
         tags.add(tag);
    }
 
-2.
+2.mybatis的使用
+   主要参照github中 crudreposity crudreposity实现读写分离和redis应用（经典）
 
 
 
