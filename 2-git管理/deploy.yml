@@ -1,0 +1,13 @@
+---
+- hosts: serving
+  remote_user: root
+  tasks:
+  - name: copy templates
+    synchronize: src=src/main/resources/ dest=/apps/svr/serving/serving/config/
+    tags: copyfile
+  - name: copy jar
+    copy: src=target/serving-1.0.0.jar dest=/apps/svr/serving/serving/lib/.
+    tags: copyfile
+  - name: start serving  
+    shell: LANG=zh_CN.UTF-8 LC_CTYPE=zh_CN.UTF-8 &&  source /etc/profile && cd /apps/svr/serving/serving/ && ./restart.sh > ./ansible.log 2>&1 && java -version >> ./ansible.log 2>&1
+    tags: restart

@@ -1,0 +1,18 @@
+1.ExecutorService多线程、JSONObject、hashmap  hashset concurrnethashmap hashtable的用法
+  D:\workspace\src\seek\seek\src\main\java\com\vip\seek\task\crontab\tag_index\TagIndexUpdate.java
+  此任务适合做数据处理计算。
+
+   Victor/Stack/hashtable  同步容器
+   list/map/set/queue  非同步容器
+   concurrenthashmap    并发容器，提高访问性能
+   hashmap   hashtable  hashset
+   //遍历hashmap中的key
+   for(String tag: tagStocksMap.keySet()){
+        tags.add(tag);
+   }
+
+2.
+
+
+
+

@@ -1,0 +1,5 @@
+deploy.sh       :获取代码并打包，执行deploy.yml
+deploy.yml      :执行copy,start服务等操作
+src             :源代码
+target          :打包生成路径
+

@@ -1,0 +1,36 @@
+项目源代码地址：
+http://192.168.2.206:7990/projects
+git clone ssh://git@192.168.2.206:7999/bigdata/serving.git
+
+切换分支：
+git checkout  pre_product
+
+//第一次获取代码 服务器覆盖本地代码
+git checkout  pre_product
+
+//提交之前要执行  获取服务器最新
+git pull
+
+//先添加
+git add
+//提交代码
+git commit
+//最后完全提交
+git push origin pre_product
+
+//添加&取消注释
+ctrl+/  添加注释，则ctrl+/取消注释
+
+IDEA 操作要点：
+//查找接口具体实现
+选择 “具体方法”后 鼠标右键 Go To → Implementations
+
+//查找全局变量或者局部变量
+选择“具体变量”后 鼠标右键  Find Usages
+  Value read 
+  Value write 
+
+//查找全局变量
+Edit → Find in Path 
+
+

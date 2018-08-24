@@ -1,0 +1,4 @@
+
+######## seek update hot news from news every day########
+0 14 * * * source /etc/profile && /apps/tasks/update_hot_news_deal_everyday/bin/update_hot_news_everyday.sh
+

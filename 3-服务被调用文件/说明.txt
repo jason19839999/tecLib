@@ -1,0 +1,12 @@
+bin  :执行文件，java源代码打包jar,update.sh
+conf :java 源代码下src 配置文件，程序需要读取的文件
+data :好像没用
+
+
+在crontab 里面添加定时执行命令
+例如：
+
+
+需要给main函数传值，读取配置等相关信息
+   hk_darkpool.sh(给main函数传值).png
+

@@ -1,0 +1,94 @@
+1.数据库字段这个Timestamp，实体要用Date. 要不然序列化失败。 注意：定义的实体类必须跟数据库一致
+
+2.D:/timg.jpg 访问本地路径   读取文件
+            //File filePic = new File("D:/timg.jpg");
+            //FileInputStream is = new FileInputStream(filePic);
+            //int i = is.available(); // 得到文件大小
+            //byte data1[] = new byte[i];
+
+3.写类实体文件注意： 要把文件建立在jpa扫描路径下面
+entity
+  mimingstock
+  等等
+
+要不然不能创建bin,运行会报错
+
+4.查看异常
+  有鼠标悬停到异常对象
+  点开 + 号， 查看cause,里面有详细错误信息，很有用
+
+5.CrudRepository 更新/添加/删除时要加事物标签，否则会报错
+ @Query(name = "updateConfirm", value = "update hk_bills set is_confirm = 1 where code = :code ", nativeQuery = true)
+ @Modifying
+ @Transactional
+
+6.右键 Local History 查看本地修改版本
+
+7.查看字段注释  mysql yog 右键选择表 → 改变表 →再执行查询就有注释了
+
+8.urlEncode 和urlDecode  必须在传参数的时候进行encode，防止特殊字符丢失，然后在服务端decode就可以了。
+
+9.str.substring(start,end) 从0开始 end:不包含截取的部分，所以比如substring(1,6)，截取到6，但是截取的部分不包括第六位。
+
+10.使用内置tomcat启动
+启动方式：
+①、IDEA中main函数启动 nohup java -cp . :./config/ :./lib/* -Dspring.profiles.active=test-2 
+                      com.juniorchina.Application >> serving.log 2 > &1 &
+                      注意：:./lib/*  是运行jar包
+
+②、mvn springboot-run 命令 
+③、java -jar XXX.jar
+
+11.启动.sh和服务命令(命令参照实例：技术总结→服务被调用文件)
+./hk_darkpool.sh start | stop | restart 或者
+sh hk_darkpool.sh start | stop | restart
+
+12.-D指定多个环境命令（参照Serving项目）
+-Dspring.profiles.active=dev | product | test
+
+13.统一处理总结
+   ①ControllerAdvice   jsonp跨域问题解决（JsonpAdvice）/统一异常处理
+   ②Aspect  doBefore   用户身份验证
+   ③Filler  doFilter   跨域问题解决/版本过滤等等
+      
+14.同步容器： Vector类似List<>数组/Stack/HashTable，他们内部加了synchronized，所以必然会影响到执行性能。
+   本身也不太安全，需要在处理这些时，进行额外的同步
+   synchronized(Test.class){
+        同步容器处理；
+   }
+ 
+15.非同步容器：List/Map/Set/Queue
+
+16.并发容器：ConcurrentHashMap的锁分离技术
+             若容器中有多把锁，每一把锁用于锁定容器其中一部分数据，那么当多线程访问容器里不同数据段的数据时，线程间就不会存在锁竞争，
+         从而可以有效提高并发访问效率，这就是ConcurrentHashMap所使用的锁分段技术，首先将数据分成一段一段的存储，然后给每一段数据配
+         一把锁，当一个线程占用锁并访问其中一个段数据的时候，其他段的数据也能被其他线程访问。
+
+17.Java多线程实现的方式有四种
+   concurrent 下面ExecutorService/Callable/FutureTask
+   ①.继承Thread类，重写run方法
+   ②.实现Runnable接口，重写run方法，实现Runnable接口的实现类的实例对象作为Thread构造函数的target
+   ③.通过Callable和FutureTask创建线程 Callable/FutureTask   
+         cancel取消任务
+   ④.通过线程池创建线程ExecutorService.newFixedThreadPool/newCachedThreadPool/newSingleThreadPool
+         shutdown()关闭线程
+
+18.redis心得
+    ① 适当考虑应用本机缓存，减少访问redis集群,提高效率
+
+
+        
+如下描述：对于分布式缓存，我们需要在Nginx+Lua应用中进行应用缓存来减少Redis集群的访问冲击；
+        即首先查询应用本地缓存，如果命中则直接缓存，如果没有命中则接着查询Redis集群、回源到Tomcat；
+        然后将数据缓存到应用本地。
+
+
+
+
+    ② 当然本地缓存只针对热点数据、实时性非常高访问量相当大的数据场景
+
+。
+
+19.    服务采用单独部署，所谓的隔离机制，如果一个服务不可用了，不影响其他服务使用，当然这种功能方式增加了运维成本，但是实现了高可用
+。
+
