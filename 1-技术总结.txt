@@ -90,6 +90,7 @@ sh hk_darkpool.sh start | stop | restart
 
 。
 
-19.    服务采用单独部署，所谓的隔离机制，如果一个服务不可用了，不影响其他服务使用，当然这种功能方式增加了运维成本，但是实现了高可用
+19.服务采用单独部署，所谓的隔离机制，如果一个服务不可用了，不影响其他服务使用，当然这种功能方式增加了运维成本，但是实现了高可用
 。
 
+20.jpa多表关联查询sql处理 https://blog.csdn.net/helloworld_dream/article/details/78913008
