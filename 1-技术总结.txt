@@ -16,6 +16,7 @@ entity
 4.查看异常
   有鼠标悬停到异常对象
   点开 + 号， 查看cause,里面有详细错误信息，很有用
+  如果定位具体出错的代码行，要查看exception的stack message。
 
 5.CrudRepository 更新/添加/删除时要加事物标签，否则会报错
  @Query(name = "updateConfirm", value = "update hk_bills set is_confirm = 1 where code = :code ", nativeQuery = true)
