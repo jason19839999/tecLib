@@ -4,6 +4,5 @@
 
 ######## seek update hot news from news every day########  正式环境 
 注意:这个情况比较特殊，在测试环境不用加sh，但是在正式环境不加的话， update_hot_news_everyday.sh不执行。
-
 5 11 * * * source /etc/profile && sh /apps/tasks/update_hot_news_deal_everyday/bin/update_hot_news_everyday.sh
 
