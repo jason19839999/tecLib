@@ -1,96 +1,114 @@
-1.���ݿ��ֶ����Timestamp��ʵ��Ҫ��Date. Ҫ��Ȼ���л�ʧ�ܡ� ע�⣺�����ʵ�����������ݿ�һ��
+1.数据库字段这个Timestamp，实体要用Date. 要不然序列化失败。 注意：定义的实体类必须跟数据库一致
 
-2.D:/timg.jpg ���ʱ���·��   ��ȡ�ļ�
+2.D:/timg.jpg 访问本地路径   读取文件
             //File filePic = new File("D:/timg.jpg");
             //FileInputStream is = new FileInputStream(filePic);
-            //int i = is.available(); // �õ��ļ���С
+            //int i = is.available(); // 得到文件大小
             //byte data1[] = new byte[i];
 
-3.д��ʵ���ļ�ע�⣺ Ҫ���ļ�������jpaɨ��·������
+3.写类实体文件注意： 要把文件建立在jpa扫描路径下面
 entity
   mimingstock
-  �ȵ�
+  等等
 
-Ҫ��Ȼ���ܴ���bin,���лᱨ��
+要不然不能创建bin,运行会报错
 
-4.�鿴�쳣
-  �������ͣ���쳣����
-  �㿪 + �ţ� �鿴cause,��������ϸ������Ϣ��������
-  �����λ��������Ĵ����У�Ҫ�鿴exception��stack message��
+4.查看异常
+  有鼠标悬停到异常对象
+  点开 + 号， 查看cause,里面有详细错误信息，很有用
+  如果定位具体出错的代码行，要查看exception的stack message。
 
-5.CrudRepository ����/����/ɾ��ʱҪ�������ǩ������ᱨ��
+5.CrudRepository 更新/添加/删除时要加事物标签，否则会报错
  @Query(name = "updateConfirm", value = "update hk_bills set is_confirm = 1 where code = :code ", nativeQuery = true)
  @Modifying
  @Transactional
 
-6.�Ҽ� Local History �鿴�����޸İ汾
+6.右键 Local History 查看本地修改版本
 
-7.�鿴�ֶ�ע��  mysql yog �Ҽ�ѡ��� �� �ı�� ����ִ�в�ѯ����ע����
+7.查看字段注释  mysql yog 右键选择表 → 改变表 →再执行查询就有注释了
 
-8.urlEncode ��urlDecode  �����ڴ�������ʱ�����encode����ֹ�����ַ���ʧ��Ȼ���ڷ����decode�Ϳ����ˡ�
+8.urlEncode 和urlDecode  必须在传参数的时候进行encode，防止特殊字符丢失，然后在服务端decode就可以了。
 
-9.str.substring(start,end) ��0��ʼ end:��������ȡ�Ĳ��֣����Ա���substring(1,6)����ȡ��6�����ǽ�ȡ�Ĳ��ֲ���������λ��
+9.str.substring(start,end) 从0开始 end:不包含截取的部分，所以比如substring(1,6)，截取到6，但是截取的部分不包括第六位。
 
-10.ʹ������tomcat����
-������ʽ��
-�١�IDEA��main�������� nohup java -cp . :./config/ :./lib/* -Dspring.profiles.active=test-2 
+10.使用内置tomcat启动
+启动方式：
+①、IDEA中main函数启动 nohup java -cp . :./config/ :./lib/* -Dspring.profiles.active=test-2 
                       com.juniorchina.Application >> serving.log 2 > &1 &
-                      ע�⣺:./lib/*  ������jar��
+                      注意：:./lib/*  是运行jar包
 
-�ڡ�mvn springboot-run ���� 
-�ۡ�java -jar XXX.jar
+②、mvn springboot-run 命令 
+③、java -jar XXX.jar
 
-11.����.sh�ͷ�������(�������ʵ���������ܽ�����񱻵����ļ�)
-./hk_darkpool.sh start | stop | restart ����
+11.启动.sh和服务命令(命令参照实例：技术总结→服务被调用文件)
+./hk_darkpool.sh start | stop | restart 或者
 sh hk_darkpool.sh start | stop | restart
 
-12.-Dָ����������������Serving��Ŀ��
+12.-D指定多个环境命令（参照Serving项目）
 -Dspring.profiles.active=dev | product | test
 
-13.ͳһ�����ܽ�
-   ��ControllerAdvice   jsonp������������JsonpAdvice��/ͳһ�쳣����
-   ��Aspect  doBefore   �û�������֤
-   ��Filler  doFilter   ����������/�汾���˵ȵ�
+13.统一处理总结
+   ①ControllerAdvice   jsonp跨域问题解决（JsonpAdvice）/统一异常处理
+   ②Aspect  doBefore   用户身份验证
+   ③Filler  doFilter   跨域问题解决/版本过滤等等
       
-14.ͬ�������� Vector����List<>����/Stack/HashTable�������ڲ�����synchronized�����Ա�Ȼ��Ӱ�쵽ִ�����ܡ�
-   ����Ҳ��̫��ȫ����Ҫ�ڴ�����Щʱ�����ж����ͬ��
+14.同步容器： Vector类似List<>数组/Stack/HashTable，他们内部加了synchronized，所以必然会影响到执行性能。
+   本身也不太安全，需要在处理这些时，进行额外的同步
    synchronized(Test.class){
-        ͬ������������
+        同步容器处理；
    }
  
-15.��ͬ��������List/Map/Set/Queue
+15.非同步容器：List/Map/Set/Queue
 
-16.����������ConcurrentHashMap�������뼼��
-             ���������ж������ÿһ��������������������һ�������ݣ���ô�����̷߳��������ﲻͬ���ݶε�����ʱ���̼߳�Ͳ��������������
-         �Ӷ�������Ч��߲�������Ч�ʣ������ConcurrentHashMap��ʹ�õ����ֶμ��������Ƚ����ݷֳ�һ��һ�εĴ洢��Ȼ���ÿһ��������
-         һ��������һ���߳�ռ��������������һ�������ݵ�ʱ�������ε�����Ҳ�ܱ������̷߳��ʡ�
+16.并发容器：ConcurrentHashMap的锁分离技术
+             若容器中有多把锁，每一把锁用于锁定容器其中一部分数据，那么当多线程访问容器里不同数据段的数据时，线程间就不会存在锁竞争，
+         从而可以有效提高并发访问效率，这就是ConcurrentHashMap所使用的锁分段技术，首先将数据分成一段一段的存储，然后给每一段数据配
+         一把锁，当一个线程占用锁并访问其中一个段数据的时候，其他段的数据也能被其他线程访问。
 
-17.Java���߳�ʵ�ֵķ�ʽ������
-   concurrent ����ExecutorService/Callable/FutureTask
-   ��.�̳�Thread�࣬��дrun����
-   ��.ʵ��Runnable�ӿڣ���дrun������ʵ��Runnable�ӿڵ�ʵ�����ʵ��������ΪThread���캯����target
-   ��.ͨ��Callable��FutureTask�����߳� Callable/FutureTask   
-         cancelȡ������
-   ��.ͨ���̳߳ش����߳�ExecutorService.newFixedThreadPool/newCachedThreadPool/newSingleThreadPool
-         shutdown()�ر��߳�
+17.Java多线程实现的方式有四种
+   concurrent 下面ExecutorService/Callable/FutureTask
+   ①.继承Thread类，重写run方法
+   ②.实现Runnable接口，重写run方法，实现Runnable接口的实现类的实例对象作为Thread构造函数的target
+   ③.通过Callable和FutureTask创建线程 Callable/FutureTask   
+         cancel取消任务
+   ④.通过线程池创建线程ExecutorService.newFixedThreadPool/newCachedThreadPool/newSingleThreadPool
+         shutdown()关闭线程
 
-18.redis�ĵ�
-    �� �ʵ�����Ӧ�ñ������棬���ٷ���redis��Ⱥ,���Ч��
+18.redis心得
+    ① 适当考虑应用本机缓存，减少访问redis集群,提高效率
 
 
         
-�������������ڷֲ�ʽ���棬������Ҫ��Nginx+LuaӦ���н���Ӧ�û���������Redis��Ⱥ�ķ��ʳ����
-        �����Ȳ�ѯӦ�ñ��ػ��棬���������ֱ�ӻ��棬���û����������Ų�ѯRedis��Ⱥ����Դ��Tomcat��
-        Ȼ�����ݻ��浽Ӧ�ñ��ء�
+如下描述：对于分布式缓存，我们需要在Nginx+Lua应用中进行应用缓存来减少Redis集群的访问冲击；
+        即首先查询应用本地缓存，如果命中则直接缓存，如果没有命中则接着查询Redis集群、回源到Tomcat；
+        然后将数据缓存到应用本地。
 
 
 
 
-    �� ��Ȼ���ػ���ֻ����ȵ����ݡ�ʵʱ�Էǳ��߷������൱������ݳ���
+    ② 当然本地缓存只针对热点数据、实时性非常高访问量相当大的数据场景
 
-��
+。
 
-19.������õ���������ν�ĸ�����ƣ����һ�����񲻿����ˣ���Ӱ����������ʹ�ã���Ȼ���ֹ��ܷ�ʽ��������ά�ɱ�������ʵ���˸߿���
-��
+19.服务采用单独部署，所谓的隔离机制，如果一个服务不可用了，不影响其他服务使用，当然这种功能方式增加了运维成本，但是实现了高可用
+。
 
-20.jpa���������ѯsql���� https://blog.csdn.net/helloworld_dream/article/details/78913008
+20.jpa多表关联查询sql处理 https://blog.csdn.net/helloworld_dream/article/details/78913008
+
+21. //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
+    //CopyOnWriteArrayList适合使用在读操作远远大于写操作的场景里，比如缓存。发生修改时候做copy，新老版本分离，保证读的高性能，适用于以读为主的情况。
+    //     *      对于CopyOnWriteArraySet<E>类： 
+    //             *      1）它最适合于具有以下特征的应用程序：set 大小通常保持很小，只读操作远多于可变操作，需要在遍历期间防止线程间的冲突。  
+    //             *      2）它是线程安全的, 底层的实现是CopyOnWriteArrayList；   
+    //             *      3）因为通常需要复制整个基础数组，所以可变操作（add、set 和 remove 等等）的开销很大。  
+    //             *      4）迭代器不支持可变 remove 操作。  
+    //             *      5）使用迭代器进行遍历的速度很快，并且不会与其他线程发生冲突。在构造迭代器时，迭代器依赖于不变的数组快照。  
+    //            ---------------------
+    //    作者：学无止境qwer
+    //    来源：CSDN
+    //    原文：https://blog.csdn.net/u012956987/article/details/50811703
+    //    版权声明：本文为博主原创文章，转载请附上博文链接！
+    public static CopyOnWriteArraySet<WebSocketServer> webSocketSet = new CopyOnWriteArraySet<WebSocketServer>();
+    参照代码：\crudreposity实现读写分离和Redis处理（经典）\crudreposity\src\main\java\datacenter\crudreposity\websocket\WebSocketServer.java
+
+
