@@ -1,0 +1,66 @@
+索引属性
+
+ 名字，   name指定:     索引默认长度为125字节
+   db.imooc_2.ensureIndex({m:1,n:1,x:1,y:1},{name:"索引名"})
+   db.imooc_2.getIndexes();
+
+ 唯一性，unique指定:
+   db.imooc_2.ensureIndex({m:1,n:1},{unique:true/false})
+   db.imooc_2.getIndexes();
+   db.imooc_2.insert({m:1,n:2})
+
+ 稀疏性，sparse指定:     默认创建的索引都是不稀疏的，设置成稀疏的之后，如果在你创建索引的字段上没有值，那么不会占用磁盘空间，很有用。
+                        注意：不要在稀疏索引上用exist:false,会有脏数据。
+   db.imooc_2.ensureIndex({m:1,n:1},{sparse:true/false})
+   db.imooc_2.find({m:{$exists:false}})                →会把n:1查出来
+   db.imooc_2.find({m:{$exists:false}}).hint("m_1");   →查不出来了，"m_1"为索引名
+
+ 过期索引，expireAfterSeconds指定：
+   TTL,过期索引
+
+地理位置索引
+
+   子分类：
+      2D索引，用户存储和查找平面上的点。
+           创建方式：db.location.ensureIndex({"w":"2d"}) 注意： "w"为字段名
+	   插入数据：db.location.insert({"w":[1,1 ]})
+	             db.location.insert({"w":[1,60]})
+           位置表示方式：经纬度【经度，纬度】
+           取值范围：经度【-180,180】 纬度【-90,90】
+           查询方式：
+	             （1）$near查询：查询距离某个点最近的点,支持$maxDistance，不支持$minDistance.
+                          db.loaction.findd({"w": {$near:[1,1], $maxDistance:10} })  
+		          备注：查询距离[1,1]最近的点，最大距离限制在10；如果不加限制，会返回100个距离[1,1]最近的点
+                     （2）$geoWithin查询：查询某个形状内的点,支持$maxDistance,$minDistance.
+                          形状的表示：
+			        1.$box:矩形，使用  { $box[ [<x1>,<y1>] , [<x2>,<y2>] ] }  表示
+			                db.location.find({"w":{ $geoWithin:{ $box:[ [0,0],[3,3] ]}}})
+				        db.location.find({"w":{ $geoWithin:{ $box:[ [1,1],[2,3] ]}}})
+				2.$center:圆形，使用 {$center:[ [<x1>,<y1>] , r ] }  表示
+				        db.location.find({"w":{$geoWithin:{$center:[ [0,0],5 ] }}})
+				3.$polygon:多边形，使用 {$polygon:[ [<x1>,<y1>]  ,[<x2>,<y2>]  ,[<x3>,<y3>]  ]}
+                                        db.loaction.find({"w":{$geoWithin:{ $polygon:[ [0,0],[1,1],[2,2],[3,3] ] } }})
+                     （3）geoNear查询
+      
+      2Dsphere索引，用户存储和查找球面上的点。
+
+   查找方式：查找距离某个点一定距离内的点。
+             查找包含在某区域内的点
+
+索引构建情况分析
+  1.mongostat工具介绍
+    查看mongodb运行状态的程序
+    使用说明：mongostat -h ip:端口号
+  2.profile集合介绍
+  3.日志介绍
+  4.explain分析
+    db.imooc_2.find({x : 1}).explain()  查看此语句的执行效率
+
+
+
+
+
+
+
+
+

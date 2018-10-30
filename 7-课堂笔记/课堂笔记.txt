@@ -1,0 +1,77 @@
+Spring Boot 2.0新特性
+
+  底层框架：Spring Framework 5.0.x  
+
+  编程语言：java 8+    jdk 1.8.x 
+
+  依赖资源管理：maven 3.2.5以上版本
+
+  编程模型: Web Flux（创建项目时选择 reavtive web，此时就是Web Flux模型了。
+                      项目启动时：是：Netty started on port(s): 8086 而不是：Tomcat started on port(s): 8086  ）
+		          <dependencies>
+				<dependency>
+				    <groupId>org.springframework.boot</groupId>
+				    <artifactId>spring-boot-starter-webflux</artifactId>
+	        	        </dependency>
+				...
+		          <dependencies>
+    函数编程：Java 8 Lambda
+    响应编程：Reactive Streams
+    异步编程：Servlet 3.1 或 Async NIO
+ 
+  启动方式：
+    nohup java -cp
+    java -jar  ---.jar
+    mvn springboot -run 
+
+Json返回包装类：
+    具体参照项目地址：serving\src\main\java\com\juniorchina\serving\entity\External\NewsListCloneResponse.java
+    ResponseEntity<NewsListResponse> 返回类型
+
+    //填充实体对象 
+    NewsListResponse response = new NewsListResponse(header, response_data);
+    
+    return new ResponseEntity<NewsListResponse>(response, HttpStatus.OK);
+
+    public class NewsListResponse {
+       private ResponseHeader header;
+       private List<NewsListResponseData> response_data;
+
+       public NewsListResponse(ResponseHeader header, List<NewsListResponseData> response_data) {
+        this.header = header;
+        this.response_data = response_data;
+      }
+     }
+
+    总结：这里注意一下，可以往类里面添加任意属性，即用所在的类构造函数初始化即可。
+    例如：NewsListTypeResponse response_data = new NewsListTypeResponse(to_subscribe, new_stock_response_data, hk_placement_result, special_topic_news, responseDatas);
+          NewsListCloneResponse response = new NewsListCloneResponse(header, response_data);这个实体类同上，即：header,response_data 
+	  即：把to_subscribe, new_stock_response_data, hk_placement_result, special_topic_news放入到response_data展示。
+          return new ResponseEntity<NewsListCloneResponse>(response, HttpStatus.OK);
+
+          public class NewsListTypeResponse {
+	    private List<NewsListResponseData> newsListResponseData;
+	    private List<SubscribeTag> to_subscribe;
+	    private List<NewStockResponseData> new_stock_response_data;
+	    private List<String> hk_placement_result;
+	    private List<SpecialTopicNews> special_topic_news;
+	   
+	    public NewsListTypeResponse(List<SubscribeTag> to_subscribe,
+					List<NewStockResponseData> new_stock_response_data,
+					List<String> hk_placement_result,
+					List<SpecialTopicNews> special_topic_news,
+					List<NewsListResponseData> newsListResponseData) {
+
+		this.newsListResponseData = newsListResponseData;
+		this.to_subscribe = to_subscribe;
+		this.new_stock_response_data = new_stock_response_data;
+		this.hk_placement_result = hk_placement_result;
+		this.special_topic_news = special_topic_news;
+	    }
+          }
+
+
+
+
+
+
