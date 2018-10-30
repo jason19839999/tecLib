@@ -14,8 +14,9 @@
 2.mybatis的使用
    主要参照github中 crudreposity crudreposity实现读写分离和redis应用（经典）
 
-3.多线程处理rabbitMQ,signalHandler关闭线程处理
-    主要参照：D:\workspace\src\seek\seek\src\main\java\com\vip\seek\creeper\entry\Main.java
+3.多线程处理rabbitMQ,
+    signalHandler关闭线程处理：\seek\src\main\java\com\vip\seek\creeper\entry\Main.java
+    ExecutorService处理多个MQ: \seek\src\main\java\com\vip\seek\creeper\entry\CreeperMQHandler.java
 
 4.多个拦截器的使用
 第①种问题： D:\workspace\src\serving\serving\src\main\java\com\juniorchina\Application.java
