@@ -29,7 +29,7 @@
            取值范围：经度【-180,180】 纬度【-90,90】
            查询方式：
 	             （1）$near查询：查询距离某个点最近的点,支持$maxDistance，不支持$minDistance.
-                          db.loaction.find({"w": {$near:[1,1], $maxDistance:10} })  
+                          db.loaction.findd({"w": {$near:[1,1], $maxDistance:10} })  
 		          备注：查询距离[1,1]最近的点，最大距离限制在10；如果不加限制，会返回100个距离[1,1]最近的点
                      （2）$geoWithin查询：查询某个形状内的点,支持$maxDistance,$minDistance.
                           形状的表示：
