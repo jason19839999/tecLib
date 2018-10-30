@@ -47,7 +47,7 @@ static Thread currentThread()
       (1)、常用的wait方法有wait()和wait(long timeout);
            void wait() 在其他线程调用此对象的 notify() 方法或者 notifyAll()方法前，导致当前线程等待。
            void wait(long timeout)在其他线程调用此对象的notify() 方法 或者 notifyAll()方法，或者超过指定的时间量前，导致当前线程等待。
-           wait()后，线程会释放掉它所占有的“锁标志”，从而使线程 → 所在对象中 → 的其他shnchronized数据可被别的线程使用。
+           wait()后，线程会释放掉它所占有的“锁标志”，从而使线程 → 所在对象中 的其他shnchronized数据可被别的线程使用。
            wait()h和notify()因为会对对象的“锁标志”进行操作，所以他们必需在Synchronized函数或者 synchronized block 中进行调用。如果在
 	   non-synchronized 函数或 non-synchronized block 中进行调用，虽然能编译通过，但在运行时会发生IllegalMonitorStateException的异常。。
 
