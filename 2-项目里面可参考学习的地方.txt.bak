@@ -64,6 +64,3 @@
 env("app.name") → app.name=SpringBoot-Plus
 前台获取springboot-plus\admin-console\src\main\resources\application.properties的配置
 
-
-
-
