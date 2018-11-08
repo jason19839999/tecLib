@@ -121,4 +121,71 @@ sh hk_darkpool.sh start | stop | restart
   ⑦.重要一个宗旨就是减少mysql的访问量；充分利用nosql和缓存服务，其次本地内存也需要考虑；
   ⑧.查看是否被其他业务访问影响，这个也是关键因素。
 
+23.服务器端之间的通信：通过post请求实现，调用websocket所在服务端的接口，来达到通知其他负载上面客户端连接的目的。
+ spring boot 
+   ①实现 RestTemplate →→ ResponseEntity<StockResponse> response = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, StockResponse.class);
+   ②.通过HttpPost   → CloseableHttpClient httpClient = HttpClients.createDefault(); → reponse = httpClient.execute(httppost);
 
+24.redis事务控制：multi   → begin transaction
+                   exec   →  commit
+                   discard →  rollback
+    redis吞吐量指标：
+	读取线程数量2 的吞吐量为 4.3/S 平均每个线程读取能力2.1W/S 负载1.0
+	读取线程数量4（cpu内核2倍）的吞吐量为 5.6W/S 平均每个线程读取能力 1.4W/S 负载 1.85
+	读取线程数量6 (cpu内核3倍) 的吞吐量为 6.3W/S 平均每个线程读取能力 1W/S 负载 2.73
+	读取线程数量8 (cpu内核4倍) 的吞吐量为 6.7W/S 平均每个线程读取能力 8300/S 负载3.42
+    redis多个实例 →  配置多个端口即可
+
+25.CopyOnWriteArraySet：它最适合于具有以下特征的应用程序：set 大小通常保持很小，只读操作远多于可变操作，需要在遍历期间防止线程间的冲突。 
+	它是线程安全的。 
+	因为通常需要复制整个基础数组，所以可变操作（add、set 和 remove 等等）的开销很大。 
+	迭代器不支持可变 remove 操作。 
+	使用迭代器进行遍历的速度很快，并且不会与其他线程发生冲突。在构造迭代器时，迭代器依赖于不变的数组快照。 
+	//迭代器
+	Iterator iter = webSocketSet.iterator();
+	while(iter.hasNext()) {
+	 WebSocketServer item = (WebSocketServer)iter.next();
+	try {
+		item.sendMessage(message);
+	} catch (IOException e) {
+        e.printStackTrace();
+	 }
+	}
+
+26.mongoDB架构：
+   replica set 主、副本集，主如果挂了，  副本接替主继续工作
+   master-slaver
+   sharding
+
+27.①.分布式是指将不同的业务分布在不同的地方。 而集群指的是将几台服务器集中在一起，实现同一业务。
+   ②.简单说，分布式是以缩短单个任务的执行时间来提升效率的，而集群则是通过提高单位时间内执行的任务数来提升效率。
+
+28.线程的使用
+	wait notify notifyall  object类的方法
+	wait方法，使当前线程暂停执行并释放对象锁标志，使其他线程进入syncronized数据区
+	当前线程被放入对象等待池中。
+	notify 将对象的等待池中取出任意一个线程放到锁标志等待池中，只有锁标志等待池中的
+	线程能够获取到锁标志，如果锁标志等待池中没有线程，那么notify不起作用。
+
+	sleep         yield        thread类的方法
+	sleep和yield 都没有释放锁标志
+	sleep 让不同优先级的线程执行 sleep()高优先级的，这样低优先级的就获得了执行机会
+	yield 只能让出cpu占有权，只针对同优先级。找同等级的线程是否有可执行的
+	Future是对于具体的Runnable或者Callable任务的执行结果进行取消、查询是否完成、获取结果的接口。必要时可以通过get方法获取执行结果，该方法会阻塞直到任务返回结果。
+
+29.hbase特点：列和数据存放格式：byte[]
+	列动态增加
+	数据自动切分
+	高并发读写
+	不支持条件查询
+	最多支持5个列簇，每个列簇支持百万个列，支持百亿行
+
+30.spring boot 框架版本历史
+	版本号               	发布时间	备注
+	v0.5.0.M1	        2013-08-06	
+	v1.0.0.RELEASE		2014-04-01	
+	v1.2.0.RELEASE		2014-12-11	
+	v1.3.0.RELEASE		2015-11-16	
+	v1.4.0.RELEASE		2016-07-29	
+	v1.5.0.RELEASE		2017-01-30	
+	v2.0.0.M2	        2017-06-16	最新
