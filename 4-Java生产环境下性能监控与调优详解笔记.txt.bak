@@ -1,0 +1,91 @@
+JVM参数类型：
+   标准参数
+   X参数
+     -Xint   : 解释执行
+     -Xcomp  : 第一次使用就编译成本地代码
+     -Xmixed : 混合模式，JVM自己来决定是否编译成本地代码
+
+   XX参数    :JVM调优和debug
+      Boolean类型
+      格式：-XX:[+-]<name>表示启用或者禁用name属性
+      比如：-XX:+UseConcMarkSweepGC     并发GC  Old区收集方式
+            -XX:+UseParNewGC            并发GC  New区收集方式 设置+UseConcMarkSweepGC时自动打开
+            
+	    -XX:+UseG1GC       web应用  并发GC  java1.8推荐使用UseG1GC性能比较高
+
+	    -XX:+UseParallelGC -XX:+UseParallelOldGC  并行GC  
+
+	    -XX:+UseSerialGC  +UseSerialOldGC         串行GC 新生代\旧生代
+
+      非Boolean类型
+      格式：-XX:<name> = <value>表示name属性的值是value
+      比如：-XX:MaxGCPauseMillis = 500
+            -XX:GCTimeRatio = 19
+
+      -Xmx  -XX:MaxHeapSize       最大内存数 比如：-Xms128M -Xmx128M
+      -Xms  -XX:InitialHeapSize   初始化内存大小
+
+查看JVM运行时参数
+    jps 类似linux的ps,查看java进程
+    jps -l 查看运行的java进程
+    [root@jason ~]# jps -l
+    1324 sun.tools.jps.Jps
+    查看最大内存
+    jinfo -flag MaxHeapSize 1324
+    jinfo -flags 1324 
+
+    查看垃圾回收器
+    jinfo -flag UseConcMarkSweepGC 3176
+    jinfo -flag UseG1GC 3176
+    jinfo -flag UseParallelGC  3176
+    jinfo -flag UseParallelOldGC  3176
+
+jstat查看JVM统计信息
+  类装载
+
+  垃圾收集（非常有用）
+  jps -l  查看线程pid
+  jstat -gc 13144 
+
+  JIT编译
+  
+jmap + MAT实战内存溢出
+  内存溢出映像文件自动导出
+  -XX:+HeapDumpOnOutOfMemoryError
+  -XX:HeapDumpPath = ./
+
+  jmap命令手动导出内存溢出映像文件
+  jps -l  查看运行实例，找对应的pid
+  16940 com.imooc.monitor.XXXXApplication  运行实例
+  jmap -help
+  jmap -dump:format=b,file=heap.hprof 16940
+
+   MAT分析内存溢出
+   将导出的内存溢出映像.hprof文件，用MAT打开分析，定位内存溢出代码。
+
+jstack 实战死循环与死锁  
+  CPU利用率高，定位线程(new runnable timed_waiting waiting blocked terminated)
+  jps -l 查看pid
+  jstack pid > pid.txt
+  sz pid.txt
+
+  //打印所有线程
+  top -p pid H
+  把pid十进制转换成16进制，因为导出的日志里面保存的是16进制
+  printf "%x" 8247
+  2037  在pid.txt里面查找2037即可
+
+JVM层GC调优
+   
+
+  
+
+
+
+
+
+
+
+
+
+
