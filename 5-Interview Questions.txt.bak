@@ -1,0 +1,27 @@
+1.linux命令：
+    ① load average后面三个数字分别代表不同时间段即一分钟、五分钟和十五分钟的系统平均负载；
+    ② cat /proc/loadavg 第四个值的分子是正在运行的进程数，分母为总进程数；第五个值是最近运行的进程id；
+    ③ ps aux --sort -rss 查看应用内存的使用情况；
+
+2.ExecutorService ThreadPool →  动态维护线程池，什么场景下适合。
+     newFixedThreadPool： LinkedBlockingQueue   
+     newSingleThreadExecutor：LinkedBlockingQueue 
+     newCachedThreadPool：SynchronousQueue
+
+3.研究代码的时候最好看看源码，深入了解下原理
+
+4.mysql的隔离级别，各自优缺点
+
+5.基本数据类型和引用数据类型的区别
+
+6.mysql 索引方式，深入研究
+
+7.Synchronized 和 ReentrantLock 的区别  深入研究
+  参照代码：\crudreposity实现读写分离和Redis处理（经典）\crudreposity\src\main\java\datacenter\crudreposity\aspect\LockAspect.java
+
+8.list 和 set 的区别，隐身其他集合的深入研究
+
+9.多线程  深入研究  线程重入，重排序等深入研究 Synchronized和Volatile区别，各自深入研究
+
+10.
+
