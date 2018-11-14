@@ -14,14 +14,42 @@
 
 5.基本数据类型和引用数据类型的区别
 
-6.mysql 索引方式，深入研究
+6.mysql 索引方式，深入研究，建立索引，在where条件是否生效原理，深入研究；
 
-7.Synchronized 和 ReentrantLock 的区别  深入研究
+7.Synchronized 和 ReentrantLock 的区别  深入研究；
   参照代码：\crudreposity实现读写分离和Redis处理（经典）\crudreposity\src\main\java\datacenter\crudreposity\aspect\LockAspect.java
 
 8.list 和 set 的区别，隐身其他集合的深入研究
 
 9.多线程  深入研究  线程重入，重排序等深入研究 Synchronized和Volatile区别，各自深入研究  看视频
 
-10.
+10.分库分表怎么分，深入研究？
+   分表→ 按时间分：建立一个字典表，把表的配置写入
+         比如：id、表名、开始时间、结束时间、要写入的表名
+	 user  user_1  user_2  写一个存储过程根据当前系统时间判断需要插入到哪个表
+	 然后插入或者更新就可以了。以后查询也是按照这个规则来。
+	 配置表：CREATE TABLE `user_sub_table` (
+	  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+	  `table_name` varchar(20) DEFAULT NULL,
+	  `start_time` datetime DEFAULT NULL,
+	  `end_time` datetime DEFAULT NULL,
+	  `object_table_name` varchar(20) DEFAULT NULL,
+	  PRIMARY KEY (`id`)
+	) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1
+
+	id     `table_name`  `start_time`             `end_time`             `object_table_name`
+	"1	  user	   2018-11-13 16:57:55	   2018-11-15 16:58:06	          user_1"
+	"2	  user	   2018-11-16 16:58:19	   2018-11-17 16:58:27	          user_2"
+
+   分库→ 
+
+11.int 和 Integer的区别
+
+12.
+
+
+
+
+
+
 
