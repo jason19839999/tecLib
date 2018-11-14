@@ -64,6 +64,8 @@
             m = 999;
         }
 
+13.synchronized(lockobj) 这个lockobj用static修饰 和不用static修饰的区别
+   
 
 
 
