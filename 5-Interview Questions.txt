@@ -20,7 +20,13 @@
   参照代码：\crudreposity实现读写分离和Redis处理（经典）\crudreposity\src\main\java\datacenter\crudreposity\aspect\LockAspect.java
 
 8.list 和 set 的区别，隐身其他集合的深入研究
+   ① set:注重独一无二的性质,该体系集合可以知道某物是否已近存在于集合中,不会存储重复的元素;用于存储无序(存入和取出的顺序不一定相同)元素，
+         值不能重复。 add() → 向集合中添加元素|clear() → 去掉集合中所有的元素|contains() → 判断集合中是否包含某一个元素|isEmpty() → 判断集合是否          为空| iterator() → 主要用于递归集合，返回一个Iterator()对象|remove() → 从集合中去掉特定的对象|size() →  返回集合的大小
+   ② list:
+ 
 
+
+   
 9.多线程  深入研究  线程重入，重排序等深入研究 Synchronized和Volatile区别，各自深入研究  看视频
 
 10.分库分表怎么分，深入研究？
