@@ -20,10 +20,10 @@
 　　 持久性（Durability）：事务完成后，事务对数据库的所有更新将被保存到数据库，不能回滚。
 
    事务隔离级别                                   脏读       不可重复读       幻读 
-     读未提交（read-uncommitted）                 是            是             是 
-     不可重复读（read-committed）		  否            是             是 
-     可重复读（repeatable-read）		  否            否             是 
-     串行化（serializable）                       否            否             否 
+     读未提交（read-uncommitted）                 Y              Y             Y 
+     不可重复读（read-committed）		  N              Y             Y 
+     可重复读（repeatable-read）		  N              N             Y 
+     串行化（serializable）                       N              N             N 
 
     脏读：事务A读取了事务B更新的数据，然后B回滚操作，那么A读取到的数据是脏数据
 　　不可重复读：事务 A 多次读取同一数据，事务 B 在事务A多次读取的过程中，对数据作了更新并提交，导致事务A多次读取同一数据时，结果 不一致。
@@ -147,5 +147,9 @@
 16.mongodb 属于多线程 深入学习？
 
 17.java GC1原理 之前的是CMS UseConcMarkSeepGC 原理
+
+18.java 单向链表反转  实现
+
+19.分库分表  分表的思想 → 可以存储上ES/lucence上，供查询用，这个想法很好！
 
 
