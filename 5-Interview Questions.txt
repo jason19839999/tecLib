@@ -47,11 +47,11 @@
       这种情况生效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa' AND table_name  = 'user'  
 
   单键索引：idx_table_name/idx_object_table_name    总体规则就是就近生效原则：
-    ① 这种情况生效：【idx_object_table_name】  EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%'   AND table_name  LIKE 'user%'   
-    ② 这种情况失效：                           EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa'   AND table_name  LIKE '%user'  
-    ③ 这种情况生效：【idx_object_table_name】  EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%'   AND table_name  LIKE '%user'  
-    ④ 这种情况生效：【idx_table_name】         EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa'   AND table_name  LIKE 'user%' 
-    ⑤ 这种情况失效：                           EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' OR table_name  LIKE 'user%'  
+    ①【idx_object_table_name】 EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%'   AND table_name  LIKE 'user%'   
+    ②                          EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa'   AND table_name  LIKE '%user'  
+    ③ 【idx_object_table_name】 EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%'   AND table_name  LIKE '%user'  
+    ④ 【idx_table_name】      EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa'   AND table_name  LIKE 'user%' 
+    ⑤                         EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' OR table_name  LIKE 'user%'  
 
     ⑥【table_name】        EXPLAIN SELECT * FROM user_sub_table WHERE table_name = 'aa' AND  object_table_name = 'user'  
     ⑦【object_table_name】 EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa' AND table_name  = 'user'  
