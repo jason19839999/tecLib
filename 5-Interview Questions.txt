@@ -134,5 +134,6 @@
 
 16.mongodb 属于多线程 深入学习？
 
+17.java GC1原理 之前的是CMS UseConcMarkSeepGC 原理
 
 
