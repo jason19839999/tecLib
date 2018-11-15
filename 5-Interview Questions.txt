@@ -14,7 +14,31 @@
 
 5.基本数据类型和引用数据类型的区别
 
-6.mysql 索引方式，深入研究，建立索引，在where条件是否生效原理，深入研究；
+6.mysql 索引方式，深入研究，建立索引，在where条件是否生效原理，深入研究； 总体规则就是就近生效原则：
+  复合索引顺序：idx_table_name_object_table_name  
+      存在断路原则，索引的先后顺序，a b c 如果where 后面没有 a ，则不生效，只要有就行，跟顺序没关系；加上or 都失效，除非每个都建立索引；
+    ① 这种情况失效：EXPLAIN SELECT * FROM user_sub_table WHERE table_name LIKE '%user' 
+    ② 这种情况失效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa' AND  table_name LIKE '%user'  
+      这种情况生效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa' AND  table_name LIKE 'user%'  
+      这种情况生效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND  table_name LIKE 'user%'  
+      这种情况失效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND  table_name LIKE '%user'  
+      这种情况失效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa%' OR  table_name = 'user%' 
+
+      这种情况生效：EXPLAIN SELECT * FROM user_sub_table WHERE table_name = 'aa' AND  object_table_name = 'user'  
+      这种情况生效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa' AND table_name  = 'user'  
+
+  单键索引：idx_table_name/idx_object_table_name    总体规则就是就近生效原则：
+    ① 这种情况生效：【idx_object_table_name】  EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%'   AND table_name  LIKE 'user%'   
+    ② 这种情况失效：                           EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa'   AND table_name  LIKE '%user'  
+    ③ 这种情况生效：【idx_object_table_name】  EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%'   AND table_name  LIKE '%user'  
+    ④ 这种情况生效：【idx_table_name】         EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa'   AND table_name  LIKE 'user%' 
+    ⑤ 这种情况失效：                           EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' OR table_name  LIKE 'user%'  
+
+    ⑥【table_name】        EXPLAIN SELECT * FROM user_sub_table WHERE table_name = 'aa' AND  object_table_name = 'user'  
+    ⑦【object_table_name】 EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa' AND table_name  = 'user'  
+    ⑧【null】              EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa' OR table_name  = 'user'  
+    如果出现=号，like也满足条件，那么=号的索引生效
+    ⑨【idx_table_name】    EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND table_name  = '%user' 
 
 7.Synchronized 和 ReentrantLock 的区别  深入研究；
   参照代码：\crudreposity实现读写分离和Redis处理（经典）\crudreposity\src\main\java\datacenter\crudreposity\aspect\LockAspect.java
