@@ -11,23 +11,72 @@
 3.研究代码的时候最好看看源码，深入了解下原理
 
 4.mysql的隔离级别，各自优缺点
+   事务的基本要素（ACID）
+　　 原子性（Atomicity）：事务开始后所有操作，要么全部做完，要么全部不做，不可能停滞在中间环节。事务执行过程中出错，会回滚到事务开始前的状态，所有的操作就像没有发生一样。也就是说事务是一个不可分割的整体，就像化学中学过的原子，是物质构成的基本单位。
+　　 一致性（Consistency）：事务开始前和结束后，数据库的完整性约束没有被破坏 。比如A向B转账，不可能A扣了钱，B却没收到。
+　　 隔离性（Isolation）：同一时间，只允许一个事务请求同一数据，不同的事务之间彼此没有任何干扰。比如A正在从一张银行卡中取钱，在A取钱的过程结束前，B不能向这张卡转账。
+　　 持久性（Durability）：事务完成后，事务对数据库的所有更新将被保存到数据库，不能回滚。
+
+   事务隔离级别                                   脏读       不可重复读       幻读 
+     读未提交（read-uncommitted）                 是            是             是 
+     不可重复读（read-committed）		  否            是             是 
+     可重复读（repeatable-read）		  否            否             是 
+     串行化（serializable）                       否            否             否 
+
+    脏读：事务A读取了事务B更新的数据，然后B回滚操作，那么A读取到的数据是脏数据
+　　不可重复读：事务 A 多次读取同一数据，事务 B 在事务A多次读取的过程中，对数据作了更新并提交，导致事务A多次读取同一数据时，结果 不一致。
+　　幻读：系统管理员A将数据库中所有学生的成绩从具体分数改为ABCDE等级，但是系统管理员B就在这个时候插入了一条具体分数的记录，当系统管理员A改结束后发现还有一条记录没有改过来，就好像发生了幻觉一样，这就叫幻读。
+　　小结：不可重复读的和幻读很容易混淆，不可重复读侧重于修改，幻读侧重于新增或删除。解决不可重复读的问题只需锁住满足条件的行，解决幻读需要锁表
 
 5.基本数据类型和引用数据类型的区别
+   区别:基本数据类型和引用类型的区别主要在于基本数据类型是分配在栈上的，而引用类型是分配在堆上的（需要java中的栈、堆概念），
+   猜想：不论是基本数据类型还是引用类型，他们都会先在栈中分配一块内存，对于基本类型来说，这块区域包含的是基本类型的内容；
+   而对于对象类型来说，这块区域包含的是指向真正内容的指针，真正的内容被手动的分配在堆上。
 
-6.mysql 索引方式，深入研究，建立索引，在where条件是否生效原理，深入研究；
+6.mysql 索引方式，深入研究，建立索引，在where条件是否生效原理，深入研究； 总体规则就是就近生效原则：
+  复合索引顺序：idx_table_name_object_table_name  
+      存在断路原则，索引的先后顺序，a b c 如果where 后面没有 a ，则不生效，只要有就行，跟顺序没关系；加上or 都失效，除非每个都建立索引；
+    ① 这种情况失效：EXPLAIN SELECT * FROM user_sub_table WHERE table_name LIKE '%user' 
+    ② 这种情况失效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa' AND  table_name LIKE '%user'  
+      这种情况生效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa' AND  table_name LIKE 'user%'  
+      这种情况生效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND  table_name LIKE 'user%'  
+      这种情况失效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND  table_name LIKE '%user'  
+      这种情况失效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa%' OR  table_name = 'user%' 
 
-7.Synchronized 和 ReentrantLock 的区别  深入研究；
+      这种情况生效：EXPLAIN SELECT * FROM user_sub_table WHERE table_name = 'aa' AND  object_table_name = 'user'  
+      这种情况生效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa' AND table_name  = 'user'  
+
+  单键索引：idx_table_name/idx_object_table_name    总体规则就是就近生效原则：
+    ① 这种情况生效：【idx_object_table_name】  EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%'   AND table_name  LIKE 'user%'   
+    ② 这种情况失效：                           EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa'   AND table_name  LIKE '%user'  
+    ③ 这种情况生效：【idx_object_table_name】  EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%'   AND table_name  LIKE '%user'  
+    ④ 这种情况生效：【idx_table_name】         EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa'   AND table_name  LIKE 'user%' 
+    ⑤ 这种情况失效：                           EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' OR table_name  LIKE 'user%'  
+
+    ⑥【table_name】        EXPLAIN SELECT * FROM user_sub_table WHERE table_name = 'aa' AND  object_table_name = 'user'  
+    ⑦【object_table_name】 EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa' AND table_name  = 'user'  
+    ⑧【null】              EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa' OR table_name  = 'user'  
+    如果出现=号，like也满足条件，那么=号的索引生效
+    ⑨【idx_table_name】    EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND table_name  = '%user' 
+
+7.Synchronized 和 ReentrantLock 的区别  深入研究；轮训，可重入，中断，可以设置超时时间，如果超时会回到等待池。
   参照代码：\crudreposity实现读写分离和Redis处理（经典）\crudreposity\src\main\java\datacenter\crudreposity\aspect\LockAspect.java
 
 8.list 和 set 的区别，隐身其他集合的深入研究
-   ① set:注重独一无二的性质,该体系集合可以知道某物是否已近存在于集合中,不会存储重复的元素;用于存储无序(存入和取出的顺序不一定相同)元素，
-         值不能重复。 add() → 向集合中添加元素|clear() → 去掉集合中所有的元素|contains() → 判断集合中是否包含某一个元素|isEmpty() → 判断集合是否          为空| iterator() → 主要用于递归集合，返回一个Iterator()对象|remove() → 从集合中去掉特定的对象|size() →  返回集合的大小
-   ② list:
-     List(列表):元素有序,元素可以重复 (有索引)。 通过元素的equals()方法判断是否重复。  查看
-     Set(集):元素无序,不可重复 (没有索引)。 遍历只能用Iterator迭代器和增强for, 不能使用普通for遍历。 查看
+        //list  有序连续的可重复数组，读取快，写入慢；
 
+        //set的用法:无序且不能存储相同的元素，读取慢，写入快； https://blog.csdn.net/Dzy_water/article/details/79144206
+        //TreeSet         :会将里面的元素默认排序。TreeSet(内部实现二叉树) 主要作用:排序 Comparable，Comparator，compareTo
+        //Hashset         :它是无顺序的，利用hash算法给赋值,使用HashSet 主要用来去重,当Set集合在进行存储的时候,hashCode值相同时,
+        // 会调用equals方法进行对比是同一个对象就不存;当hashCode值不相同时 不用调用equals方法,可以直接存
+        //LinkedHashSet   :有序 怎么存就怎么取出来
 
-   
+	//        看到array，就要想到角标。
+	//        看到link，就要想到first，last。
+	//        看到hash，就要想到hashCode,equals.
+	//        看到tree，就要想到两个接口。Comparable，Comparator
+  
+
 9.多线程  深入研究  线程重入，重排序等深入研究 Synchronized和Volatile区别，各自深入研究  看视频
 
 10.分库分表怎么分，深入研究？
@@ -52,22 +101,15 @@
 
 11.int 和 Integer的区别
 
-12.//数值类型比较
-        byte i =1;
-        short j = 1;
-        int k =1;
-        long m = 1;
-        float f = 1.0F;
-        double d = 1.0;
-        String s = "1";
-        if(i == d){ //除了s,其他数值的都相等。
-            m = 999;
-        }
+12.hashtable
+   Hashtable<String, Integer> table = new Hashtable<String, Integer>();
+   ① Hashtable 是一个散列表，它存储的内容是键值对(key-value)映射。
+   ② Hashtable 继承于Dictionary，实现了Map、Cloneable、java.io.Serializable接口。
+   ③ Hashtable 的函数都是同步的，这意味着它是线程安全的。它的key、value都不可以为null
 
-13.synchronized(lockobj) 这个lockobj用static修饰 和不用static修饰的区别
-   
-
-
+结论：HashMap对象的key、value值均可为null。它不是线程安全的。           
+      HahTable对象的key、value值均不可为null。
+      且两者的的key值均不能重复，若添加key相同的键值对，后面的value会自动覆盖前面的value，但不会报错。
 
 
 
