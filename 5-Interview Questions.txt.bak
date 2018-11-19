@@ -150,6 +150,9 @@
 
 18.java 单向链表反转  实现
 
-19.分库分表  分表的思想 → 可以存储上ES/lucence上，供查询用，这个想法很好！
+19.分库分表  分表的思想 → 数据量大的情况：可以存储上ES/lucence上，供查询用，这个想法很好！
+                          数据量小的情况：通过配置表按时间拆分；
 
+20. ThreadLocal的作用 →
+    private static ThreadLocal<MiaoshaUser> userHolder = new ThreadLocal<MiaoshaUser>();
 
