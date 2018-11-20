@@ -1,98 +1,98 @@
-1.linux���
-    �� load average�����������ֱַ������ͬʱ��μ�һ���ӡ�����Ӻ�ʮ����ӵ�ϵͳƽ�����أ�
-    �� cat /proc/loadavg ���ĸ�ֵ�ķ������������еĽ���������ĸΪ�ܽ������������ֵ��������еĽ���id��
-    �� ps aux --sort -rss �鿴Ӧ���ڴ��ʹ�������
+1.linux命令：
+    ① load average后面三个数字分别代表不同时间段即一分钟、五分钟和十五分钟的系统平均负载；
+    ② cat /proc/loadavg 第四个值的分子是正在运行的进程数，分母为总进程数；第五个值是最近运行的进程id；
+    ③ ps aux --sort -rss 查看应用内存的使用情况；
 
-2.ExecutorService ThreadPool ��  ��̬ά���̳߳أ�ʲô�������ʺϡ�
-     newFixedThreadPool�� LinkedBlockingQueue   
-     newSingleThreadExecutor��LinkedBlockingQueue 
-     newCachedThreadPool��SynchronousQueue
+2.ExecutorService ThreadPool →  动态维护线程池，什么场景下适合。
+     newFixedThreadPool： LinkedBlockingQueue   
+     newSingleThreadExecutor：LinkedBlockingQueue 
+     newCachedThreadPool：SynchronousQueue
 
-3.�о������ʱ����ÿ���Դ�룬�����˽���ԭ��
+3.研究代码的时候最好看看源码，深入了解下原理
 
-4.mysql�ĸ��뼶�𣬸�����ȱ��
-   ����Ļ���Ҫ�أ�ACID��
-���� ԭ���ԣ�Atomicity��������ʼ�����в�����Ҫôȫ�����꣬Ҫôȫ��������������ͣ�����м价�ڡ�����ִ�й����г�����
-   ��ع�������ʼǰ��״̬�����еĲ�������û�з���һ����Ҳ����˵������һ�����ɷָ�����壬����ѧ��ѧ����ԭ�ӣ������ʹ��ɵĻ�����λ��
-���� һ���ԣ�Consistency��������ʼǰ�ͽ��������ݿ��������Լ��û�б��ƻ� ������A��Bת�ˣ�������A����Ǯ��Bȴû�յ���
-���� �����ԣ�Isolation����ͬһʱ�䣬ֻ����һ����������ͬһ���ݣ���ͬ������֮��˴�û���κθ��š�����A���ڴ�һ�����п���ȡǮ��
-   ��AȡǮ�Ĺ��̽���ǰ��B���������ſ�ת�ˡ�
-���� �־��ԣ�Durability����������ɺ���������ݿ�����и��½������浽���ݿ⣬���ܻع���
+4.mysql的隔离级别，各自优缺点
+   事务的基本要素（ACID）
+　　 原子性（Atomicity）：事务开始后所有操作，要么全部做完，要么全部不做，不可能停滞在中间环节。事务执行过程中出错，
+   会回滚到事务开始前的状态，所有的操作就像没有发生一样。也就是说事务是一个不可分割的整体，就像化学中学过的原子，是物质构成的基本单位。
+　　 一致性（Consistency）：事务开始前和结束后，数据库的完整性约束没有被破坏 。比如A向B转账，不可能A扣了钱，B却没收到。
+　　 隔离性（Isolation）：同一时间，只允许一个事务请求同一数据，不同的事务之间彼此没有任何干扰。比如A正在从一张银行卡中取钱，
+   在A取钱的过程结束前，B不能向这张卡转账。
+　　 持久性（Durability）：事务完成后，事务对数据库的所有更新将被保存到数据库，不能回滚。
 
-   ������뼶��                                   ���       �����ظ���       �ö� 
-     ��δ�ύ��read-uncommitted��                 Y              Y             Y 
-     �����ظ�����read-committed��		  N              Y             Y 
-     ���ظ�����repeatable-read��		  N              N             Y 
-     ���л���serializable��                       N              N             N 
+   事务隔离级别                                   脏读       不可重复读       幻读 
+     读未提交（read-uncommitted）                 Y              Y             Y 
+     不可重复读（read-committed）		  N              Y             Y 
+     可重复读（repeatable-read）		  N              N             Y 
+     串行化（serializable）                       N              N             N 
 
-    ���������A��ȡ������B���µ����ݣ�Ȼ��B�ع���������ôA��ȡ����������������
-���������ظ��������� A ��ζ�ȡͬһ���ݣ����� B ������A��ζ�ȡ�Ĺ����У����������˸��²��ύ����������A��ζ�ȡͬһ����ʱ����� ��һ�¡�
-�����ö���ϵͳ����ԱA�����ݿ�������ѧ���ĳɼ��Ӿ��������ΪABCDE�ȼ�������ϵͳ����ԱB�������ʱ�������һ����������ļ�¼��
-  ��ϵͳ����ԱA�Ľ������ֻ���һ����¼û�иĹ������ͺ������˻þ�һ������ͽлö���
-����С�᣺�����ظ����ĺͻö������׻����������ظ����������޸ģ��ö�������������ɾ������������ظ���������ֻ����ס�����������У�
-  ����ö���Ҫ����
+    脏读：事务A读取了事务B更新的数据，然后B回滚操作，那么A读取到的数据是脏数据
+　　不可重复读：事务 A 多次读取同一数据，事务 B 在事务A多次读取的过程中，对数据作了更新并提交，导致事务A多次读取同一数据时，结果 不一致。
+　　幻读：系统管理员A将数据库中所有学生的成绩从具体分数改为ABCDE等级，但是系统管理员B就在这个时候插入了一条具体分数的记录，
+  当系统管理员A改结束后发现还有一条记录没有改过来，就好像发生了幻觉一样，这就叫幻读。
+　　小结：不可重复读的和幻读很容易混淆，不可重复读侧重于修改，幻读侧重于新增或删除。解决不可重复读的问题只需锁住满足条件的行，
+  解决幻读需要锁表
 
-5.�����������ͺ������������͵�����
-   ����:�����������ͺ��������͵�������Ҫ���ڻ������������Ƿ�����ջ�ϵģ������������Ƿ����ڶ��ϵģ���Ҫjava�е�ջ���Ѹ����
-   ���룺�����ǻ����������ͻ����������ͣ����Ƕ�������ջ�з���һ���ڴ棬���ڻ���������˵���������������ǻ������͵����ݣ�
-   �����ڶ���������˵����������������ָ���������ݵ�ָ�룬���������ݱ��ֶ��ķ����ڶ��ϡ�
+5.基本数据类型和引用数据类型的区别
+   区别:基本数据类型和引用类型的区别主要在于基本数据类型是分配在栈上的，而引用类型是分配在堆上的（需要java中的栈、堆概念），
+   猜想：不论是基本数据类型还是引用类型，他们都会先在栈中分配一块内存，对于基本类型来说，这块区域包含的是基本类型的内容；
+   而对于对象类型来说，这块区域包含的是指向真正内容的指针，真正的内容被手动的分配在堆上。
 
-6.mysql ������ʽ�������о���������������where�����Ƿ���Чԭ���������о��� ���������Ǿͽ���Чԭ��
-  ��������˳��idx_table_name_object_table_name  
-      ���ڶ�·ԭ���������Ⱥ�˳��a b c ���where ����û�� a ������Ч��ֻҪ�о��У���˳��û��ϵ������or ��ʧЧ������ÿ��������������
-    �� �������ʧЧ��EXPLAIN SELECT * FROM user_sub_table WHERE table_name LIKE '%user' 
-    �� �������ʧЧ��EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa' AND  table_name LIKE '%user'  
-      ���������Ч��EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa' AND  table_name LIKE 'user%'  
-      ���������Ч��EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND  table_name LIKE 'user%'  
-      �������ʧЧ��EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND  table_name LIKE '%user'  
-      �������ʧЧ��EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa%' OR  table_name = 'user%' 
+6.mysql 索引方式，深入研究，建立索引，在where条件是否生效原理，深入研究； 总体规则就是就近生效原则：
+  复合索引顺序：idx_table_name_object_table_name  
+      存在断路原则，索引的先后顺序，a b c 如果where 后面没有 a ，则不生效，只要有就行，跟顺序没关系；加上or 都失效，除非每个都建立索引；
+    ① 这种情况失效：EXPLAIN SELECT * FROM user_sub_table WHERE table_name LIKE '%user' 
+    ② 这种情况失效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa' AND  table_name LIKE '%user'  
+      这种情况生效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa' AND  table_name LIKE 'user%'  
+      这种情况生效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND  table_name LIKE 'user%'  
+      这种情况失效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND  table_name LIKE '%user'  
+      这种情况失效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa%' OR  table_name = 'user%' 
 
-      ���������Ч��EXPLAIN SELECT * FROM user_sub_table WHERE table_name = 'aa' AND  object_table_name = 'user'  
-      ���������Ч��EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa' AND table_name  = 'user'  
+      这种情况生效：EXPLAIN SELECT * FROM user_sub_table WHERE table_name = 'aa' AND  object_table_name = 'user'  
+      这种情况生效：EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa' AND table_name  = 'user'  
 
-  ����������idx_table_name/idx_object_table_name    ���������Ǿͽ���Чԭ��
-    �١�idx_object_table_name�� EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%'   AND table_name  LIKE 'user%'   
-    ��                          EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa'   AND table_name  LIKE '%user'  
-    �� ��idx_object_table_name�� EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%'   AND table_name  LIKE '%user'  
-    �� ��idx_table_name��      EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa'   AND table_name  LIKE 'user%' 
-    ��                         EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' OR table_name  LIKE 'user%'  
+  单键索引：idx_table_name/idx_object_table_name    总体规则就是就近生效原则：
+    ①【idx_object_table_name】 EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%'   AND table_name  LIKE 'user%'   
+    ②                          EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa'   AND table_name  LIKE '%user'  
+    ③ 【idx_object_table_name】 EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%'   AND table_name  LIKE '%user'  
+    ④ 【idx_table_name】      EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE '%aa'   AND table_name  LIKE 'user%' 
+    ⑤                         EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' OR table_name  LIKE 'user%'  
 
-    �ޡ�table_name��        EXPLAIN SELECT * FROM user_sub_table WHERE table_name = 'aa' AND  object_table_name = 'user'  
-    �ߡ�object_table_name�� EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa' AND table_name  = 'user'  
-    �ࡾnull��              EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa' OR table_name  = 'user'  
-    �������=�ţ�likeҲ������������ô=�ŵ�������Ч
-    �᡾idx_table_name��    EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND table_name  = '%user' 
+    ⑥【table_name】        EXPLAIN SELECT * FROM user_sub_table WHERE table_name = 'aa' AND  object_table_name = 'user'  
+    ⑦【object_table_name】 EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa' AND table_name  = 'user'  
+    ⑧【null】              EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa' OR table_name  = 'user'  
+    如果出现=号，like也满足条件，那么=号的索引生效
+    ⑨【idx_table_name】    EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND table_name  = '%user' 
 
-7.Synchronized �� ReentrantLock ������  �����о�����ѵ�������룬�жϣ��������ó�ʱʱ�䣬�����ʱ��ص��ȴ��ء�
-  ���մ��룺\crudreposityʵ�ֶ�д�����Redis���������䣩\crudreposity\src\main\java\datacenter\crudreposity\aspect\LockAspect.java
+7.Synchronized 和 ReentrantLock 的区别  深入研究；轮训，可重入，中断，可以设置超时时间，如果超时会回到等待池。
+  参照代码：\crudreposity实现读写分离和Redis处理（经典）\crudreposity\src\main\java\datacenter\crudreposity\aspect\LockAspect.java
 
-8.list �� set �����������������ϵ������о�
-        //list  ���������Ŀ��ظ����飬��ȡ�죬д������
+8.list 和 set 的区别，隐身其他集合的深入研究
+        //list  有序连续的可重复数组，读取快，写入慢；
 
-        //set���÷�:�����Ҳ��ܴ洢��ͬ��Ԫ�أ���ȡ����д��죻 https://blog.csdn.net/Dzy_water/article/details/79144206
-        //TreeSet         :�Ὣ�����Ԫ��Ĭ������TreeSet(�ڲ�ʵ�ֶ�����) ��Ҫ����:���� Comparable��Comparator��compareTo
-        //Hashset         :������˳��ģ�����hash�㷨����ֵ,ʹ��HashSet ��Ҫ����ȥ��,��Set�����ڽ��д洢��ʱ��,hashCodeֵ��ͬʱ,
-        // �����equals�������жԱ���ͬһ������Ͳ���;��hashCodeֵ����ͬʱ ���õ���equals����,����ֱ�Ӵ�
-        //LinkedHashSet   :���� ��ô�����ôȡ����
+        //set的用法:无序且不能存储相同的元素，读取慢，写入快； https://blog.csdn.net/Dzy_water/article/details/79144206
+        //TreeSet         :会将里面的元素默认排序。TreeSet(内部实现二叉树) 主要作用:排序 Comparable，Comparator，compareTo
+        //Hashset         :它是无顺序的，利用hash算法给赋值,使用HashSet 主要用来去重,当Set集合在进行存储的时候,hashCode值相同时,
+        // 会调用equals方法进行对比是同一个对象就不存;当hashCode值不相同时 不用调用equals方法,可以直接存
+        //LinkedHashSet   :有序 怎么存就怎么取出来
 
-	//        ����array����Ҫ�뵽�Ǳꡣ
-	//        ����link����Ҫ�뵽first��last��
-	//        ����hash����Ҫ�뵽hashCode,equals.
-	//        ����tree����Ҫ�뵽�����ӿڡ�Comparable��Comparator
+	//        看到array，就要想到角标。
+	//        看到link，就要想到first，last。
+	//        看到hash，就要想到hashCode,equals.
+	//        看到tree，就要想到两个接口。Comparable，Comparator
   
 
-9.���߳�  �����о�  �߳����룬������������о� Synchronized��Volatile���𣬸��������о�  ����Ƶ
-  synchronized��volatile�����Խ�ֹ������ָ������������������棬Ϊ�˾����ܼ����ڴ�����ٶ�Զ����CPU�����ٶ���������CPU���õ�Ӱ�죬������ᰴ��
-  �Լ���һЩ���򽫳����д˳����ҡ�����д�ں���Ĵ�����ʱ��˳���Ͽ��ܻ���ִ�У���д��ǰ��Ĵ�����ִ�С����Ծ����ܳ�ֵ�����CPU��
-  �߳��жϹ���(Thread Interruption Rule)�����߳�interrupte()�����ĵ��������ڱ��ж��̵߳Ĵ����⵽�ж��¼��ķ���������ͨ��Thread.interrupted()
-  ��������߳��Ƿ����жϡ�
+9.多线程  深入研究  线程重入，重排序等深入研究 Synchronized和Volatile区别，各自深入研究  看视频
+  synchronized和volatile都可以禁止重排序，指令重排序在虚拟机层面，为了尽可能减少内存操作速度远慢于CPU运行速度所带来的CPU空置的影响，虚拟机会按照
+  自己的一些规则将程序编写顺序打乱——即写在后面的代码在时间顺序上可能会先执行，而写在前面的代码会后执行——以尽可能充分地利用CPU。
+  线程中断规则(Thread Interruption Rule)：对线程interrupte()方法的调用优先于被中断线程的代码检测到中断事件的发生，可以通过Thread.interrupted()
+  方法检测线程是否已中断。
   
-10.�ֿ�ֱ���ô�֣������о���
-   �ֱ��� ��ʱ��֣�����һ���ֵ�����ѱ�������д��
-         ���磺id����������ʼʱ�䡢����ʱ�䡢Ҫд��ı���
-	 user  user_1  user_2  дһ���洢���̸��ݵ�ǰϵͳʱ���ж���Ҫ���뵽�ĸ���
-	 Ȼ�������߸��¾Ϳ����ˡ��Ժ��ѯҲ�ǰ��������������
-	 ���ñ���CREATE TABLE `user_sub_table` (
+10.分库分表怎么分，深入研究？
+   分表→ 按时间分：建立一个字典表，把表的配置写入
+         比如：id、表名、开始时间、结束时间、要写入的表名
+	 user  user_1  user_2  写一个存储过程根据当前系统时间判断需要插入到哪个表
+	 然后插入或者更新就可以了。以后查询也是按照这个规则来。
+	 配置表：CREATE TABLE `user_sub_table` (
 	  `id` bigint(20) NOT NULL AUTO_INCREMENT,
 	  `table_name` varchar(20) DEFAULT NULL,
 	  `start_time` datetime DEFAULT NULL,
@@ -105,72 +105,72 @@
 	"1	  user	   2018-11-13 16:57:55	   2018-11-15 16:58:06	          user_1"
 	"2	  user	   2018-11-16 16:58:19	   2018-11-17 16:58:27	          user_2"
 
-   �ֿ�� 
+   分库→ 
 
-11.int �� Integer������
+11.int 和 Integer的区别
 
 12.hashtable
    Hashtable<String, Integer> table = new Hashtable<String, Integer>();
-   �� Hashtable ��һ��ɢ�б������洢�������Ǽ�ֵ��(key-value)ӳ�䡣
-   �� Hashtable �̳���Dictionary��ʵ����Map��Cloneable��java.io.Serializable�ӿڡ�
-   �� Hashtable �ĺ�������ͬ���ģ�����ζ�������̰߳�ȫ�ġ�����key��value��������Ϊnull
+   ① Hashtable 是一个散列表，它存储的内容是键值对(key-value)映射。
+   ② Hashtable 继承于Dictionary，实现了Map、Cloneable、java.io.Serializable接口。
+   ③ Hashtable 的函数都是同步的，这意味着它是线程安全的。它的key、value都不可以为null
 
-���ۣ�HashMap�����key��valueֵ����Ϊnull���������̰߳�ȫ�ġ�           
-      HahTable�����key��valueֵ������Ϊnull��
-      �����ߵĵ�keyֵ�������ظ���������key��ͬ�ļ�ֵ�ԣ������value���Զ�����ǰ���value�������ᱨ����
+结论：HashMap对象的key、value值均可为null。它不是线程安全的。           
+      HahTable对象的key、value值均不可为null。
+      且两者的的key值均不能重复，若添加key相同的键值对，后面的value会自动覆盖前面的value，但不会报错。
 
-13.�ۼ������ͷǾۼ�����   mysql2���������ͣ�B-tree������hash������
-   ÿ����ֻ����һ���۴���������Ϊһ�����еļ�¼ֻ����һ������˳���š����ǣ�һ���������в�ֹһ���Ǿ۴�������ʵ����
-   ����ÿ�����������Խ���249���Ǿ۴��������Ǿ۴�������Ҫ������Ӳ�̿ռ���ڴ档���⣬��Ȼ�Ǿ۴�����������ߴӱ���
-   ȡ���ݵ��ٶȣ���Ҳ�ή������в���͸������ݵ��ٶȡ�ÿ����ı���һ�������˷Ǿ۴������ı��е�����ʱ������ͬʱ����������
-   ������һ���������Ǿ۴�����ʱҪ���ؿ��ǡ������Ԥ��һ������ҪƵ���ظ������ݣ���ô��Ҫ��������̫��Ǿ۴�������
-   ���⣬���Ӳ�̺��ڴ�ռ����ޣ�ҲӦ������ʹ�÷Ǿ۴�������������
-    �۴������ĺ�ѡ��
-   �١�������,������where�Ӿ���ʹ�ò��Ҳ���������ġ�
-   �ڡ�����Χ��ȡ���У���pri_order > 100 and pri_order < 200��
-   �ۡ���group by��order by��ʹ�õ��С�
-   �ܡ��������޸ĵ��С�
-   �ݡ������Ӳ�����ʹ�õ��С�
+13.聚集索引和非聚集索引   mysql2大索引类型（B-tree索引和hash索引）
+   每个表只能有一个聚簇索引，因为一个表中的记录只能以一种物理顺序存放。但是，一个表可以有不止一个非聚簇索引。实际上
+   ，对每个表你最多可以建立249个非聚簇索引。非聚簇索引需要大量的硬盘空间和内存。另外，虽然非聚簇索引可以提高从表中
+   取数据的速度，它也会降低向表中插入和更新数据的速度。每当你改变了一个建立了非聚簇索引的表中的数据时，必须同时更新索引。
+   因此你对一个表建立非聚簇索引时要慎重考虑。如果你预计一个表需要频繁地更新数据，那么不要对它建立太多非聚簇索引。
+   另外，如果硬盘和内存空间有限，也应该限制使用非聚簇索引的数量。
+    聚簇索引的侯选列
+   ①、主键列,该列在where子句中使用并且插入是随机的。
+   ②、按范围存取的列，如pri_order > 100 and pri_order < 200。
+   ③、在group by或order by中使用的列。
+   ④、不经常修改的列。
+   ⑤、在连接操作中使用的列。
  
-14.aop����springʲôԭ��ʵ�ֵģ�springԭ������Ⱥ�������ûʵʱͬ�����ᵼ�¿ͻ��˶�ȡ�����ݲ�׼ȷ������ô��֤��
-   aop����ν�����桱���򵥵�˵�����ǽ���Щ��ҵ���޹أ�ȴΪҵ��ģ������ͬ���õ��߼������η�װ���������ڼ���ϵͳ���ظ����룬����ģ������϶ȣ�
-    ��������δ���Ŀɲ����ԺͿ�ά���ԡ�
-    APOʹ�ó�����
-    Authentication Ȩ��
-    Caching ����
-    Context passing ���ݴ���
-    Error handling ������
-    Lazy loading��������
-    Debugging��������
-    logging, tracing, profiling and monitoring����¼���١��Ż���У׼
-    Performance optimization�������Ż�
-    Persistence�����־û�
-    Resource pooling����Դ��
-    Synchronization��ͬ��
-    Transactions ����
-   Spring��һ���ֲ����������Դ������ܣ����Խӹ�web�㣬ҵ��㣬dao�㣬�־ò����������ҿ������ø���bean,��ά��bean��bean֮��Ĺ�ϵ��
-   ����ľ��ǿ��Ʒ�ת(IOC),����������(AOP)��
+14.aop基于spring什么原理实现的？spring原理？集群如果数据没实时同步，会导致客户端读取的数据不准确，改怎么保证？
+   aop的所谓“方面”，简单地说，就是将那些与业务无关，却为业务模块所共同调用的逻辑或责任封装起来，便于减少系统的重复代码，降低模块间的耦合度，
+    并有利于未来的可操作性和可维护性。
+    APO使用场景：
+    Authentication 权限
+    Caching 缓存
+    Context passing 内容传递
+    Error handling 错误处理
+    Lazy loading　懒加载
+    Debugging　　调试
+    logging, tracing, profiling and monitoring　记录跟踪　优化　校准
+    Performance optimization　性能优化
+    Persistence　　持久化
+    Resource pooling　资源池
+    Synchronization　同步
+    Transactions 事务
+   Spring是一个分层的轻量级开源容器框架，可以接管web层，业务层，dao层，持久层的组件，并且可以配置各种bean,和维护bean与bean之间的关系。
+   其核心就是控制反转(IOC),和面向切面(AOP)。
 
-15.redis ���ڵ��̣߳�����ʽ��һ����̨��Ϊ�θ�Ч����η�Ƭ������ԭ��������ѧϰ��  
-   �� Ϊʲô˵redis�ܹ�����ִ��
-   (1) ���󲿷������Ǵ�����ڴ�������ǳ����٣�
-   (2) ���õ��߳�,�����˲���Ҫ���������л��;�������
-   (3) ������IO - IO��·����
-   �� redis���ڲ�ʵ��
-      �ڲ�ʵ�ֲ���epoll��������epoll+�Լ�ʵ�ֵļ򵥵��¼���ܡ�epoll�еĶ���д���رա����Ӷ�ת�������¼���Ȼ������epoll�Ķ�·�������ԣ�
-   ������io���˷�һ��ʱ�� ��3�����������໥�����ģ��ر��ǵ�һ������������Ǻ�ʱ�ģ����õ��߳������������ܿ����֪�ˡ�Ӧ��˵redisΪ
-   ����ĳ���ѡ���˺��ʵļ���������
-   �� Redis�����̰߳�ȫ����
-     redisʵ�����ǲ������̷߳�յĹ������������һ���̣߳���Ȼ�������̰߳�ȫ���⣬����������Ҫ�������redis�����ĸ��ϲ�����˵����Ȼ
-     ��Ҫ���������п����Ƿֲ�ʽ����
-   �� ����Sentinel �����ĵ���https://www.cnblogs.com/youzhibing/p/8466491.html
+15.redis 属于单线程，阻塞式，一个柜台，为何高效？如何分片，核心原理，深入学习？  
+   ① 为什么说redis能够快速执行
+   (1) 绝大部分请求是纯粹的内存操作（非常快速）
+   (2) 采用单线程,避免了不必要的上下文切换和竞争条件
+   (3) 非阻塞IO - IO多路复用
+   ② redis的内部实现
+      内部实现采用epoll，采用了epoll+自己实现的简单的事件框架。epoll中的读、写、关闭、连接都转化成了事件，然后利用epoll的多路复用特性，
+   绝不在io上浪费一点时间 这3个条件不是相互独立的，特别是第一条，如果请求都是耗时的，采用单线程吞吐量及性能可想而知了。应该说redis为
+   特殊的场景选择了合适的技术方案。
+   ③ Redis关于线程安全问题
+     redis实际上是采用了线程封闭的观念，把任务封闭在一个线程，自然避免了线程安全问题，不过对于需要依赖多个redis操作的复合操作来说，依然
+     需要锁，而且有可能是分布式锁。
+   ④ 运行Sentinel 参照文档：https://www.cnblogs.com/youzhibing/p/8466491.html
    redis-sentinel /path/to/sentinel.conf  or redis-server /path/to/sentinel.conf --sentinel
  
-      �� down-after-milliseconds ����Sentinel��ʼ��Ϊ���ѹرյ�ʱ�䣬ʵ����Ӧ�ÿ��Ե����ʱ�䣨�����ǲ��ظ����ǵ�PING���ǻظ����󣩶����Ժ���Ϊ
-         ��λ��ʱ�䡣
-      �� parallel-syncs���ÿ���ͬһ����ת�ƺ�����������ʹ�������������Ĵӷ�������������ԽС������ת�ƹ�����������ʱ���Խ�࣬���������վ����Ϊ��
-      �������ݣ�����ܲ�ϣ�����д�վͬʱ����վ����ͬ������Ȼ���ƹ��̶��ڴ�վ��Ҫ�Ƿ������ģ�������һ��ʱ����ֹͣ����վ�����������ݡ�������ϣ��ͨ��
-      ����ѡ������Ϊֵ1��ȷ��һ��ֻ�ܷ���һ����վ��
+      ※ down-after-milliseconds 对于Sentinel开始认为它已关闭的时间，实例不应该可以到达的时间（无论是不回复我们的PING还是回复错误）都是以毫秒为
+         单位的时间。
+      ※ parallel-syncs设置可在同一故障转移后重新配置以使用新主服务器的从服务器数。数字越小，故障转移过程完成所需的时间就越多，但是如果从站配置为提
+      供旧数据，则可能不希望所有从站同时与主站重新同步。虽然复制过程对于从站主要是非阻塞的，但是有一段时间它停止从主站加载批量数据。您可能希望通过
+      将此选项设置为值1来确保一次只能访问一个从站。
 		       +----+
 			 | M1 |
 			 | S1 | <- C1 (writes will be lost)
@@ -182,69 +182,69 @@
 		| [M2] |----+----| R3 |
 		| S2   |         | S3 |
 		+------+         +----+
-	   ����������£�������������˾ɵ���M1����˴���R2������Ϊ�������ǣ������������λ��ͬһ�����еĿͻ��ˣ���C1�����ܻ����������д���������
-	��.������ݽ���Զ��ʧ����Ϊ������������ʱ������������������Ϊ�������Ĵӻ������������ݼ���
-	ʹ������Redis���ƹ��ܿ��Ի�������⣬�������������⵽�����ܹ�����д�봫�䵽ָ�������Ĵӷ�������������ֹͣ����д�롣
-	min-slaves����ѡ��
-	     min-slaves-to-write 1  //�ӽڵ���������1�������ڵ�ܾ�ִ��д����
-	     min-slaves-max-lag 10  //1���ӽڵ���ӳ�(lag)ֵ�����ڻ����10�����ڵ�ܾ�ִ��д����
-	   ʹ���������ã������redis.confRedis���а��е���ע��ʾ���Ի�ȡ������Ϣ��Redisʵ����Ϊ��������ʱ������޷�д������1���ӷ���������ֹͣ��
-	��д�롣���ڸ������첽�ģ�����޷�ʵ��д����ζ�Ŵ����豸�ѶϿ����ӣ�����δ�����Ƿ��ͳ���ָ��max-lag�������첽ȷ�ϡ�
-	  ʹ�ô����ã������еľ�Redis��M1����10����Ϊ�����á��������ָ�ʱ��Sentinel���ý��������µ����ã��ͻ���C1���ܹ���ȡ��Ч���ò�����ʹ����
-	���豸������û����ѵ���͡�ͨ�����ָĽ������������վ�رգ���վ��ֹͣ����д�롣����һ�����ԡ�
+	   在这种情况下，网络分区隔离了旧的主M1，因此从属R2被提升为主。但是，与旧主服务器位于同一分区中的客户端（如C1）可能会继续将数据写入旧主服务
+	器.这个数据将永远丢失，因为当分区将愈合时，主机将被重新配置为新主机的从机，丢弃其数据集。
+	使用以下Redis复制功能可以缓解此问题，如果主服务器检测到不再能够将其写入传输到指定数量的从服务器，则允许停止接受写入。
+	min-slaves配置选项
+	     min-slaves-to-write 1  //从节点数量少于1个，主节点拒绝执行写命令
+	     min-slaves-max-lag 10  //1个从节点的延迟(lag)值，大于或等于10，主节点拒绝执行写命令
+	   使用上述配置（请参阅redis.confRedis发行版中的自注释示例以获取更多信息）Redis实例作为主服务器时，如果无法写入至少1个从服务器，将停止接
+	受写入。由于复制是异步的，因此无法实际写入意味着从属设备已断开连接，或者未向我们发送超过指定max-lag秒数的异步确认。
+	  使用此配置，上例中的旧Redis主M1将在10秒后变为不可用。当分区恢复时，Sentinel配置将收敛到新的配置，客户端C1将能够获取有效配置并继续使用新
+	主设备。但是没有免费的午餐。通过这种改进，如果两个从站关闭，主站将停止接受写入。这是一个折衷。
 
-        ��������Ҫע����ǣ�sentinel��Ҫ��55��56��������֮����ܿ�����������56��ִ��slaveof���������֮���ٿ���3��sentinel��ط���һ���߿���
-	�ģ������Զ��л������ɡ�����ͨ����master��ִ��redis-cli -p 6379 DEBUG sleep 30 ������ģ�����ת�ƣ�������sentinel����ת���Ƿ���
-	����127.0.0.1:5000> SENTINEL get-master-addr-by-name mymaster ���������鿴��ǰmaster�ڵ���Ϣ�����Ƿ��Զ��л���master.
-        ������е�һ���ӹ��ˣ���ô���������֮�����ݻ��Զ�ͬ�����ôӡ�
-    ���岿��: ���Բ��� �� https://blog.csdn.net/guying4875/article/details/79045075
-	һ���������ڱ�   
-	ip��ַ����ֱ�Ϊ
-	�� 127.0.0.1:6379
-	�� 127.0.0.1:6380
-	�� 127.0.0.1:6381
-	�ڱ� 127.0.0.1:26379
-	�ڱ� 127.0.0.1:26380
-	�ڱ� 127.0.0.1:26381
-    1��3��sentinel�ڵ�������ļ�����һ�£������ֻ�Ƕ˿�
+        ※这里需要注意的是：sentinel需要在55和56做好主从之后才能开启，即：在56上执行slaveof，搭建好主从之后，再开启3个sentinel监控服务，一个高可用
+	的（主从自动切换）搭建完成。可以通过在master上执行redis-cli -p 6379 DEBUG sleep 30 命令来模拟故障转移，来测试sentinel故障转移是否搭建成
+	功：127.0.0.1:5000> SENTINEL get-master-addr-by-name mymaster 用这个命令查看当前master节点信息，看是否自动切换了master.
+        如果其中的一个从挂了，那么重启这个从之后，数据会自动同步到该从。
+    总体部署: 可以参照 → https://blog.csdn.net/guying4875/article/details/79045075
+	一主二从三哨兵   
+	ip地址分配分别为
+	主 127.0.0.1:6379
+	从 127.0.0.1:6380
+	从 127.0.0.1:6381
+	哨兵 127.0.0.1:26379
+	哨兵 127.0.0.1:26380
+	哨兵 127.0.0.1:26381
+    1、3个sentinel节点的配置文件基本一致，区别的只是端口
     sentinel-26379.conf	
         port 26379
 	daemonize yes
 	logfile "26379.log"
 	dir "/opt/soft/redis/data"
-	sentinel monitor mymaster 192.168.11.202 6379 2 ���2�����ڱ�ͶƱ������Ҳ����˵ֻ���ڱ�ͶƱ�ﵽ2��ʱ���ִ�й���ת�ƣ�
-	#redis����master�ڵ���������֤������Ҫ��������
+	sentinel monitor mymaster 192.168.11.202 6379 2 这个2代表哨兵投票个数（也就是说只有哨兵投票达到2的时候才执行故障转移）
+	#redis数据master节点设置了认证，则需要如下配置
 	sentinel auth-pass mymaster myredis
 	sentinel down-after-milliseconds mymaster 30000
 	sentinel parallel-syncs mymaster 1
 	sentinel failover-timeout mymaster 180000
-����sentinel-26380.conf
+　　sentinel-26380.conf
 	port 26380
 	daemonize yes
 	logfile "26379.log"
 	dir "/opt/soft/redis/data"
-	sentinel monitor mymaster 192.168.11.202 6379 2 ���2�����ڱ�ͶƱ������Ҳ����˵ֻ���ڱ�ͶƱ�ﵽ2��ʱ���ִ�й���ת�ƣ�
-	#redis����master�ڵ���������֤������Ҫ��������
+	sentinel monitor mymaster 192.168.11.202 6379 2 这个2代表哨兵投票个数（也就是说只有哨兵投票达到2的时候才执行故障转移）
+	#redis数据master节点设置了认证，则需要如下配置
 	sentinel auth-pass mymaster myredis
 	sentinel down-after-milliseconds mymaster 30000
 	sentinel parallel-syncs mymaster 1
 	sentinel failover-timeout mymaster 180000
-����sentinel-26381.conf
+　　sentinel-26381.conf
 	port 26381
 	daemonize yes
 	logfile "26379.log"
 	dir "/opt/soft/redis/data"
-	sentinel monitor mymaster 192.168.11.202 6379 2 ���2�����ڱ�ͶƱ������Ҳ����˵ֻ���ڱ�ͶƱ�ﵽ2��ʱ���ִ�й���ת�ƣ�
-	#redis����master�ڵ���������֤������Ҫ��������
+	sentinel monitor mymaster 192.168.11.202 6379 2 这个2代表哨兵投票个数（也就是说只有哨兵投票达到2的时候才执行故障转移）
+	#redis数据master节点设置了认证，则需要如下配置
 	sentinel auth-pass mymaster myredis
 	sentinel down-after-milliseconds mymaster 30000
 	sentinel parallel-syncs mymaster 1
 	sentinel failover-timeout mymaster 180000
-����2������sentinel
+　　2、启动sentinel
 	[root@slave1 master_slave]# ./../src/redis-sentinel sentinel-26379.conf 
 	[root@slave1 master_slave]# ./../src/redis-sentinel sentinel-26380.conf 
 	[root@slave1 master_slave]# ./../src/redis-sentinel sentinel-26381.conf
-   3��sentinelȷ��
+   3、sentinel确认
 	127.0.0.1:26379> # ./../src/redis-cli -h 192.168.11.202 -p 26379 info Sentinel
 	# Sentinel
 	sentinel_masters:1
@@ -253,75 +253,88 @@
 	sentinel_scripts_queue_length:0
 	master0:name=mymaster,status=ok,address=192.168.11.202:6379,slaves=2,sentinels=3
 	
-	127.0.0.1:26379> # ./../src/SENTINEL slaves mymaster  �鿴�ӽڵ��ڱ�
+	127.0.0.1:26379> # ./../src/SENTINEL slaves mymaster  查看从节点哨兵
 
-   4��java jedis�ͻ������ã� ������ȡ�ӽڵ㣬��Nginx�����ؾ���,��������Nginx�ڵ�ip�Ͷ˿�...
+   4、java jedis客户端配置： 如果想读取从节点，用Nginx做负载均衡,可以配置Nginx节点ip和端口...
         redis.masterName=mymaster
 	redis.sentinels=192.168.11.202:26379,192.168.11.202:26380,192.168.11.202:26381
 	redis.timeout=10000
-	#����master��Ҫ�õ������룬���redis���ݽڵ㿪����������֤
+	#连接master需要用到的密码，如果redis数据节点开启了连接认证
 	redis.password=myredis
-    �� ���˿��ܻ������������ʣ�Ϊʲôͨ��sentinel����ȡredis�����ӣ�������ֱ������master����ȡredis�����أ�
-������������һ�£��ͻ���ֱ��ͨ��master�ڵ��ȡredis���ӣ����master�ڵ�ҵ��ˣ���ȻRedis Sentinel������ɹ���ת�ƣ����ǿͻ����޷���ȡ����仯����
-    ô�ͻ��˾��޷���ȡredis�����ˣ�
-�����������˽�master�ڵ���Ϣ�ľ���Sentinel�ڵ㼯�ϣ�����ͨ��sentinel����ȡredis���Ӿ�������߿��õ�Ҫ���ˡ�
-���� �� redis master�Ĺ���ת�Ʋ�Ӱ��ͻ������Ӵ��룬 ����ת���ڼ��ڣ�ͨ��sentinel�ǻ�ȡ�������ڵ�����ӵģ� ��Ϊת���ڼ���master�ڵ㻹û��ѡ�ٳ�
-   ����
+    ① 有人可能会有这样的疑问：为什么通过sentinel来获取redis的连接，而不是直接连接master来获取redis连接呢？
+　　　　试想一下，客户端直接通过master节点获取redis连接，如果master节点挂掉了，虽然Redis Sentinel可以完成故障转移，但是客户端无法获取这个变化，那
+    么客户端就无法获取redis连接了；
+　　　　最了解master节点信息的就是Sentinel节点集合，所以通过sentinel来获取redis连接就能满足高可用的要求了。
+　　 ② redis master的故障转移不影响客户端连接代码， 但是转移期间内，通过sentinel是获取不到主节点的连接的， 因为转移期间内master节点还没被选举出
+   来；
 	
-16.mongodb ���ڶ��̣߳��������������̨������ԭ��������ѧϰ��
-   �� ΪʲôҪ��Ƭ
-     ������������������Ҫ��һ����̻���һ��RAID�����ϱ���͹���������˴��ģ�����ݼ�Ҳ��ò�̫��ʵ������������ʹ����ͨӲ����������Ӳ�����й����ݿ⣬
-     ��ô�����������Ľ���������ǽ����ݿ�ֲ�����̨�������ϣ����ַ�����֮Ϊ��Ƭ��
-   �� ʲô��MongoDB ?
-     MongoDB ����C++���Ա�д�ģ���һ�����ڷֲ�ʽ�ļ��洢�Ŀ�Դ���ݿ�ϵͳ��
-     �ڸ߸��ص�����£����Ӹ���Ľڵ㣬���Ա�֤���������ܡ�
-     MongoDB ּ��ΪWEBӦ���ṩ����չ�ĸ��������ݴ洢���������
-     MongoDB �����ݴ洢Ϊһ���ĵ������ݽṹ�ɼ�ֵ(key=>value)����ɡ�MongoDB �ĵ������� JSON ����
-   �� ��Ҫ�ص�
-	MongoDB���ṩ��һ�������ĵ��洢�����������Ƚϼ򵥺����ס�
-	�������MongoDB��¼�������κ����Ե����� (�磺FirstName="Sameer",Address="8 Gandhi Road")��ʵ�ָ��������
-	�����ͨ�����ػ������紴�����ݾ�����ʹ��MongoDB�и�ǿ����չ�ԡ�
-	������ص����ӣ���Ҫ����Ĵ洢�ռ�͸�ǿ�Ĵ��������� �������Էֲ��ڼ���������е������ڵ����������ν�ķ�Ƭ��
-	Mongo֧�ַḻ�Ĳ�ѯ����ʽ����ѯָ��ʹ��JSON��ʽ�ı�ǣ������ײ�ѯ�ĵ�����Ƕ�Ķ������顣
-	MongoDb ʹ��update()�������ʵ���滻��ɵ��ĵ������ݣ�����һЩָ���������ֶ� ��
-	Mongodb�е�Map/reduce��Ҫ�����������ݽ������������;ۺϲ�����
-	Map��Reduce��Map��������emit(key,value)�������������еļ�¼����key��value����Reduce�������д�����
-	Map������Reduce������ʹ��Javascript��д�ģ�������ͨ��db.runCommand��mapreduce������ִ��MapReduce������
-	GridFS��MongoDB�е�һ�����ù��ܣ��������ڴ�Ŵ���С�ļ���
-	MongoDB�����ڷ����ִ�нű���������Javascript��дĳ��������ֱ���ڷ����ִ�У�Ҳ���԰Ѻ����Ķ���洢�ڷ���ˣ��´�ֱ�ӵ��ü��ɡ�
-	MongoDB֧�ָ��ֱ������:RUBY��PYTHON��JAVA��C++��PHP��C#�ȶ������ԡ�
-    �� ����.mongodb����ʹ���ڴ�
-      mongodbʹ���ڴ�ӳ��洢���棬
-      ����������ļ�ӳ�䵽�ڴ��У�����Ƕ��������ڴ��е������𵽻�������ã������д�������ڴ滹���԰������д����ת����˳���д��������֮���Դ�����������ܡ�
-      MongoDB���������ڴ�������������ǰ���Щ������������ϵͳ�������ڴ������ȥ�������������ĺô��Ǽ���MongoDB�Ĺ���������������û�з����ܷ���Ŀ���MongoDB
-      ռ����ڴ棬���˵��������ڴ�������Ĵ��������Ƕ���ʱ�򲢲���Ҫ����������⡣
-      MongoDB���ڴ�ʹ�û��������ڻ����ؽ�����������ƣ������֮������������̣���ô������Ȼ��Ч���������ϵͳ����ô����ͨ�����������ļ���/dev/null�ķ�ʽ��
-      �ؽ�����
+16.mongodb 属于多线程，非阻塞，多个柜台，核心原理，深入学习？
+   ① 为什么要分片
+     随着数据量的增长，要在一块磁盘或者一组RAID阵列上保存和管理备份如此大规模的数据集也变得不太现实。如果还想继续使用普通硬件或者虚拟硬件来托管数据库，
+     那么这对这类问题的解决方案就是将数据库分布到多台服务器上，这种方法称之为分片。
+   ② 什么是MongoDB ?
+     MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。
+     在高负载的情况下，添加更多的节点，可以保证服务器性能。
+     MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。
+     MongoDB 将数据存储为一个文档，数据结构由键值(key=>value)对组成。MongoDB 文档类似于 JSON 对象
+   ③ 主要特点
+     MongoDB的提供了一个面向文档存储，操作起来比较简单和容易。
+     你可以在MongoDB记录中设置任何属性的索引 (如：FirstName="Sameer",Address="8 Gandhi Road")来实现更快的排序。
+     你可以通过本地或者网络创建数据镜像，这使得MongoDB有更强的扩展性。
+     如果负载的增加（需要更多的存储空间和更强的处理能力） ，它可以分布在计算机网络中的其他节点上这就是所谓的分片。
+     Mongo支持丰富的查询表达式。查询指令使用JSON形式的标记，可轻易查询文档中内嵌的对象及数组。
+     MongoDb 使用update()命令可以实现替换完成的文档（数据）或者一些指定的数据字段 。
+     Mongodb中的Map/reduce主要是用来对数据进行批量处理和聚合操作。
+     Map和Reduce。Map函数调用emit(key,value)遍历集合中所有的记录，将key与value传给Reduce函数进行处理。
+     Map函数和Reduce函数是使用Javascript编写的，并可以通过db.runCommand或mapreduce命令来执行MapReduce操作。
+     GridFS是MongoDB中的一个内置功能，可以用于存放大量小文件。
+     MongoDB允许在服务端执行脚本，可以用Javascript编写某个函数，直接在服务端执行，也可以把函数的定义存储在服务端，下次直接调用即可。
+     MongoDB支持各种编程语言:RUBY，PYTHON，JAVA，C++，PHP，C#等多种语言。
+   ④ 首先.mongodb怎样使用内存
+     mongodb使用内存映射存储引擎，
+     它会把数据文件映射到内存中，如果是读操作，内存中的数据起到缓存的作用，如果是写操作，内存还可以把随机的写操作转换成顺序的写操作，总之可以大幅度提升性能。
+     MongoDB并不干涉内存管理工作，而是把这些工作留给操作系统的虚拟内存管理器去处理，这样做的好处是简化了MongoDB的工作，但坏处是你没有方法很方便的控制MongoDB
+     占多大内存，幸运的是虚拟内存管理器的存在让我们多数时候并不需要关心这个问题。
+     MongoDB的内存使用机制让它在缓存重建方面更有优势，简而言之：如果重启进程，那么缓存依然有效，如果重启系统，那么可以通过拷贝数据文件到/dev/null的方式来
+     重建缓存
+   ⑤ mongo使用场合
+     mongodb的主要目标是在键/值存储方式（提供了高性能和高度伸缩性）以及传统的RDBMS系统（丰富的功能）架起一座桥梁，集两者的优势于一身。mongo适用于以下场景：
+     网站数据：mongo非常适合实时的插入，更新与查询，并具备网站实时数据存储所需的复制及高度伸缩性。
+     缓存：由于性能很高，mongo也适合作为信息基础设施的缓存层。在系统重启之后，由mongo搭建的持久化缓存可以避免下层的数据源过载。
+     大尺寸、低价值的数据：使用传统的关系数据库存储一些数据时可能会比较贵，在此之前，很多程序员往往会选择传统的文件进行存储。
+     高伸缩性的场景：mongo非常适合由数十或者数百台服务器组成的数据库。
+     用于对象及JSON数据的存储：mongo的BSON数据格式非常适合文档格式化的存储及查询。
+   ⑥ 不适合的场景：
+     高度事物性的系统：例如银行或会计系统。传统的关系型数据库目前还是更适用于需要大量原子性复杂事务的应用程序。
+     传统的商业智能应用：针对特定问题的BI数据库会对产生高度优化的查询方式。对于此类应用，数据仓库可能是更合适的选择。
+     需要SQL的问题。
+  
 
 
-17.java GC1ԭ�� ֮ǰ����CMS UseConcMarkSeepGC ԭ��
+17.java GC1原理 之前的是CMS UseConcMarkSeepGC 原理
 
-18.java ����������ת  ʵ��
+18.java 单向链表反转  实现
 
-19.�ֿ�ֱ�  �ֱ���˼�� �� �����������������Դ洢��ES/lucence�ϣ�����ѯ�ã�����뷨�ܺã�
-                          ������С�������ͨ�����ñ���ʱ���֣�
+19.分库分表  分表的思想 → 数据量大的情况：可以存储上ES/lucence上，供查询用，这个想法很好！
+                          数据量小的情况：通过配置表按时间拆分；
 
-20. redis��Ƭ(partitioning)���ǽ�������ݲ�ֵ���� Redis ʵ���Ĺ��̣�����ÿ��ʵ����ֻ�������м����Ӽ���
-    ��Ƭ����ʲô
-	Redis �ķ�Ƭ�е���������ҪĿ�꣺
-	����ʹ�úܶ���Ե��ڴ��ܺ���֧�ָ�������ݿ⡣û�з�Ƭ����ͱ������ڵ�����֧�ֵ��ڴ�������
-	��������������������˻��������������������������������������������
-    ��Ƭ�Ĳ�ͬʵ��
-	��Ƭ��������ջ�еĲ�ͬ�������е���
-	    �ͻ��˷�Ƭ(Client side partitioning)��ζ�ţ��ͻ���ֱ��ѡ����ȷ�Ľڵ���д��Ͷ�ȡָ���������� Redis �ͻ���ʵ���˿ͻ��˷�Ƭ��
-	    ����Э����Ƭ(Proxy assisted partitioning)��ζ�ţ����ǵĿͻ��˷�������һ���������� Redis Э��Ĵ����ϣ�������ֱ�ӷ������� Redis  
-	 ʵ���ϡ�������������úõķ�Ƭģʽ������֤ת�����ǵ�������ȷ�� Redis ʵ������������Ӧ���ͻ��ˡ�Redis �� Memcached �Ĵ��� Twemproxy 
-	 ʵ���˴���Э���ķ�Ƭ��
-	    ��ѯ·��(Query routing)��ζ�ţ�����Է�����Ĳ�ѯ��һ�����ʵ�������ʵ���ᱣ֤ת����Ĳ�ѯ����ȷ�Ľڵ㡣Redis ��Ⱥ�ڿͻ��˵İ����£� 
-	 ʵ���˲�ѯ·�ɵ�һ�ֻ����ʽ (������ֱ�Ӵ� Redis ʵ��ת������һ�������ǿͻ����յ��ض�����ȷ�Ľڵ�)��
+20. redis分片(partitioning)就是将你的数据拆分到多个 Redis 实例的过程，这样每个实例将只包含所有键的子集。
+    分片能做什么
+	Redis 的分片承担着两个主要目标：
+	允许使用很多电脑的内存总和来支持更大的数据库。没有分片，你就被局限于单机能支持的内存容量。
+	允许伸缩计算能力到多核或多服务器，伸缩网络带宽到多服务器或多网络适配器。
+    分片的不同实现
+	分片可由软件栈中的不同部分来承担。
+	    客户端分片(Client side partitioning)意味着，客户端直接选择正确的节点来写入和读取指定键。许多 Redis 客户端实现了客户端分片。
+	    代理协助分片(Proxy assisted partitioning)意味着，我们的客户端发送请求到一个可以理解 Redis 协议的代理上，而不是直接发送请求到 Redis  
+	 实例上。代理会根据配置好的分片模式，来保证转发我们的请求到正确的 Redis 实例，并返回响应给客户端。Redis 和 Memcached 的代理 Twemproxy 
+	 实现了代理协助的分片。
+	    查询路由(Query routing)意味着，你可以发送你的查询到一个随机实例，这个实例会保证转发你的查询到正确的节点。Redis 集群在客户端的帮助下， 
+	 实现了查询路由的一种混合形式 (请求不是直接从 Redis 实例转发到另一个，而是客户端收到重定向到正确的节点)。
 
 21.ThreadLocal 
-����ThreadLocalһ���Ϊ�̱߳��ر���������һ��������̰߳󶨻��ƣ����������̰߳���һ��Ϊÿһ���߳�ά��һ�������ı���������ͨ��ThreadLocal���Խ�����Ŀɼ���Χ������ͬһ���߳��ڡ�
+　　ThreadLocal一般称为线程本地变量，它是一种特殊的线程绑定机制，将变量与线程绑定在一起，为每一个线程维护一个独立的变量副本。通过ThreadLocal
+    可以将对象的可见范围限制在同一个线程内。
 
 
 	
