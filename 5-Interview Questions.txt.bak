@@ -128,7 +128,24 @@
    ④、不经常修改的列。
    ⑤、在连接操作中使用的列。
  
-14.aop基于spring什么原理实现的？spring原理？
+14.aop基于spring什么原理实现的？spring原理？集群如果数据没实时同步，会导致客户端读取的数据不准确，改怎么保证？
+   aop的所谓“方面”，简单地说，就是将那些与业务无关，却为业务模块所共同调用的逻辑或责任封装起来，便于减少系统的重复代码，降低模块间的耦合度，
+    并有利于未来的可操作性和可维护性。
+    APO使用场景：
+    Authentication 权限
+    Caching 缓存
+    Context passing 内容传递
+    Error handling 错误处理
+    Lazy loading　懒加载
+    Debugging　　调试
+    logging, tracing, profiling and monitoring　记录跟踪　优化　校准
+    Performance optimization　性能优化
+    Persistence　　持久化
+    Resource pooling　资源池
+    Synchronization　同步
+    Transactions 事务
+   Spring是一个分层的轻量级开源容器框架，可以接管web层，业务层，dao层，持久层的组件，并且可以配置各种bean,和维护bean与bean之间的关系。
+   其核心就是控制反转(IOC),和面向切面(AOP)。
 
 15.redis 属于单线程，阻塞式，一个柜台，为何高效？如何分片，核心原理，深入学习？  
    ① 为什么说redis能够快速执行
@@ -152,4 +169,3 @@
 
 19.分库分表  分表的思想 → 数据量大的情况：可以存储上ES/lucence上，供查询用，这个想法很好！
                           数据量小的情况：通过配置表按时间拆分；
-

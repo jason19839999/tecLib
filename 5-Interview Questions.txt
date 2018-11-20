@@ -82,7 +82,11 @@
   
 
 9.多线程  深入研究  线程重入，重排序等深入研究 Synchronized和Volatile区别，各自深入研究  看视频
-
+  synchronized和volatile都可以禁止重排序，指令重排序在虚拟机层面，为了尽可能减少内存操作速度远慢于CPU运行速度所带来的CPU空置的影响，虚拟机会按照
+  自己的一些规则将程序编写顺序打乱——即写在后面的代码在时间顺序上可能会先执行，而写在前面的代码会后执行——以尽可能充分地利用CPU。
+  线程中断规则(Thread Interruption Rule)：对线程interrupte()方法的调用优先于被中断线程的代码检测到中断事件的发生，可以通过Thread.interrupted()
+  方法检测线程是否已中断。
+  
 10.分库分表怎么分，深入研究？
    分表→ 按时间分：建立一个字典表，把表的配置写入
          比如：id、表名、开始时间、结束时间、要写入的表名
@@ -115,7 +119,7 @@
       HahTable对象的key、value值均不可为null。
       且两者的的key值均不能重复，若添加key相同的键值对，后面的value会自动覆盖前面的value，但不会报错。
 
-13.聚集索引和非聚集索引
+13.聚集索引和非聚集索引   mysql2大索引类型（B-tree索引和hash索引）
    每个表只能有一个聚簇索引，因为一个表中的记录只能以一种物理顺序存放。但是，一个表可以有不止一个非聚簇索引。实际上
    ，对每个表你最多可以建立249个非聚簇索引。非聚簇索引需要大量的硬盘空间和内存。另外，虽然非聚簇索引可以提高从表中
    取数据的速度，它也会降低向表中插入和更新数据的速度。每当你改变了一个建立了非聚簇索引的表中的数据时，必须同时更新索引。
@@ -159,8 +163,111 @@
    ③ Redis关于线程安全问题
      redis实际上是采用了线程封闭的观念，把任务封闭在一个线程，自然避免了线程安全问题，不过对于需要依赖多个redis操作的复合操作来说，依然
      需要锁，而且有可能是分布式锁。
+   ④ 运行Sentinel 参照文档：https://www.cnblogs.com/youzhibing/p/8466491.html
+   redis-sentinel /path/to/sentinel.conf  or redis-server /path/to/sentinel.conf --sentinel
+ 
+      ※ down-after-milliseconds 对于Sentinel开始认为它已关闭的时间，实例不应该可以到达的时间（无论是不回复我们的PING还是回复错误）都是以毫秒为
+         单位的时间。
+      ※ parallel-syncs设置可在同一故障转移后重新配置以使用新主服务器的从服务器数。数字越小，故障转移过程完成所需的时间就越多，但是如果从站配置为提
+      供旧数据，则可能不希望所有从站同时与主站重新同步。虽然复制过程对于从站主要是非阻塞的，但是有一段时间它停止从主站加载批量数据。您可能希望通过
+      将此选项设置为值1来确保一次只能访问一个从站。
+		       +----+
+			 | M1 |
+			 | S1 | <- C1 (writes will be lost)
+			 +----+
+			    |
+			    /
+			    /
+		+------+    |    +----+
+		| [M2] |----+----| R3 |
+		| S2   |         | S3 |
+		+------+         +----+
+	   在这种情况下，网络分区隔离了旧的主M1，因此从属R2被提升为主。但是，与旧主服务器位于同一分区中的客户端（如C1）可能会继续将数据写入旧主服务
+	器.这个数据将永远丢失，因为当分区将愈合时，主机将被重新配置为新主机的从机，丢弃其数据集。
+	使用以下Redis复制功能可以缓解此问题，如果主服务器检测到不再能够将其写入传输到指定数量的从服务器，则允许停止接受写入。
+	min-slaves配置选项
+	     min-slaves-to-write 1  //从节点数量少于1个，主节点拒绝执行写命令
+	     min-slaves-max-lag 10  //1个从节点的延迟(lag)值，大于或等于10，主节点拒绝执行写命令
+	   使用上述配置（请参阅redis.confRedis发行版中的自注释示例以获取更多信息）Redis实例作为主服务器时，如果无法写入至少1个从服务器，将停止接
+	受写入。由于复制是异步的，因此无法实际写入意味着从属设备已断开连接，或者未向我们发送超过指定max-lag秒数的异步确认。
+	  使用此配置，上例中的旧Redis主M1将在10秒后变为不可用。当分区恢复时，Sentinel配置将收敛到新的配置，客户端C1将能够获取有效配置并继续使用新
+	主设备。但是没有免费的午餐。通过这种改进，如果两个从站关闭，主站将停止接受写入。这是一个折衷。
 
-   
+        ※这里需要注意的是：sentinel需要在55和56做好主从之后才能开启，即：在56上执行slaveof，搭建好主从之后，再开启3个sentinel监控服务，一个高可用
+	的（主从自动切换）搭建完成。可以通过在master上执行redis-cli -p 6379 DEBUG sleep 30 命令来模拟故障转移，来测试sentinel故障转移是否搭建成
+	功：127.0.0.1:5000> SENTINEL get-master-addr-by-name mymaster 用这个命令查看当前master节点信息，看是否自动切换了master.
+        如果其中的一个从挂了，那么重启这个从之后，数据会自动同步到该从。
+    总体部署: 可以参照 → https://blog.csdn.net/guying4875/article/details/79045075
+	一主二从三哨兵   
+	ip地址分配分别为
+	主 127.0.0.1:6379
+	从 127.0.0.1:6380
+	从 127.0.0.1:6381
+	哨兵 127.0.0.1:26379
+	哨兵 127.0.0.1:26380
+	哨兵 127.0.0.1:26381
+    1、3个sentinel节点的配置文件基本一致，区别的只是端口
+    sentinel-26379.conf	
+        port 26379
+	daemonize yes
+	logfile "26379.log"
+	dir "/opt/soft/redis/data"
+	sentinel monitor mymaster 192.168.11.202 6379 2 这个2代表哨兵投票个数（也就是说只有哨兵投票达到2的时候才执行故障转移）
+	#redis数据master节点设置了认证，则需要如下配置
+	sentinel auth-pass mymaster myredis
+	sentinel down-after-milliseconds mymaster 30000
+	sentinel parallel-syncs mymaster 1
+	sentinel failover-timeout mymaster 180000
+　　sentinel-26380.conf
+	port 26380
+	daemonize yes
+	logfile "26379.log"
+	dir "/opt/soft/redis/data"
+	sentinel monitor mymaster 192.168.11.202 6379 2 这个2代表哨兵投票个数（也就是说只有哨兵投票达到2的时候才执行故障转移）
+	#redis数据master节点设置了认证，则需要如下配置
+	sentinel auth-pass mymaster myredis
+	sentinel down-after-milliseconds mymaster 30000
+	sentinel parallel-syncs mymaster 1
+	sentinel failover-timeout mymaster 180000
+　　sentinel-26381.conf
+	port 26381
+	daemonize yes
+	logfile "26379.log"
+	dir "/opt/soft/redis/data"
+	sentinel monitor mymaster 192.168.11.202 6379 2 这个2代表哨兵投票个数（也就是说只有哨兵投票达到2的时候才执行故障转移）
+	#redis数据master节点设置了认证，则需要如下配置
+	sentinel auth-pass mymaster myredis
+	sentinel down-after-milliseconds mymaster 30000
+	sentinel parallel-syncs mymaster 1
+	sentinel failover-timeout mymaster 180000
+　　2、启动sentinel
+	[root@slave1 master_slave]# ./../src/redis-sentinel sentinel-26379.conf 
+	[root@slave1 master_slave]# ./../src/redis-sentinel sentinel-26380.conf 
+	[root@slave1 master_slave]# ./../src/redis-sentinel sentinel-26381.conf
+   3、sentinel确认
+	127.0.0.1:26379> # ./../src/redis-cli -h 192.168.11.202 -p 26379 info Sentinel
+	# Sentinel
+	sentinel_masters:1
+	sentinel_tilt:0
+	sentinel_running_scripts:0
+	sentinel_scripts_queue_length:0
+	master0:name=mymaster,status=ok,address=192.168.11.202:6379,slaves=2,sentinels=3
+	
+	127.0.0.1:26379> # ./../src/SENTINEL slaves mymaster  查看从节点哨兵
+
+   4、java jedis客户端配置： 如果想读取从节点，用Nginx做负载均衡,可以配置Nginx节点ip和端口...
+        redis.masterName=mymaster
+	redis.sentinels=192.168.11.202:26379,192.168.11.202:26380,192.168.11.202:26381
+	redis.timeout=10000
+	#连接master需要用到的密码，如果redis数据节点开启了连接认证
+	redis.password=myredis
+    ① 有人可能会有这样的疑问：为什么通过sentinel来获取redis的连接，而不是直接连接master来获取redis连接呢？
+　　　　试想一下，客户端直接通过master节点获取redis连接，如果master节点挂掉了，虽然Redis Sentinel可以完成故障转移，但是客户端无法获取这个变化，那
+    么客户端就无法获取redis连接了；
+　　　　最了解master节点信息的就是Sentinel节点集合，所以通过sentinel来获取redis连接就能满足高可用的要求了。
+　　 ② redis master的故障转移不影响客户端连接代码， 但是转移期间内，通过sentinel是获取不到主节点的连接的， 因为转移期间内master节点还没被选举出
+   来；
+	
 16.mongodb 属于多线程，非阻塞，多个柜台，核心原理，深入学习？
 
 17.java GC1原理 之前的是CMS UseConcMarkSeepGC 原理
@@ -169,3 +276,23 @@
 
 19.分库分表  分表的思想 → 数据量大的情况：可以存储上ES/lucence上，供查询用，这个想法很好！
                           数据量小的情况：通过配置表按时间拆分；
+
+20. redis分片(partitioning)就是将你的数据拆分到多个 Redis 实例的过程，这样每个实例将只包含所有键的子集。
+    分片能做什么
+	Redis 的分片承担着两个主要目标：
+	允许使用很多电脑的内存总和来支持更大的数据库。没有分片，你就被局限于单机能支持的内存容量。
+	允许伸缩计算能力到多核或多服务器，伸缩网络带宽到多服务器或多网络适配器。
+    分片的不同实现
+	分片可由软件栈中的不同部分来承担。
+	    客户端分片(Client side partitioning)意味着，客户端直接选择正确的节点来写入和读取指定键。许多 Redis 客户端实现了客户端分片。
+	    代理协助分片(Proxy assisted partitioning)意味着，我们的客户端发送请求到一个可以理解 Redis 协议的代理上，而不是直接发送请求到 Redis  
+	 实例上。代理会根据配置好的分片模式，来保证转发我们的请求到正确的 Redis 实例，并返回响应给客户端。Redis 和 Memcached 的代理 Twemproxy 
+	 实现了代理协助的分片。
+	    查询路由(Query routing)意味着，你可以发送你的查询到一个随机实例，这个实例会保证转发你的查询到正确的节点。Redis 集群在客户端的帮助下， 
+	 实现了查询路由的一种混合形式 (请求不是直接从 Redis 实例转发到另一个，而是客户端收到重定向到正确的节点)。
+
+21.ThreadLocal 
+　　ThreadLocal一般称为线程本地变量，它是一种特殊的线程绑定机制，将变量与线程绑定在一起，为每一个线程维护一个独立的变量副本。通过ThreadLocal可以将对象的可见范围限制在同一个线程内。
+
+
+	
