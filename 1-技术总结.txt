@@ -239,10 +239,22 @@ sh hk_darkpool.sh start | stop | restart
    ④动态对象年龄判定
    ⑤空间分配担保
 
-35.
-
-
-
+35.java sql Date 转换成 Time
+    /** 
+    * @param 返回java.sql.Time格式的 
+    * */  
+    public static java.sql.Time strToTime(String strDate) {  
+	     String str = strDate;  
+	     SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");  
+	     java.util.Date d = null;  
+	     try {  
+		 d = format.parse(str);  
+	     } catch (Exception e) {  
+		 e.printStackTrace();  
+	     }  
+	     java.sql.Time time = new java.sql.Time(d.getTime());  
+	     return time.valueOf(str);  
+     }
 
 
 
