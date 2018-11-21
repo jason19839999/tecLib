@@ -257,4 +257,9 @@ sh hk_darkpool.sh start | stop | restart
              }
                      break;
       }
-
+        日期时间计算，增加或者减少。。。
+        Date publishHistoryTime = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(publishHistoryTime);
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        Date tomorrow = c.getTime();
