@@ -64,7 +64,18 @@
     ⑨【idx_table_name】    EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND table_name  = '%user' 
 
 7.Synchronized 和 ReentrantLock 的区别  深入研究；轮训，可重入，中断，可以设置超时时间，如果超时会回到等待池。
-  参照代码：\crudreposity实现读写分离和Redis处理（经典）\crudreposity\src\main\java\datacenter\crudreposity\aspect\LockAspect.java
+     参照代码：\crudreposity实现读写分离和Redis处理（经典）\crudreposity\src\main\java\datacenter\crudreposity\aspect\LockAspect.java
+  Condition的使用：参照：https://www.cnblogs.com/hongdada/p/6150699.html
+      问题出现在当缓冲区已经满了，而此时生产者还想向其中放入一个新的数据项的情形，其解决方法是让生产者此时进行休眠，等待消费者从缓冲区中取走了一个
+  或者多个数据后再去唤醒它。
+      同样地，当缓冲区已经空了，而消费者还想去取消息，此时也可以让消费者进行休眠，等待生产者放入一个或者多个数据时再唤醒它。
+      Condition 将 Object 监视器方法（wait、notify 和 notifyAll）分解成截然不同的对象，以便通过将这些对象与任意 Lock 实现组合使用，为每个对象提供多
+  个等待 set （wait-set）。
+      其中，Lock 替代了 synchronized 方法和语句的使用，Condition 替代了 Object 监视器方法的使用。
+      在Condition中，用await()替换wait()，用signal()替换notify()，用signalAll()替换notifyAll()，传统线程的通信方式，Condition都可以实现，这里注意，
+      Condition是被绑定到Lock上的，要创建一个Lock的Condition必须用newCondition()方法。
+
+
 
 8.list 和 set 的区别，隐身其他集合的深入研究
         //list  有序连续的可重复数组，读取快，写入慢；
