@@ -239,7 +239,22 @@ sh hk_darkpool.sh start | stop | restart
    ④动态对象年龄判定
    ⑤空间分配担保
 
-35.java sql Date 转换成 Time
-   java.sql.Time time = new java.sql.Time(tNew.getNews_time().getTime()); 这里的News_time()为Util的Date类型；
-
+35.java sql Date 转换成 Time 
+     if (objNewsTimeClassification.getTag_code().equals(article_type_results)) {
+             java.sql.Time time = new java.sql.Time(tNew.getNews_time().getTime());
+             String strTime= time.toString();
+             SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss");
+             java.util.Date d = null;
+             try {
+                     d = format.parse(strTime);
+                 } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                   if (d.getTime() >= objNewsTimeClassification.getStart().getTime() && d.getTime() <= objNewsTimeClassification.getEnd().getTime()) {
+                       hot_weight = hot_weight + 6;
+                    } else {
+                            hot_weight = 0; //不在时间范围内的降权处理
+                    }
+                     break;
+      }
 
