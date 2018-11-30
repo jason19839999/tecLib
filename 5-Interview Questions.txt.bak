@@ -66,9 +66,9 @@
 7.Synchronized 和 ReentrantLock 的区别  深入研究；轮训，可重入，中断，可以设置超时时间，如果超时会回到等待池。
      参照代码：\crudreposity实现读写分离和Redis处理（经典）\crudreposity\src\main\java\datacenter\crudreposity\aspect\LockAspect.java
   Condition的使用：参照：https://www.cnblogs.com/hongdada/p/6150699.html
-     问题出现在当缓冲区已经满了，而此时生产者还想向其中放入一个新的数据项的情形，其解决方法是让生产者此时进行休眠，等待消费者从缓冲区中取走了一个
+      问题出现在当缓冲区已经满了，而此时生产者还想向其中放入一个新的数据项的情形，其解决方法是让生产者此时进行休眠，等待消费者从缓冲区中取走了一个
   或者多个数据后再去唤醒它。
-     同样地，当缓冲区已经空了，而消费者还想去取消息，此时也可以让消费者进行休眠，等待生产者放入一个或者多个数据时再唤醒它。
+      同样地，当缓冲区已经空了，而消费者还想去取消息，此时也可以让消费者进行休眠，等待生产者放入一个或者多个数据时再唤醒它。
       Condition 将 Object 监视器方法（wait、notify 和 notifyAll）分解成截然不同的对象，以便通过将这些对象与任意 Lock 实现组合使用，为每个对象提供多
   个等待 set （wait-set）。
       其中，Lock 替代了 synchronized 方法和语句的使用，Condition 替代了 Object 监视器方法的使用。
@@ -92,7 +92,7 @@
 	//        看到tree，就要想到两个接口。Comparable，Comparator
   
 
-9.多线程  深入研究  线程重入，重排序等深入研究 Synchronized和Volatile区别，各自深入研究  看视频
+9.多线程原理以及应用场景  深入研究  线程重入，重排序等深入研究 Synchronized和Volatile区别，各自深入研究  看视频
   synchronized和volatile都可以禁止重排序，指令重排序在虚拟机层面，为了尽可能减少内存操作速度远慢于CPU运行速度所带来的CPU空置的影响，虚拟机会按照
   自己的一些规则将程序编写顺序打乱——即写在后面的代码在时间顺序上可能会先执行，而写在前面的代码会后执行——以尽可能充分地利用CPU。
   线程中断规则(Thread Interruption Rule)：对线程interrupte()方法的调用优先于被中断线程的代码检测到中断事件的发生，可以通过Thread.interrupted()
@@ -159,8 +159,11 @@
     Resource pooling　资源池
     Synchronization　同步
     Transactions 事务
+
    Spring是一个分层的轻量级开源容器框架，可以接管web层，业务层，dao层，持久层的组件，并且可以配置各种bean,和维护bean与bean之间的关系。
-   其核心就是控制反转(IOC),和面向切面(AOP)。
+   其核心就是控制反转(IOC),和面向切面(AOP)。spring框架本身也是按照设计模式精心打造。
+   核心模块：数据访问/集成、web、aop、工具、消息和测试模块。
+
 
 15.redis 属于单线程，阻塞式，一个柜台，为何高效？如何分片，核心原理，深入学习？  
    ① 为什么说redis能够快速执行
