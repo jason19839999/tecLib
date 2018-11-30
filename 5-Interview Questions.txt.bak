@@ -160,7 +160,7 @@
     Synchronization　同步
     Transactions 事务
 
-   Spring是一个分层的轻量级开源容器框架，可以接管web层，业务层，dao层，持久层的组件，并且可以配置各种bean,和维护bean与bean之间的关系。
+   Spring是一个分层的轻量级开源容器框架（java开发基础组件），可以接管web层，业务层，dao层，持久层的组件，并且可以配置各种bean,和维护bean与bean之间的关系。
    其核心就是控制反转(IOC),和面向切面(AOP)。spring框架本身也是按照设计模式精心打造。
    核心模块：数据访问/集成、web、aop、工具、消息和测试模块。
 
