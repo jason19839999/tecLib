@@ -146,6 +146,8 @@
 14.aop基于spring什么原理实现的？spring原理？集群如果数据没实时同步，会导致客户端读取的数据不准确，改怎么保证？
    aop的所谓“方面”，简单地说，就是将那些与业务无关，却为业务模块所共同调用的逻辑或责任封装起来，便于减少系统的重复代码，降低模块间的耦合度，
     并有利于未来的可操作性和可维护性。
+    要了解Spring的AOP就必须先了解的动态代理的原理，因为AOP就是基于动态代理实现的。动态代理还要从JDK本身说起。
+
     APO使用场景：
     Authentication 权限
     Caching 缓存
@@ -360,7 +362,7 @@
 
 25.gc步骤和原理
 
-26.spring 哪些功能用模板方法，工厂，策略，责任链模式 https://www.cnblogs.com/baizhanshi/p/6187537.html
+26.spring 哪些功能用模板方法，工厂，策略，责任链模式  https://www.cnblogs.com/baizhanshi/p/6187537.html
 
 27.spring cloud注册发现的原理    Spring Cloud之Eureka服务注册与发现（概念原理篇）https://www.jianshu.com/p/2fa691d4a00a
                                  eureka的server和client各种配置https://www.jianshu.com/p/98f4e5f6bca7
