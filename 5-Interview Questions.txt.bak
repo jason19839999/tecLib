@@ -163,6 +163,7 @@
    Spring是一个分层的轻量级开源容器框架（java开发基础组件），可以接管web层，业务层，dao层，持久层的组件，并且可以配置各种bean,和维护bean与bean之间的关系。
    其核心就是控制反转(IOC),和面向切面(AOP)。spring框架本身也是按照设计模式精心打造。
    核心模块：数据访问/集成、web、aop、工具、消息和测试模块。
+   web模块 → spring mvc原理以及流程
 
 
 15.redis 属于单线程，阻塞式，一个柜台，为何高效？如何分片，核心原理，深入学习？  
@@ -351,5 +352,15 @@
 　　ThreadLocal一般称为线程本地变量，它是一种特殊的线程绑定机制，将变量与线程绑定在一起，为每一个线程维护一个独立的变量副本。通过ThreadLocal
     可以将对象的可见范围限制在同一个线程内。
 
+22.synchronize实现原理   回去搜索各种原理，熟练掌握
 
-	
+23.2.hashmap在1.8中的性能提升在哪里，如何提升的
+
+24.springmvc流程  https://blog.csdn.net/javaxuexi123/article/details/80804800
+
+25.gc步骤和原理
+
+26.spring 哪些功能用模板方法，工厂，策略，责任链模式
+
+27.spring cloud注册发现的原理    Spring Cloud之Eureka服务注册与发现（概念原理篇）https://www.jianshu.com/p/2fa691d4a00a
+                                 eureka的server和client各种配置https://www.jianshu.com/p/98f4e5f6bca7

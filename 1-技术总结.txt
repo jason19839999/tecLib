@@ -263,3 +263,8 @@ sh hk_darkpool.sh start | stop | restart
         c.setTime(publishHistoryTime);
         c.add(Calendar.DAY_OF_MONTH, 1);
         Date tomorrow = c.getTime();
+
+36.synchronize原理
+
+37.gc原理
+
