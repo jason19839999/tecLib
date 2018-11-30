@@ -360,7 +360,9 @@
 
 25.gc步骤和原理
 
-26.spring 哪些功能用模板方法，工厂，策略，责任链模式
+26.spring 哪些功能用模板方法，工厂，策略，责任链模式 https://www.cnblogs.com/baizhanshi/p/6187537.html
 
 27.spring cloud注册发现的原理    Spring Cloud之Eureka服务注册与发现（概念原理篇）https://www.jianshu.com/p/2fa691d4a00a
                                  eureka的server和client各种配置https://www.jianshu.com/p/98f4e5f6bca7
+
+
