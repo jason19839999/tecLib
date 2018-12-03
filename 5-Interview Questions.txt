@@ -370,7 +370,7 @@
 
 23.hashmap在1.8中的性能提升在哪里，如何提升的
 
-24.springmvc流程 ioc原理  https://blog.csdn.net/javaxuexi123/article/details/80804800
+24.springmvc流程 ioc原理以及生命周期？  https://blog.csdn.net/javaxuexi123/article/details/80804800
 
 25.gc步骤和原理
 
@@ -379,7 +379,7 @@
 27.spring cloud注册发现的原理    Spring Cloud之Eureka服务注册与发现（概念原理篇）https://www.jianshu.com/p/2fa691d4a00a
                                  eureka的server和client各种配置https://www.jianshu.com/p/98f4e5f6bca7
 
-28.jstack Dump 日志文件中的线程状态
+28.jstack Dump 日志文件中的线程状态（重点看死循环和死锁的状态）
 	①：dump 文件里，值得关注的线程状态有
 		死锁， Deadlock（重点关注） 
 		执行中，Runnable   
