@@ -375,6 +375,15 @@
 25.gc步骤和原理
 
 26.spring 哪些功能用模板方法，工厂，策略，责任链模式  https://www.cnblogs.com/baizhanshi/p/6187537.html
+   ①工厂模式    ApplicationContext →派生出ConfigurableApplicationContext 应用上下文初始器
+                在使用Spring的时候，我们经常需要先得到一个ApplicationContext对象，然后从该对象中获取我们配置的Bean对象。
+                ApplicationContext隶属于org.springframework.context，是SpringFramework中Bean的管理者，为SpringFramework的诸多功能提供支撑作用。
+   ②观察者模式 事件传播机制  ApplicationListener监听ApplicationEvent事件，一旦spring bean 使用 ApplicationContext.publishEvent
+                (ApplicationEvent event)发布事件后，Spring 容器会通知注册在 bean.xml 中所有 ApplicationListener 接口的实现类，最后 ApplicationListener 
+                接口实现类判断是否响应刚发布出来的 ApplicationEvent 事件。
+   ③模板方法模式 AbstractApplicationContext 实现了ApplicationContext 接口中简单不易变动的部分，然后通过“组合”将众多“容易变动”功能代理给它的一些成员变
+                 量来实现，最后再使用模板方法模式让子类为父类提供一些函数的支持或者设置替换父类的上述成员变量，从而实现了“对扩展开放，对修改封闭”的
+		 设计原则，为Spring Framework 提供了灵活性大可扩展性强的架构支撑。
 
 27.spring cloud注册发现的原理    Spring Cloud之Eureka服务注册与发现（概念原理篇）https://www.jianshu.com/p/2fa691d4a00a
                                  eureka的server和client各种配置https://www.jianshu.com/p/98f4e5f6bca7
