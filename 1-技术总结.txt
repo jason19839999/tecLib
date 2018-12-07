@@ -275,6 +275,9 @@ sh hk_darkpool.sh start | stop | restart
 
 40.学习跟踪源码 方法：直接ctrl + B 进入源码，可以debug跟踪即可。
 
-
-
+41.在反序列化实体中，如果字段被赋值为null,那么就不返回这个字段了，通过如下配置：
+	import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+	import java.io.Serializable;
+	@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+	public class DepositListResponseData implements Serializable {
 
