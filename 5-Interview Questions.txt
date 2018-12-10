@@ -385,6 +385,8 @@
                  量来实现，最后再使用模板方法模式让子类为父类提供一些函数的支持或者设置替换父类的上述成员变量，从而实现了“对扩展开放，对修改封闭”的
 		 设计原则，为Spring Framework 提供了灵活性大可扩展性强的架构支撑。
    ④策略模式     视图 → 内容协商策略实现 ContentNegotiationStrategy
+   ⑤责任链模式   Filter实现 → 初始化：Filter#init(FilerConfig) → 过滤：Filter#doFilter(FilterChain,ServletRequest,ServletResponse) → 
+                 Filter#destory()
 
 27.spring cloud注册发现的原理    Spring Cloud之Eureka服务注册与发现（概念原理篇）https://www.jianshu.com/p/2fa691d4a00a
                                  eureka的server和client各种配置https://www.jianshu.com/p/98f4e5f6bca7
