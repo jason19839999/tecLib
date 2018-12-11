@@ -429,7 +429,13 @@
    修饰带static的，由于是类方法和类变量，那么在锁控制的时候是同一个方法和对象，能达到锁的目的，
    如果修饰不带static的，那么每次调用会new 出一个对象，调用方法，导致每次new都是一个新对象，那么所机制就失效了。
 
-
+30.Aspect切面编程 可以指定执行顺序。例如：用注解的方式 → 参照项目：datacenter/crudreposity/aspect/AuthorizeAspect.java
+	@Aspect
+	@Component
+	@Order(2)
+   注意：如果以后项目用到 @Around("lockAspect"),那么不能再添加此注解的方法内抛出异常（ControllerAdvice捕捉不到，具体原因是 @Around()没有执行完成
+    ，所以捕捉不到，程序终止了），具体做法是让此方法返回错误信息给
+   @Around(),在 @Around() 里面抛出异常即可。
 
 
 
