@@ -64,6 +64,7 @@
     ⑨【idx_table_name】    EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND table_name  = '%user' 
 
 7.Synchronized 和 ReentrantLock 的区别  深入研究；轮训，可重入，中断，可以设置超时时间，如果超时会回到等待池。
+      ReentrantLock实现原理
      参照代码：\crudreposity实现读写分离和Redis处理（经典）\crudreposity\src\main\java\datacenter\crudreposity\aspect\LockAspect.java
   Condition的使用：参照：https://www.cnblogs.com/hongdada/p/6150699.html
       问题出现在当缓冲区已经满了，而此时生产者还想向其中放入一个新的数据项的情形，其解决方法是让生产者此时进行休眠，等待消费者从缓冲区中取走
@@ -365,8 +366,6 @@
   这个 monitor 的所有权。 
   通过这两段描述，我们应该能很清楚的看出Synchronized的实现原理，Synchronized的语义底层是通过一个monitor的对象来完成，其实wait/notify等方法也
   依赖于monitor对象，这就是为什么只有在同步的块或者方法中才能调用wait/notify等方法，否则会抛出java.lang.IllegalMonitorStateException的异常的原因。
-
-22-2.ReentrantLock实现原理
 
 23.hashmap在1.8中的性能提升在哪里，如何提升的
 
