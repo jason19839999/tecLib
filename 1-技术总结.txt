@@ -281,3 +281,8 @@ sh hk_darkpool.sh start | stop | restart
 	@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 	public class DepositListResponseData implements Serializable {
 
+42.动态代理实现：AOP就是基于这个实现的：主要有InvocationHandler(invoke())接口和Proxy类
+   \1-IdeaProjects\demo\src\main\java\com\example\demo\dynamic_proxy\DynamicProxy.java
+
+
+
