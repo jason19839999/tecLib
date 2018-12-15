@@ -1,0 +1,2 @@
+后台运行jar 包
+nohup java -jar demo-0.0.1-SNAPSHOT.jar > demo.log &
