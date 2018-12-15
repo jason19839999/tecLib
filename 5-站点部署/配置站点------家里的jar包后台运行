@@ -1,2 +1,13 @@
 后台运行jar 包
 nohup java -jar demo-0.0.1-SNAPSHOT.jar > demo.log &
+
+thymleaf 后台 return 跳转的时候前面不要加/ ,否则发布到linux会报错，无法解析出来。
+     /**
+     * 初始化添加页面  绑定实体对象，页面展示
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String Add(Model model) {
+
+        model.addAttribute("obj", new userInfoEntity());
+        return "user/add";
+    }
