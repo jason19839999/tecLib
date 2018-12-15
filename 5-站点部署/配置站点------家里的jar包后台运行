@@ -1,7 +1,7 @@
-后台运行jar 包
-nohup java -jar demo-0.0.1-SNAPSHOT.jar > demo.log &
+①  后台运行jar 包
+     nohup java -jar demo-0.0.1-SNAPSHOT.jar > demo.log &
 
-thymleaf 后台 return 跳转的时候前面不要加/ ,否则发布到linux会报错，无法解析出来。
+②  thymleaf 后台 return 跳转的时候前面不要加/ ,否则发布到linux会报错，无法解析出来。
      /**
      * 初始化添加页面  绑定实体对象，页面展示
      */
@@ -11,3 +11,5 @@ thymleaf 后台 return 跳转的时候前面不要加/ ,否则发布到linux会�
         model.addAttribute("obj", new userInfoEntity());
         return "user/add";
     }
+
+③  mysql如何开启远程连接 https://jingyan.baidu.com/article/046a7b3ed85f3ef9c27fa9dc.html
