@@ -5,20 +5,27 @@ nohup java -cp .:./config/:./lib/* -Dspring.profiles.active=test-2 com.juniorchi
 
 
 注意：***踩过的坑  Error: Could not find or load main class com.imooc.demo.GirlApplication
+    查看jdk安装目录： ls -lrt /etc/alternatives/java   https://www.cnblogs.com/bincoding/p/6159847.html
+    
+    1. 修改/etc/profile文件
+如果你的计算机仅仅作为开发使用时推荐使用这种方法，因为所有用户的shell都有权使用这些环境变量，可能会给系统带来安全性问题。
+·用文本编辑器打开/etc/profile
+·在profile文件末尾加入：
 
-  第一步：将/etc下的profile文件末尾的CLASSPATH系统变量最前面加入.:，. 代表当前路径。
+export JAVA_HOME=/usr/share/jdk1.6.0_14
+export PATH=$JAVA_HOME/bin:$PATH
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+ 
 
-      原来的/etc/profie文件中的CLASSPATH为：  
-
-      CLASSPATH=$JAVA_HOME/jre/lib/ext:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar。
-
-      增加后的CLASSPATH为：CLASSPATH=.:$JAVA_HOME/jre/lib/ext:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
-
-      第二步：命令行输入source /etc/profie，使/etc/profile中的系统变量生效，即可运行。
-
-      注意：可以修改系统变量的前提是当前用户为root。在命令行输入source /etc/profile，系统变量只是临时生效，关闭Terminal，系统变量即恢复原状，因为系统变量是在系统启动时加载，所以，本次改变系统变量只有在下次系统重启时才会自动加载，才不用再输入source /etc/profie。
---------------------- 
-作者：魏晓蕾 
-来源：CSDN 
-原文：https://blog.csdn.net/gongxifacai_believe/article/details/53081466 
-版权声明：本文为博主原创文章，转载请附上博文链接！
+·重新登录
+·注解
+a. 你要将 /usr/share/jdk1.6.0_14改为你的jdk安装目录
+b. linux下用冒号“:”来分隔路径
+c. PATH/PATH/CLASSPATH / $JAVA_HOME 是用来引用原来的环境变量的值
+在设置环境变量时特别要注意不能把原来的值给覆盖掉了，这是一种
+常见的错误。
+d. CLASSPATH中当前目录“.”不能丢,把当前目录丢掉也是常见的错误。
+e. export是把这三个变量导出为全局变量。
+f. 大小写必须严格区分。
+    
+    
