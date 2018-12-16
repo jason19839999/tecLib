@@ -260,7 +260,7 @@
     分片的不同实现
 	分片可由软件栈中的不同部分来承担。
 	    客户端分片(Client side partitioning)意味着，客户端直接选择正确的节点来写入和读取指定键。许多 Redis 客户端实现了客户端分片。
-	    代理协助分片(Proxy assisted partitioning)意味着，我们的客户端发送请求到一个可以理解 Redis 协议的代理上，而不是直接发送请求到 Redis  
+	    代理协助分片(Proxy assisted partitioning)意味着，我们的客户端发送请求到一个可以理解 Redis 协议的代理上，而不是直接发送请求到Redis  
 	 实例上。代理会根据配置好的分片模式，来保证转发我们的请求到正确的 Redis 实例，并返回响应给客户端。Redis 和 Memcached 的代理 Twemproxy 
 	 实现了代理协助的分片。
 	    查询路由(Query routing)意味着，你可以发送你的查询到一个随机实例，这个实例会保证转发你的查询到正确的节点。Redis 集群在客户端的帮助下， 
@@ -290,16 +290,18 @@
 26.spring 哪些功能用模板方法，工厂，策略，责任链模式  https://www.cnblogs.com/baizhanshi/p/6187537.html
    ①工厂模式  ApplicationContext →派生出ConfigurableApplicationContext 应用上下文初始器
              在使用Spring的时候，我们经常需要先得到一个ApplicationContext对象，然后从该对象中获取我们配置的Bean对象。
-             ApplicationContext隶属于org.springframework.context，是SpringFramework中Bean的管理者，为SpringFramework的诸多功能提供支撑作用。
+             ApplicationContext隶属于org.springframework.context，是SpringFramework中Bean的管理者，为SpringFramework的诸多功
+	     能提供支撑作用。
 
    ②观察者模式 事件传播机制  ApplicationListener监听ApplicationEvent事件，一旦spring bean 使用 ApplicationContext.publishEvent
-              (ApplicationEvent event)发布事件后，Spring 容器会通知注册在 bean.xml 中所有 ApplicationListener 接口的实现类，最后 ApplicationListener 
+              (ApplicationEvent event)发布事件后，Spring 容器会通知注册在 bean.xml 中所有 ApplicationListener 接口的实现类
+	      ，最后 ApplicationListener 
               接口实现类判断是否响应刚发布出来的 ApplicationEvent 事件。
 
    ③模板方法模式 
-       1.AbstractApplicationContext 实现了ApplicationContext 接口中简单不易变动的部分，然后通过“组合”将众多“容易变动”功能代理给它的一些成员变
-         量来实现，最后再使用模板方法模式让子类为父类提供一些函数的支持或者设置替换父类的上述成员变量，从而实现了“对扩展开放，对修改封闭”的
-	 设计原则，为Spring Framework 提供了灵活性大可扩展性强的架构支撑。
+       1.AbstractApplicationContext 实现了ApplicationContext 接口中简单不易变动的部分，然后通过“组合”将众多“容易变动”功能代理给它
+       的一些成员变量来实现，最后再使用模板方法模式让子类为父类提供一些函数的支持或者设置替换父类的上述成员变量，从而实现了“对扩展开放，
+       对修改封闭”的设计原则，为Spring Framework 提供了灵活性大可扩展性强的架构支撑。
        2.还有集合CopyOnWriteArraySet<> 继承了AbstractSet → AbstractCollection<E>
        3.Servlet容器 DispatcherServlet → 继承FrameworkServlet → 继承HttpServletBean → 继承httpServlet 
 
