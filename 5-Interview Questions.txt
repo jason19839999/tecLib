@@ -187,46 +187,14 @@
      redis实际上是采用了线程封闭的观念，把任务封闭在一个线程，自然避免了线程安全问题，不过对于需要依赖多个redis操作的复合操作来说，依然
      需要锁，而且有可能是分布式锁。
    ④ 运行Sentinel 参照文档：https://www.cnblogs.com/youzhibing/p/8466491.html
-   redis-sentinel /path/to/sentinel.conf  or redis-server /path/to/sentinel.conf --sentinel
- 
-      ※ down-after-milliseconds 对于Sentinel开始认为它已关闭的时间，实例不应该可以到达的时间（无论是不回复我们的PING还是回复错误）都是以毫秒为
-         单位的时间。
-      ※ parallel-syncs设置可在同一故障转移后重新配置以使用新主服务器的从服务器数。数字越小，故障转移过程完成所需的时间就越多，但是如果从站配置为提
-      供旧数据，则可能不希望所有从站同时与主站重新同步。虽然复制过程对于从站主要是非阻塞的，但是有一段时间它停止从主站加载批量数据。您可能希望通过
-      将此选项设置为值1来确保一次只能访问一个从站。
-		       +----+
-			 | M1 |
-			 | S1 | <- C1 (writes will be lost)
-			 +----+
-			    |
-			    /
-			    /
-		+------+    |    +----+
-		| [M2] |----+----| R3 |
-		| S2   |         | S3 |
-		+------+         +----+
-	   在这种情况下，网络分区隔离了旧的主M1，因此从属R2被提升为主。但是，与旧主服务器位于同一分区中的客户端（如C1）可能会继续将数据写入
-	旧主服务器.这个数据将永远丢失，因为当分区将愈合时，主机将被重新配置为新主机的从机，丢弃其数据集。
-	使用以下Redis复制功能可以缓解此问题，如果主服务器检测到不再能够将其写入传输到指定数量的从服务器，则允许停止接受写入。
-	min-slaves配置选项
-	     min-slaves-to-write 1  //从节点数量少于1个，主节点拒绝执行写命令
-	     min-slaves-max-lag 10  //1个从节点的延迟(lag)值，大于或等于10，主节点拒绝执行写命令
-	  使用上述配置（请参阅redis.confRedis发行版中的自注释示例以获取更多信息）Redis实例作为主服务器时，如果无法写入至少1个从服务器，将停止接
-	受写入。由于复制是异步的，因此无法实际写入意味着从属设备已断开连接，或者未向我们发送超过指定max-lag秒数的异步确认。
-	  使用此配置，上例中的旧Redis主M1将在10秒后变为不可用。当分区恢复时，Sentinel配置将收敛到新的配置，客户端C1将能够获取有效配置并继续使用新
-	主设备。但是没有免费的午餐。通过这种改进，如果两个从站关闭，主站将停止接受写入。这是一个折衷。
-
-        ※这里需要注意的是：sentinel需要在55和56做好主从之后才能开启，即：在56上执行slaveof，搭建好主从之后，再开启3个sentinel监控服务，一个高可用
-	的（主从自动切换）搭建完成。可以通过在master上执行redis-cli -p 6379 DEBUG sleep 30 命令来模拟故障转移，来测试sentinel故障转移是否搭建成
-	功：127.0.0.1:5000> SENTINEL get-master-addr-by-name mymaster 用这个命令查看当前master节点信息，看是否自动切换了master.
-        如果其中的一个从挂了，那么重启这个从之后，数据会自动同步到该从。
-    总体部署: 可以参照 → https://blog.csdn.net/guying4875/article/details/79045075
-   4、java jedis客户端配置： 如果想读取从节点，用Nginx做负载均衡,可以配置Nginx节点ip和端口...
+     总体部署: 可以参照 → https://blog.csdn.net/guying4875/article/details/79045075
+   ⑤ java jedis客户端配置： 如果想读取从节点，用Nginx做负载均衡,可以配置Nginx节点ip和端口...
         redis.masterName=mymaster
 	redis.sentinels=192.168.11.202:26379,192.168.11.202:26380,192.168.11.202:26381
 	redis.timeout=10000
 	#连接master需要用到的密码，如果redis数据节点开启了连接认证
 	redis.password=myredis
+	
     ① 有人可能会有这样的疑问：为什么通过sentinel来获取redis的连接，而不是直接连接master来获取redis连接呢？
 　　　　试想一下，客户端直接通过master节点获取redis连接，如果master节点挂掉了，虽然Redis Sentinel可以完成故障转移，但是客户端无法获取这个变化，
       那么客户端就无法获取redis连接了；
