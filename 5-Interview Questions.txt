@@ -246,7 +246,7 @@
      传统的商业智能应用：针对特定问题的BI数据库会对产生高度优化的查询方式。对于此类应用，数据仓库可能是更合适的选择。
      需要SQL的问题。
   
-17.java GC1原理 之前的是CMS UseConcMarkSeepGC 原理
+17.java GC1原理 之前的是CMS UseConcMarkSeepGC原理  gc步骤和原理
    https://www.cnblogs.com/ASPNET2008/p/6496481.html
    
 18.java 单向链表反转  实现
@@ -254,13 +254,11 @@
 19.分库分表  分表的思想 → 数据量大的情况：可以存储上ES/lucence上，供查询用，这个想法很好！
                           数据量小的情况：通过配置表按时间拆分；
 
-20. 
-
-21.ThreadLocal 
+20.ThreadLocal 
 　　ThreadLocal一般称为线程本地变量，它是一种特殊的线程绑定机制，将变量与线程绑定在一起，为每一个线程维护一个独立的变量副本。通过ThreadLocal
     可以将对象的可见范围限制在同一个线程内。
 
-22-1.synchronize实现原理   回去搜索各种原理，熟练掌握
+21-1.synchronize实现原理   回去搜索各种原理，熟练掌握
    每个对象有一个监视器锁（monitor）。当monitor被占用时就会处于锁定状态，线程执行monitorenter指令时尝试获取monitor的所有权，过程如下：
 	①、如果monitor的进入数为0，则该线程进入monitor，然后将进入数设置为1，该线程即为monitor的所有者。
 	②、如果线程已经占有该monitor，只是重新进入，则进入monitor的进入数加1.
@@ -272,13 +270,11 @@
   依赖于monitor对象，这就是为什么只有在同步的块或者方法中才能调用wait/notify等方法，否则会抛出java.lang.IllegalMonitorStateException的异常
   的原因。
 
-23.hashmap在1.8中的性能提升在哪里，如何提升的
+22.hashmap在1.8中的性能提升在哪里，如何提升的
+   增加了红黑树的算法
+23.springmvc流程 ioc原理以及生命周期？  https://blog.csdn.net/javaxuexi123/article/details/80804800
 
-24.springmvc流程 ioc原理以及生命周期？  https://blog.csdn.net/javaxuexi123/article/details/80804800
-
-25.gc步骤和原理
-
-26.spring 哪些功能用模板方法，工厂，策略，责任链模式  https://www.cnblogs.com/baizhanshi/p/6187537.html
+24.spring 哪些功能用模板方法，工厂，策略，责任链模式  https://www.cnblogs.com/baizhanshi/p/6187537.html
    ①工厂模式  ApplicationContext →派生出ConfigurableApplicationContext 应用上下文初始器
              在使用Spring的时候，我们经常需要先得到一个ApplicationContext对象，然后从该对象中获取我们配置的Bean对象。
              ApplicationContext隶属于org.springframework.context，是SpringFramework中Bean的管理者，为SpringFramework的诸多功
@@ -301,10 +297,10 @@
    ⑤责任链模式   Filter实现 → 初始化：Filter#init(FilerConfig) → 过滤：Filter#doFilter(FilterChain,ServletRequest,ServletResponse) → 
                  Filter#destory()
 
-27.spring cloud注册发现的原理    Spring Cloud之Eureka服务注册与发现（概念原理篇）https://www.jianshu.com/p/2fa691d4a00a
+25.spring cloud注册发现的原理    Spring Cloud之Eureka服务注册与发现（概念原理篇）https://www.jianshu.com/p/2fa691d4a00a
                                  eureka的server和client各种配置https://www.jianshu.com/p/98f4e5f6bca7
 
-28.jstack Dump 日志文件中的线程状态（重点看死循环和死锁的状态）
+26.jstack Dump 日志文件中的线程状态（重点看死循环和死锁的状态）
 	①：dump 文件里，值得关注的线程状态有
 		死锁， Deadlock（重点关注） 
 		执行中，Runnable   
@@ -333,11 +329,11 @@
 	Waiting for monitor entry 和 in Object.wait()：Monitor是 Java中用以实现线程之间的互斥与协作的主要手段，它可以看成是对象或者 Class的锁。
 	每一个对象都有，也仅有一个 monitor。
 
-29.synchronized 修饰带staitc 方法、变量和修饰不带static 方法、变量 有啥区别？
+27.synchronized 修饰带staitc 方法、变量和修饰不带static 方法、变量 有啥区别？
    修饰带static的，由于是类方法和类变量，那么在锁控制的时候是同一个方法和对象，能达到锁的目的，
    如果修饰不带static的，那么每次调用会new 出一个对象，调用方法，导致每次new都是一个新对象，那么所机制就失效了。
 
-30.Aspect切面编程 可以指定执行顺序。例如：用注解的方式 → 参照项目：datacenter/crudreposity/aspect/AuthorizeAspect.java
+28.Aspect切面编程 可以指定执行顺序。例如：用注解的方式 → 参照项目：datacenter/crudreposity/aspect/AuthorizeAspect.java
 	@Aspect
 	@Component
 	@Order(2)
