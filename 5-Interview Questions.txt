@@ -125,7 +125,8 @@
    分库→ 
 
 11.int 和 Integer的区别
-
+   https://www.cnblogs.com/guodongdidi/p/6953217.html
+   
 12.hashtable
    Hashtable<String, Integer> table = new Hashtable<String, Integer>();
    ① Hashtable 是一个散列表，它存储的内容是键值对(key-value)映射。
@@ -247,6 +248,7 @@
   
 17.java GC1原理 之前的是CMS UseConcMarkSeepGC 原理
    https://www.cnblogs.com/ASPNET2008/p/6496481.html
+   
 18.java 单向链表反转  实现
 
 19.分库分表  分表的思想 → 数据量大的情况：可以存储上ES/lucence上，供查询用，这个想法很好！
