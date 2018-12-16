@@ -15,7 +15,20 @@
 ③  mysql如何开启远程连接 https://jingyan.baidu.com/article/046a7b3ed85f3ef9c27fa9dc.html
    win10为mysql添加3306端口 https://blog.csdn.net/yj19961126/article/details/81224107
 
-④  redis & mongodb & rabbitMQ 开启    查看端口  netstat -nap | grep 端口号
+④  如果项目中存在多个main方法，那么我们需要在pom文件中明确指定，否则编译会报错。
+   <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>datacenter.crudreposity.DemoApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    
+⑤  redis & mongodb & rabbitMQ 开启    查看端口  netstat -nap | grep 端口号
 -A INPUT -m state --state NEW -m tcp -p tcp --dport 6379 -j ACCEPT
 -A INPUT -m state --state NEW -m tcp -p tcp --dport 27017 -j ACCEPT
 -A INPUT -m state --state NEW -m tcp -p tcp --dport 6379 -j ACCEPT
