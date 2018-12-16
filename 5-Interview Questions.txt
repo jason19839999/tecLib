@@ -76,8 +76,6 @@
       在Condition中，用await()替换wait()，用signal()替换notify()，用signalAll()替换notifyAll()，传统线程的通信方式，Condition都可以实现，
       这里注意，Condition是被绑定到Lock上的，要创建一个Lock的Condition必须用newCondition()方法。
 
-
-
 8.list 和 set 的区别，隐身其他集合的深入研究
         //list  有序连续的可重复数组，读取快，写入慢；
 
@@ -92,7 +90,6 @@
 	//        看到hash，就要想到hashCode,equals.
 	//        看到tree，就要想到两个接口。Comparable，Comparator
   
-
 9.多线程原理以及应用场景  深入研究  线程重入，重排序等深入研究 Synchronized和Volatile区别，各自深入研究  看视频
   synchronized和volatile都可以禁止重排序，指令重排序在虚拟机层面，为了尽可能减少内存操作速度远慢于CPU运行速度所带来的CPU空置的影响，
   虚拟机会按照自己的一些规则将程序编写顺序打乱——即写在后面的代码在时间顺序上可能会先执行，而写在前面的代码会后执行——以尽可能充分地利用CPU。
@@ -106,6 +103,7 @@
     ① 对变量的写操作不依赖当前值；
     ② 该变量没有包含在具有其他变量的不变式中。
        volatile经常用于两个两个场景：状态标记两、double check
+       
 10.分库分表怎么分，深入研究？
    分表→ 按时间分：建立一个字典表，把表的配置写入
          比如：id、表名、开始时间、结束时间、要写入的表名
@@ -175,7 +173,6 @@
    其核心就是控制反转(IOC),和面向切面(AOP)。spring框架本身也是按照设计模式精心打造。
    核心模块：数据访问/集成、web、aop、工具、消息和测试模块。
    web模块 → spring mvc原理以及流程
-
 
 15.redis 属于单线程，阻塞式，一个柜台，为何高效？如何分片，核心原理，深入学习？  
    ① 为什么说redis能够快速执行
