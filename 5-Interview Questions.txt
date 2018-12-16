@@ -194,12 +194,11 @@
 	redis.timeout=10000
 	#连接master需要用到的密码，如果redis数据节点开启了连接认证
 	redis.password=myredis
-	
-    ① 有人可能会有这样的疑问：为什么通过sentinel来获取redis的连接，而不是直接连接master来获取redis连接呢？
-　　　　试想一下，客户端直接通过master节点获取redis连接，如果master节点挂掉了，虽然Redis Sentinel可以完成故障转移，但是客户端无法获取这个变化，
-      那么客户端就无法获取redis连接了；
-　　　　最了解master节点信息的就是Sentinel节点集合，所以通过sentinel来获取redis连接就能满足高可用的要求了。
-　　 ② redis master的故障转移不影响客户端连接代码， 但是转移期间内，通过sentinel是获取不到主节点的连接的， 因为转移期间内master节点还没被选举出
+    有人可能会有这样的疑问：为什么通过sentinel来获取redis的连接，而不是直接连接master来获取redis连接呢？
+　　试想一下，客户端直接通过master节点获取redis连接，如果master节点挂掉了，虽然Redis Sentinel可以完成故障转移，但是客户端无法获取这个变化，
+    那么客户端就无法获取redis连接了；
+　　最了解master节点信息的就是Sentinel节点集合，所以通过sentinel来获取redis连接就能满足高可用的要求了。
+　　redis master的故障转移不影响客户端连接代码， 但是转移期间内，通过sentinel是获取不到主节点的连接的， 因为转移期间内master节点还没被选举出
    来；
 	
 16.mongodb 属于多线程，非阻塞，多个柜台，核心原理，深入学习？
