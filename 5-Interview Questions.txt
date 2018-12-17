@@ -76,7 +76,7 @@
       在Condition中，用await()替换wait()，用signal()替换notify()，用signalAll()替换notifyAll()，传统线程的通信方式，Condition都可以实现，
       这里注意，Condition是被绑定到Lock上的，要创建一个Lock的Condition必须用newCondition()方法。
 
-8.list 和 set 的区别，隐身其他集合的深入研究
+8.list 和 set 的区别，隐身其他集合的深入研究  详细参照：https://www.cnblogs.com/fuck1/p/5322302.html
         //list  有序连续的可重复数组，读取快，写入慢；
 
         //set的用法:无序且不能存储相同的元素，读取慢，写入快； https://blog.csdn.net/Dzy_water/article/details/79144206
