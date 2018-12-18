@@ -1,5 +1,8 @@
 ①  后台运行jar 包
      nohup java -jar demo-0.0.1-SNAPSHOT.jar > demo.log &
+     通过start.sh文件来后台运行jar包
+     cmd=nohup java -jar datacenter-0.0.1-SNAPSHOT.jar > /apps/logs/data-center.log &
+     eval $cmd
 
 ②  thymleaf 后台 return 跳转的时候前面不要加/ ,否则发布到linux会报错，无法解析出来。
      /**
