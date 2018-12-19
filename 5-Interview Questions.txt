@@ -349,7 +349,11 @@
    @Around(),在 @Around() 里面抛出异常即可。
 
 29.websocket 交互流程？ 参照课程：Netty入门之WebSocket初体验
-
-
+   ① 交互流程：
+     http握手： 客户端发起一个http特殊请求（Connection-Upgrade  Upgrade-websocket),
+               服务器端解析客户端传递过来的请求类型等信息，进行握手，然后建立一个tcp连接。
+               客户端与服务端进行数据通信之后，就不用原来握手那个http协议的参与了。
+     建立socket连接：onOpen()
+   ② 生命周期： onOpen()  onMessage() onClose() onError()
 
 
