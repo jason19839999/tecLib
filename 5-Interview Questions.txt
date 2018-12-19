@@ -355,5 +355,5 @@
                客户端与服务端进行数据通信之后，就不用原来握手那个http协议的参与了。
      建立socket连接：onOpen()
    ② 生命周期： onOpen()  onMessage() onClose() onError()
-
+   ③ 最大连接数 
 
