@@ -1,86 +1,86 @@
-JVM²ÎÊýÀàÐÍ£º
-   ±ê×¼²ÎÊý
-   X²ÎÊý
-     -Xint   : ½âÊÍÖ´ÐÐ
-     -Xcomp  : µÚÒ»´ÎÊ¹ÓÃ¾Í±àÒë³É±¾µØ´úÂë
-     -Xmixed : »ìºÏÄ£Ê½£¬JVM×Ô¼ºÀ´¾ö¶¨ÊÇ·ñ±àÒë³É±¾µØ´úÂë
+JVMå‚æ•°ç±»åž‹ï¼š
+   æ ‡å‡†å‚æ•°
+   Xå‚æ•°
+     -Xint   : è§£é‡Šæ‰§è¡Œ
+     -Xcomp  : ç¬¬ä¸€æ¬¡ä½¿ç”¨å°±ç¼–è¯‘æˆæœ¬åœ°ä»£ç 
+     -Xmixed : æ··åˆæ¨¡å¼ï¼ŒJVMè‡ªå·±æ¥å†³å®šæ˜¯å¦ç¼–è¯‘æˆæœ¬åœ°ä»£ç 
 
-   XX²ÎÊý    :JVMµ÷ÓÅºÍdebug
-      BooleanÀàÐÍ
-      ¸ñÊ½£º-XX:[+-]<name>±íÊ¾ÆôÓÃ»òÕß½ûÓÃnameÊôÐÔ
-      ±ÈÈç£º-XX:+UseConcMarkSweepGC     ²¢·¢GC  OldÇøÊÕ¼¯·½Ê½
-            -XX:+UseParNewGC            ²¢·¢GC  NewÇøÊÕ¼¯·½Ê½ ÉèÖÃ+UseConcMarkSweepGCÊ±×Ô¶¯´ò¿ª
+   XXå‚æ•°    :JVMè°ƒä¼˜å’Œdebug
+      Booleanç±»åž‹
+      æ ¼å¼ï¼š-XX:[+-]<name>è¡¨ç¤ºå¯ç”¨æˆ–è€…ç¦ç”¨nameå±žæ€§
+      æ¯”å¦‚ï¼š-XX:+UseConcMarkSweepGC     å¹¶å‘GC  OldåŒºæ”¶é›†æ–¹å¼
+            -XX:+UseParNewGC            å¹¶å‘GC  NewåŒºæ”¶é›†æ–¹å¼ è®¾ç½®+UseConcMarkSweepGCæ—¶è‡ªåŠ¨æ‰“å¼€
             
-	    -XX:+UseG1GC       webÓ¦ÓÃ  ²¢·¢GC  java1.8ÍÆ¼öÊ¹ÓÃUseG1GCÐÔÄÜ±È½Ï¸ß
+	    -XX:+UseG1GC       webåº”ç”¨  å¹¶å‘GC  java1.8æŽ¨èä½¿ç”¨UseG1GCæ€§èƒ½æ¯”è¾ƒé«˜
 
-	    -XX:+UseParallelGC -XX:+UseParallelOldGC  ²¢ÐÐGC  
+	    -XX:+UseParallelGC -XX:+UseParallelOldGC  å¹¶è¡ŒGC  
 
-	    -XX:+UseSerialGC  +UseSerialOldGC         ´®ÐÐGC ÐÂÉú´ú\¾ÉÉú´ú
+	    -XX:+UseSerialGC  +UseSerialOldGC         ä¸²è¡ŒGC æ–°ç”Ÿä»£\æ—§ç”Ÿä»£
 
-      ·ÇBooleanÀàÐÍ
-      ¸ñÊ½£º-XX:<name> = <value>±íÊ¾nameÊôÐÔµÄÖµÊÇvalue
-      ±ÈÈç£º-XX:MaxGCPauseMillis = 500
+      éžBooleanç±»åž‹
+      æ ¼å¼ï¼š-XX:<name> = <value>è¡¨ç¤ºnameå±žæ€§çš„å€¼æ˜¯value
+      æ¯”å¦‚ï¼š-XX:MaxGCPauseMillis = 500
             -XX:GCTimeRatio = 19
 
-      -Xmx  -XX:MaxHeapSize = 128       ×î´óÄÚ´æÊý ±ÈÈç¼òÐ´£º-Xms128M -Xmx128M
-      -Xms  -XX:InitialHeapSize = 128    ³õÊ¼»¯ÄÚ´æ´óÐ¡
+      -Xmx  -XX:MaxHeapSize = 128       æœ€å¤§å†…å­˜æ•° æ¯”å¦‚ç®€å†™ï¼š-Xms128M -Xmx128M
+      -Xms  -XX:InitialHeapSize = 128    åˆå§‹åŒ–å†…å­˜å¤§å°
 
-²é¿´JVMÔËÐÐÊ±²ÎÊý
-    jps ÀàËÆlinuxµÄps,²é¿´java½ø³Ì
-    jps -l ²é¿´ÔËÐÐµÄjava½ø³Ì
+æŸ¥çœ‹JVMè¿è¡Œæ—¶å‚æ•°
+    jps ç±»ä¼¼linuxçš„ps,æŸ¥çœ‹javaè¿›ç¨‹
+    jps -l æŸ¥çœ‹è¿è¡Œçš„javaè¿›ç¨‹
     [root@jason ~]# jps -l
     1324 sun.tools.jps.Jps
-    ²é¿´×î´óÄÚ´æ
+    æŸ¥çœ‹æœ€å¤§å†…å­˜
     jinfo -flag MaxHeapSize 1324
     jinfo -flags 1324 
 
-    ²é¿´À¬»ø»ØÊÕÆ÷
+    æŸ¥çœ‹åžƒåœ¾å›žæ”¶å™¨
     jinfo -flag UseConcMarkSweepGC 3176
     jinfo -flag UseG1GC 3176
     jinfo -flag UseParallelGC  3176
     jinfo -flag UseParallelOldGC  3176
 
-jstat²é¿´JVMÍ³¼ÆÐÅÏ¢
-  Àà×°ÔØ
+jstatæŸ¥çœ‹JVMç»Ÿè®¡ä¿¡æ¯
+  ç±»è£…è½½
 
-  À¬»øÊÕ¼¯£¨·Ç³£ÓÐÓÃ£©
-  jps -l  ²é¿´Ïß³Ìpid
+  åžƒåœ¾æ”¶é›†ï¼ˆéžå¸¸æœ‰ç”¨ï¼‰
+  jps -l  æŸ¥çœ‹çº¿ç¨‹pid
   jstat -gc 13144 
 
-  JIT±àÒë
+  JITç¼–è¯‘
   
-jmap + MATÊµÕ½ÄÚ´æÒç³ö
-  ÄÚ´æÒç³öÓ³ÏñÎÄ¼þ×Ô¶¯µ¼³ö
+jmap + MATå®žæˆ˜å†…å­˜æº¢å‡º
+  å†…å­˜æº¢å‡ºæ˜ åƒæ–‡ä»¶è‡ªåŠ¨å¯¼å‡º
   -XX:+HeapDumpOnOutOfMemoryError
   -XX:HeapDumpPath = ./
 
-  jmapÃüÁîÊÖ¶¯µ¼³öÄÚ´æÒç³öÓ³ÏñÎÄ¼þ
-  jps -l  ²é¿´ÔËÐÐÊµÀý£¬ÕÒ¶ÔÓ¦µÄpid
-  16940 com.imooc.monitor.XXXXApplication  ÔËÐÐÊµÀý
+  jmapå‘½ä»¤æ‰‹åŠ¨å¯¼å‡ºå†…å­˜æº¢å‡ºæ˜ åƒæ–‡ä»¶
+  jps -l  æŸ¥çœ‹è¿è¡Œå®žä¾‹ï¼Œæ‰¾å¯¹åº”çš„pid
+  16940 com.imooc.monitor.XXXXApplication  è¿è¡Œå®žä¾‹
   jmap -help
   jmap -dump:format=b,file=heap.hprof 16940
 
-   MAT·ÖÎöÄÚ´æÒç³ö
-   ½«µ¼³öµÄÄÚ´æÒç³öÓ³Ïñ.hprofÎÄ¼þ£¬ÓÃMAT´ò¿ª·ÖÎö£¬¶¨Î»ÄÚ´æÒç³ö´úÂë¡£
+   MATåˆ†æžå†…å­˜æº¢å‡º
+   å°†å¯¼å‡ºçš„å†…å­˜æº¢å‡ºæ˜ åƒ.hprofæ–‡ä»¶ï¼Œç”¨MATæ‰“å¼€åˆ†æžï¼Œå®šä½å†…å­˜æº¢å‡ºä»£ç ã€‚
 
-jstack ÊµÕ½ËÀÑ­»·ÓëËÀËø  
-  CPUÀûÓÃÂÊ¸ß£¬¶¨Î»Ïß³Ì(new runnable timed_waiting waiting blocked terminated)
-  top ²é¿´CPUÕ¼ÓÃÇé¿ö£¬ÕÒ³öÀ´pid
-  ÓÃ jps -l ²é¿´pid ÕÒ³ö¾ßÌå¶ÔÓ¦µ½µ×ÊÇÄÄ¸öÓ¦ÓÃ¡£
+jstack å®žæˆ˜æ­»å¾ªçŽ¯ä¸Žæ­»é”  
+  CPUåˆ©ç”¨çŽ‡é«˜ï¼Œå®šä½çº¿ç¨‹(new runnable timed_waiting waiting blocked terminated)
+  top æŸ¥çœ‹CPUå ç”¨æƒ…å†µï¼Œæ‰¾å‡ºæ¥pid
+  ç”¨ jps -l æŸ¥çœ‹pid æ‰¾å‡ºå…·ä½“å¯¹åº”åˆ°åº•æ˜¯å“ªä¸ªåº”ç”¨ã€‚
   jstack pid > pid.txt
   sz pid.txt
 
-  //´òÓ¡pidÏÂÃæµÄËùÓÐÏß³Ì
-  top -p pid H   ÕÒ³öÕ¼ÓÃ%CPU×î¸ßµÄ¼¸¸öpid£¬ÓÃÏÂÃæµÄ×ª»»³É16½øÖÆ
-  °ÑpidÊ®½øÖÆ×ª»»³É16½øÖÆ£¬ÒòÎªµ¼³öµÄÈÕÖ¾ÀïÃæ±£´æµÄÊÇ16½øÖÆ
+  //æ‰“å°pidä¸‹é¢çš„æ‰€æœ‰çº¿ç¨‹
+  top -p pid -H   æ‰¾å‡ºå ç”¨%CPUæœ€é«˜çš„å‡ ä¸ªpidï¼Œç”¨ä¸‹é¢çš„è½¬æ¢æˆ16è¿›åˆ¶
+  æŠŠpidåè¿›åˆ¶è½¬æ¢æˆ16è¿›åˆ¶ï¼Œå› ä¸ºå¯¼å‡ºçš„æ—¥å¿—é‡Œé¢ä¿å­˜çš„æ˜¯16è¿›åˆ¶
   printf "%x" 8247
-  2037  È»ºóÔÚpid.txtÀïÃæ²éÕÒ2037¼´¿É£¬¶¨Î»¾ßÌå³öÎÊÌâµÄÏß³Ì´úÂëÁË¡£
+  2037  ç„¶åŽåœ¨pid.txté‡Œé¢æŸ¥æ‰¾2037å³å¯ï¼Œå®šä½å…·ä½“å‡ºé—®é¢˜çš„çº¿ç¨‹ä»£ç äº†ã€‚
 
-JVM²ãGCµ÷ÓÅ
-   linuxÃüÁî£º
-   ¢Ù load averageºóÃæÈý¸öÊý×Ö·Ö±ð´ú±í²»Í¬Ê±¼ä¶Î¼´Ò»·ÖÖÓ¡¢Îå·ÖÖÓºÍÊ®Îå·ÖÖÓµÄÏµÍ³Æ½¾ù¸ºÔØ¡£
-   ¢Ú cat /proc/loadavg µÚËÄ¸öÖµµÄ·Ö×ÓÊÇÕýÔÚÔËÐÐµÄ½ø³ÌÊý£¬·ÖÄ¸Îª×Ü½ø³ÌÊý£»µÚÎå¸öÖµÊÇ×î½üÔËÐÐµÄ½ø³Ìid£»
-   ¢Û ²é¿´Ó¦ÓÃÄÚ´æµÄÊ¹ÓÃÇé¿ö£ºps aux --sort -rss
+JVMå±‚GCè°ƒä¼˜
+   linuxå‘½ä»¤ï¼š
+   â‘  load averageåŽé¢ä¸‰ä¸ªæ•°å­—åˆ†åˆ«ä»£è¡¨ä¸åŒæ—¶é—´æ®µå³ä¸€åˆ†é’Ÿã€äº”åˆ†é’Ÿå’Œåäº”åˆ†é’Ÿçš„ç³»ç»Ÿå¹³å‡è´Ÿè½½ã€‚
+   â‘¡ cat /proc/loadavg ç¬¬å››ä¸ªå€¼çš„åˆ†å­æ˜¯æ­£åœ¨è¿è¡Œçš„è¿›ç¨‹æ•°ï¼Œåˆ†æ¯ä¸ºæ€»è¿›ç¨‹æ•°ï¼›ç¬¬äº”ä¸ªå€¼æ˜¯æœ€è¿‘è¿è¡Œçš„è¿›ç¨‹idï¼›
+   â‘¢ æŸ¥çœ‹åº”ç”¨å†…å­˜çš„ä½¿ç”¨æƒ…å†µï¼šps aux --sort -rss
   
 
 
