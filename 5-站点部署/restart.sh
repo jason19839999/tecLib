@@ -17,3 +17,21 @@ CLASS_PATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
 PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
 export JAVA_HOME JRE_HOME CLASS_PATH PATH
 
+公司serving配置
+#java
+export JAVA_HOME=/apps/svr/java
+export JRE_HOME=/apps/svr/java/jre
+export SPARK_HOME=/opt/spark
+export PIO_HOME=/opt/PredictionIO
+export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH
+export CLASSPATH=$CLASSPATH:.:$JAVA_HOME/lib:$JAVA_HOME/jre/li
+export PATH=/usr/local/bin:$PATH
+export PATH=/usr/lib64/qt-3.3/bin:/apps/svr/java/bin:/apps/svr/java/jre/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/apps/svr/mysql/bin:$SPARK_HOME/bin:$PIO_HOME/bin
+export GOOGLE_APPLICATION_CREDENTIALS=/apps/svr/google-trans/fintrans-beb5fb233894.json
+#set maven environment
+M2_HOME=/apps/svr/apache-maven-3.1.1
+export MAVEN_OPTS="-Xms256m -Xmx512m"
+export PATH=$M2_HOME/bin:$PATH
+
+alias ll='ls -Cal'
+alias l='ls -Cal'
