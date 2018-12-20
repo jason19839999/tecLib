@@ -356,4 +356,13 @@
      建立socket连接：onOpen()
    ② 生命周期： onOpen()  onMessage() onClose() onError()
    ③ 最大连接数 
+   
+30.tcp 的三次握手  
+      请求 → 应答 → 再次确认 ack seq number
+  TCP与UDP的区别：
+	①.基于连接与无连接；
+	②.对系统资源的要求（TCP较多，UDP少）；
+	③.UDP程序结构较简单；
+	 .流模式与数据报模式 ；
+	⑤.TCP保证数据正确性，UDP可能丢包，TCP保证数据顺序，UDP不保证。
 
