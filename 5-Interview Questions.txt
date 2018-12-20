@@ -357,7 +357,7 @@
    ② 生命周期： onOpen()  onMessage() onClose() onError()
    ③ 最大连接数 
    
-30.tcp 的三次握手  
+30.tcp 的三次握手    https://www.cnblogs.com/rootq/articles/1377355.html
       请求 → 应答 → 再次确认 ack seq number
   TCP与UDP的区别：
 	①.基于连接与无连接；
@@ -376,3 +376,10 @@
    HTTPS：是以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。
    HTTPS协议的主要作用可以分为两种：一种是建立一个信息安全通道，来保证数据传输的安全；另一种就是确认网站的真实性。
   
+32.JVM如何加载class文件  平台无关性如何实现 什么是反射
+ 
+33.hapens-before之类的锁，最后讲讲线程类、线程池及其运行机制
+
+34.以主流框架spring为例，讲解IOC思想，解耦、AOP用途，事物5个事务隔离级别 、 七个事务传播行为
+ 
+
