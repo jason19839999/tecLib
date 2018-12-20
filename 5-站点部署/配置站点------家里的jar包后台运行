@@ -1,0 +1,81 @@
+①  后台运行jar 包
+     nohup java -jar demo-0.0.1-SNAPSHOT.jar > demo.log &
+     通过start.sh文件来后台运行jar包
+     cmd=nohup java -jar datacenter-0.0.1-SNAPSHOT.jar > /apps/logs/data-center.log &
+     eval $cmd
+
+②  thymleaf 后台 return 跳转的时候前面不要加/ ,否则发布到linux会报错，无法解析出来。
+     /**
+     * 初始化添加页面  绑定实体对象，页面展示
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String Add(Model model) {
+
+        model.addAttribute("obj", new userInfoEntity());
+        return "user/add";
+    }
+
+③  mysql如何开启远程连接 https://jingyan.baidu.com/article/046a7b3ed85f3ef9c27fa9dc.html
+   win10为mysql添加3306端口 https://blog.csdn.net/yj19961126/article/details/81224107
+
+④  如果项目中存在多个main方法，那么我们需要在pom文件中明确指定，否则编译会报错。
+   <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>datacenter.crudreposity.DemoApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    
+⑤  redis & mongodb & rabbitMQ 开启    查看端口  netstat -nap | grep 端口号
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 6379 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 27017 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 6379 -j ACCEPT
+
+******************************************************************************************************
+******************************************************************************************************
+防火墙的相关操作：
+启动：systemctl status firewalld 
+查看状态：systemctl status firewalld 
+停止： systemctl disable firewalld
+禁用： systemctl stop firewalld
+firewall-cmd --zone=public --add-port=6379/tcp --permanent
+firewall-cmd --zone=public --add-port=27017/tcp --permanent
+firewall-cmd --zone=public --add-port=8089/tcp --permanent
+firewall-cmd --zone=public --add-port=8080/tcp --permanent
+firewall-cmd --reload
+******************************************************************************************************
+******************************************************************************************************
+/usr/local/redis
+redis安装地址：/usr/local/redis
+启动redis       : ./bin/redis-server ./redis.conf
+登录redis       : ./bin/redis-cli   进入之后输入 info →查看版本信息
+停止redis       ：./bin/redis-cli shutdown
+******************************************************************************************************
+******************************************************************************************************
+/usr/local/mongodb      https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.0.6.tgz
+
+删除锁文件，否则无法启动
+[root@bogon db]# rm -rf  /usr/local/mongodb/bin/data/test/dbmongod.lock  还有这个mongodb.lock文件也要删除。。。
+
+重置mongoDB路径并启动mongoDB：：
+[root@bogon mongodb-3.0.6]# ./bin/mongod --dbpath=/usr/local/mongodb/bin/data/test/db
+
+进入客户端：
+./mongo  
+
+******************************************************************************************************
+******************************************************************************************************
+安装的目录：/usr/lib/rabbitmq/lib/rabbitmq_server-3.7.8/ebin
+[root@bogon ebin]# vim rabbit.app    修改后台登录名/密码
+[root@bogon ebin]# rabbitmq 按2次Tab键
+[root@bogon ebin]# rabbitmqctl           rabbitmq-diagnostics  rabbitmq-plugins      rabbitmq-server
+
+ 启动服务：
+[root@bogon ebin]# rabbitmq-server start &  
+
+
