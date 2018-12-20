@@ -384,3 +384,5 @@
  
 35.CompletionService completionService = new ExecutorCompletionService(service); 
    参照项目：datacenter/crudreposity/threadProcessor/myThreadPoolProcessor.java:11
+
+36.BlockingQueue 深度学习
