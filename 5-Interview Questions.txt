@@ -382,4 +382,5 @@
 
 34.以主流框架spring为例，讲解IOC思想，解耦、AOP用途，事物5个事务隔离级别 、 七个事务传播行为
  
-
+35.CompletionService completionService = new ExecutorCompletionService(service); 
+   参照项目：datacenter/crudreposity/threadProcessor/myThreadPoolProcessor.java:11
