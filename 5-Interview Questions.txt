@@ -386,3 +386,6 @@
    参照项目：datacenter/crudreposity/threadProcessor/myThreadPoolProcessor.java:11
 
 36.BlockingQueue 深度学习
+
+37.携程Apollo（阿波罗）安装部署以及java整合   https://blog.csdn.net/m0_37050600/article/details/79494568
+
