@@ -92,8 +92,8 @@ JVM层GC调优
 
      G1 GC的回收顺序:
      ① YoungGC 回收Young区
-     ② global concurrent marking  -XX:+InitiatingHeapOccupancyPercent 触发并发标记处理的堆占有率.默认45%
-       YoungGC执行完之后，剩下的堆内存占用比例大于45%就出发并发标记GC回收。initial-mark
+     ② global concurrent marking  -XX:+InitiatingHeapOccupancyPercent 触发 并发标记处理的堆占有率.默认45%
+       YoungGC执行完之后，剩下的堆内存占用比例大于45%就触发 并发标记。initial-mark
      ③ MixedGC  -XX:+G1HeapWastePercent 默认为5% 也就是说并发标记执行完之后，达到这个值就会触发MixedGC.
 
      CMS GC回收顺序
