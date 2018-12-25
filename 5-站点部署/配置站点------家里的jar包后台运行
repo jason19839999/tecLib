@@ -3,6 +3,17 @@
      通过start.sh文件来后台运行jar包
      cmd=nohup java -jar datacenter-0.0.1-SNAPSHOT.jar > /apps/logs/data-center.log &
      eval $cmd
+  在pom.xml文件配置启动类和java.home变量
+      <properties>
+
+        <start-class>datacenter.crudreposity.DemoApplication</start-class>
+        <java.home>/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64</java.home>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+
 
 ②  thymleaf 后台 return 跳转的时候前面不要加/ ,否则发布到linux会报错，无法解析出来。
      /**

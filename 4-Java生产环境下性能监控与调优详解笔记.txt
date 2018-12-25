@@ -72,15 +72,41 @@ jstack 实战死循环与死锁
   2037  然后在pid.txt里面查找2037即可，定位具体出问题的线程代码了。
 
 JVM层GC调优
-  1.2个重要指标  ① 吞吐量  ② 响应时间
-  2.设置GC打印日志相关参数
-  3.GC日志分析工具： GCeasy http://gceasy.io/  GCViewer
+  1. 2个重要指标  ① 吞吐量 花在垃圾收集的时间和花在应用的时间的占比。 -XX:GCTimeRatio = <n> 垃圾收集时间占比 1 / 1 + n
+                  ② 响应（停顿）时间 → 垃圾收集器做垃圾回收中断应用执行的时间。-XX:MaxGCPauseMillis
+
+  2. 设置GC打印日志相关参数
+     -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
+     -XX:+PrintGCDateStamps
+     -Xloggc:/apps/logs/gc.log
+     -XX:+PrintHeapAtGC              整个堆的使用情况
+     -XX:+PrintTenuringDistribution  年龄分布的信息
+
+  3.GC日志分析工具： GCeasy http://gceasy.io/  GCViewer  https://github.com/chewiebug/GCViewer
+     ※ FullGC其实就是 回收Old区 ，持续的时间比较长。
+
+     G1 GC的回收顺序:
+     ① YoungGC 回收Young区
+     ② global concurrent marking  -XX:+InitiatingHeapOccupancyPercent 触发 并发标记处理的堆占有率.默认45%
+       YoungGC执行完之后，剩下的堆内存占用比例大于45%就触发 并发标记。initial-mark
+     ③ MixedGC  -XX:+G1HeapWastePercent 默认为5% 也就是说并发标记执行完之后，达到这个值就会触发MixedGC.
+
+     CMS GC回收顺序
+     ① ParNew 回收Young区
+     ② CMS 回收Old区 initial mark → concurrent-mark-start → concurrent-sweep-start → concurrent-reset-start
+
+     Parallal GC的回收顺序
+     ① YoungGC 回收Young区
+     ② Full Gc 回收Old区
 
 nginx调优
 
 
 
+<<<<<<< HEAD
 tomcat调优
   
+=======
+>>>>>>> af17bcca277ab5d83c0b1ff91514665cc09ea0ea
 
 
