@@ -10,18 +10,13 @@ JVM参数类型：
       格式：-XX:[+-]<name>表示启用或者禁用name属性
       比如：-XX:+UseConcMarkSweepGC     并发GC  Old区收集方式
             -XX:+UseParNewGC            并发GC  New区收集方式 设置+UseConcMarkSweepGC时自动打开
-            
 	    -XX:+UseG1GC       web应用  并发GC  java1.8推荐使用UseG1GC性能比较高
-
 	    -XX:+UseParallelGC -XX:+UseParallelOldGC  并行GC  
-
 	    -XX:+UseSerialGC  +UseSerialOldGC         串行GC 新生代\旧生代
-
       非Boolean类型
       格式：-XX:<name> = <value>表示name属性的值是value
       比如：-XX:MaxGCPauseMillis = 500
             -XX:GCTimeRatio = 19
-
       -Xmx  -XX:MaxHeapSize = 128       最大内存数 比如简写：-Xms128M -Xmx128M
       -Xms  -XX:InitialHeapSize = 128    初始化内存大小
 
@@ -81,7 +76,11 @@ JVM层GC调优
   2.设置GC打印日志相关参数
   3.GC日志分析工具： GCeasy http://gceasy.io/  GCViewer
 
+nginx调优
 
+
+
+tomcat调优
   
 
 
