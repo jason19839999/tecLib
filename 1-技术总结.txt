@@ -288,5 +288,11 @@ sh hk_darkpool.sh start | stop | restart
 42.动态代理实现：AOP就是基于这个实现的：主要有InvocationHandler(invoke())接口和Proxy类
    \1-IdeaProjects\demo\src\main\java\com\example\demo\dynamic_proxy\DynamicProxy.java
 
+43.微信小程序开发参照 → https://developers.weixin.qq.com/miniprogram/introduction/
 
+44.msqlMysql按周，按月，按日，按小时分组统计数据 →  DATE_FORMAT函数  https://www.aliyun.com/jiaocheng/1129607.html
+	 SELECT DATE_FORMAT(news_time,'%Y%m%d%H') hours,COUNT(1) COUNT FROM hot_news GROUP BY hours ORDER BY news_time
+	 SELECT HOUR(e.time) as Hour,count(*) as Count FROM error_log e 
+	    WHERE e.date = '2017-09-02' 
+	    GROUP BY HOUR(e.time) ORDER BY Hour(e.time);
 

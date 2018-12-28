@@ -93,7 +93,7 @@ JVM层GC调优
 
      CMS GC回收顺序
      ① ParNew 回收Young区
-     ② CMS 回收Old区 initial mark → concurrent-mark-start → concurrent-sweep-start → concurrent-reset-start
+     ② CMS 回收Old区 initial mark → concurrent-mark-start → concurrent-preclean-start →  remark  → concurrent-sweep-start → concurrent-reset-start
 
      Parallal GC的回收顺序
      ① YoungGC 回收Young区
@@ -103,10 +103,8 @@ nginx调优
 
 
 
-<<<<<<< HEAD
 tomcat调优
   
-=======
->>>>>>> af17bcca277ab5d83c0b1ff91514665cc09ea0ea
+
 
 
