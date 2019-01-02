@@ -72,6 +72,9 @@
         sum(case when stuSex='女' then 1 else 0 end ) 女生人数  
 	from student  
 	group by stuClass  
+    新闻去重统计：
+    SELECT news_type,COUNT(DISTINCT b.title) --直接在字段前面加上DISTINCT即可。
+       FROM hot_news_classification b GROUP BY news_type 
 
 7.Synchronized 和 ReentrantLock 的区别  深入研究；轮训，可重入，中断，可以设置超时时间，如果超时会回到等待池。
       ReentrantLock实现原理
