@@ -64,6 +64,15 @@
     如果出现=号，like也满足条件，那么=号的索引生效
     ⑨【idx_table_name】    EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND table_name  = '%user' 
 
+    有student表，按照班级，统计班级的总人数，男生人数和女生人数分别是多少。
+    总结:网上搜索mysql面试题：
+         先看需要按按个字段分组，如果按班级就按班级分组，然后就可以按照任意字段进行统计了，SUM(case when then else end)  group by 
+    select stuClass,count(stuName) 班级人数,
+        sum(case when stuSex='男' then 1 else 0 end ) 男生人数,
+        sum(case when stuSex='女' then 1 else 0 end ) 女生人数  
+	from student  
+	group by stuClass  
+
 7.Synchronized 和 ReentrantLock 的区别  深入研究；轮训，可重入，中断，可以设置超时时间，如果超时会回到等待池。
       ReentrantLock实现原理
      参照代码：\crudreposity实现读写分离和Redis处理（经典）\crudreposity\src\main\java\datacenter\crudreposity\aspect\LockAspect.java
