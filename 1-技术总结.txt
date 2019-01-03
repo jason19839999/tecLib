@@ -301,4 +301,4 @@ sh hk_darkpool.sh start | stop | restart
 45.有时候要灵活运用，比如:ArrayList 和hashMap混合使用，以空间换时间。
    比如： int [] a = {1,2,3,4,5} 传入5，返回2个相加等于5的数组下标值：
    用循环效率就很低，配合hashMap就容易实现了。
-
+   具体实现参照：datacenter/crudreposity/aapractise/arrays/ArrayListHashMap.java
