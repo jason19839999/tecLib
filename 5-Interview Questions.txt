@@ -63,10 +63,15 @@
     ⑧【null】              EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa' OR table_name  = 'user'  
     如果出现=号，like也满足条件，那么=号的索引生效
     ⑨【idx_table_name】    EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND table_name  = '%user' 
-
-    有student表，按照班级，统计班级的总人数，男生人数和女生人数分别是多少。
-    总结:网上搜索mysql面试题：
-         先看需要按按个字段分组，如果按班级就按班级分组，然后就可以按照任意字段进行统计了，SUM(case when then else end)  group by 
+  索引类型：
+	1.普通索引
+	2.唯一索引
+	3.主键索引
+	4.组合索引
+	5.全文索引
+  有student表，按照班级，统计班级的总人数，男生人数和女生人数分别是多少。
+  总结:网上搜索mysql面试题：
+       先看需要按按个字段分组，如果按班级就按班级分组，然后就可以按照任意字段进行统计了，SUM(case when then else end)  group by 
     select stuClass,count(stuName) 班级人数,
         sum(case when stuSex='男' then 1 else 0 end ) 男生人数,
         sum(case when stuSex='女' then 1 else 0 end ) 女生人数  
