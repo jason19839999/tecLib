@@ -4,6 +4,7 @@
     ③ ps aux --sort -rss 查看应用内存的使用情况；
     ④ cat /proc/cpuinfo| grep "processor"| wc -l  查看cpu核数
     ⑤ tail -f /var/log/cron   查看crontab日志信息
+    ⑥ Linux使用logrotate来切割日志文件
 
 2.ExecutorService ThreadPool →  动态维护线程池，什么场景下适合。
      newFixedThreadPool： LinkedBlockingQueue   
@@ -408,4 +409,4 @@
 36.BlockingQueue 深度学习
 
 37.携程Apollo（阿波罗）安装部署以及java整合   https://blog.csdn.net/m0_37050600/article/details/79494568
-
+   
