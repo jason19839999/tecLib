@@ -3,6 +3,7 @@
     ② cat /proc/loadavg 第四个值的分子是正在运行的进程数，分母为总进程数；第五个值是最近运行的进程id；
     ③ ps aux --sort -rss 查看应用内存的使用情况；
     ④ cat /proc/cpuinfo| grep "processor"| wc -l  查看cpu核数
+    ⑤ tail -f /var/log/cron   查看crontab日志信息
 
 2.ExecutorService ThreadPool →  动态维护线程池，什么场景下适合。
      newFixedThreadPool： LinkedBlockingQueue   
