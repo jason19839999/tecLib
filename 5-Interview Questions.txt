@@ -21,6 +21,7 @@
 	    dateext
 	    rotate 31
 	}
+    ⑦ tail -f handler.log  动态查看日志文件
 
 2.ExecutorService ThreadPool →  动态维护线程池，什么场景下适合。
      newFixedThreadPool： LinkedBlockingQueue   
