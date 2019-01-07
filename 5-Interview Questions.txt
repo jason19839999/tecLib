@@ -4,7 +4,23 @@
     ③ ps aux --sort -rss 查看应用内存的使用情况；
     ④ cat /proc/cpuinfo| grep "processor"| wc -l  查看cpu核数
     ⑤ tail -f /var/log/cron   查看crontab日志信息
-    ⑥ Linux使用logrotate来切割日志文件
+    ⑥ Linux使用logrotate来切割日志文件  参照：https://www.cnblogs.com/Template/p/9082832.html
+	######## logrotate everyday ########
+	0 0 * * * /usr/sbin/logrotate -f /etc/logrotate.d/creeper
+	0 0 * * * /usr/sbin/logrotate -f /etc/logrotate.d/seek
+        crontab里面要执行的creeper文件
+	/apps/logs/creeper/handler/handler_*_*/*.log
+	/apps/logs/creeper/fetcher/fetcher_*_*/*.log
+	/apps/logs/creeper/dispatcher/dispatcher_*_*/*.log
+	{
+	    compress
+	    delaycompress
+	    notifempty
+	    copytruncate
+	    daily
+	    dateext
+	    rotate 31
+	}
 
 2.ExecutorService ThreadPool →  动态维护线程池，什么场景下适合。
      newFixedThreadPool： LinkedBlockingQueue   
