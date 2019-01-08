@@ -427,3 +427,5 @@
 
 37.携程Apollo（阿波罗）安装部署以及java整合   https://blog.csdn.net/m0_37050600/article/details/79494568
    
+38.rabbitMQ 分布式事务处理
+
