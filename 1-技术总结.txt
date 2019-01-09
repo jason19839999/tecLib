@@ -24,7 +24,7 @@ entity
  @Query(name = "updateConfirm", value = "update hk_bills set is_confirm = 1 where code = :code ", nativeQuery = true)
  @Modifying
  @Transactional
-
+ jdbc多个数据源实现：参照项目 → com/juniorchina/zhichi/zcserving/db/dao/DataSourceConfig.java
 6.右键 Local History 查看本地修改版本
 
 7.查看字段注释  mysql yog 右键选择表 → 改变表 →再执行查询就有注释了
