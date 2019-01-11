@@ -1,6 +1,7 @@
 ①  后台运行jar 包  
      ① [root@test-2 serving]# java -cp .:./lib/* com.juniorchina.Application   
-     
+     直接在lib下面运行： java -cp .:./* datacenter.crudreposity.DemoApplication
+
      ② nohup java -jar demo-0.0.1-SNAPSHOT.jar > demo.log &
      
      ③ maven中把依赖的JAR包一起打包
