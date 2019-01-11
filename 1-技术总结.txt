@@ -1,6 +1,10 @@
-1.数据库字段这个Timestamp，实体要用Date. 要不然序列化失败。 注意：定义的实体类必须跟数据库一致
+遇到疑问或者问题要追查到底，彻底掌握了。。。
   IDEA 常用搜索快捷键   https://jingyan.baidu.com/article/29697b9163ac7dab20de3cbf.html
         添加jar包：File → ProjectStructure → Modules → 最右边 选 Dependencies → <Module source> → 点击最右边 "+" 即可添加 
+
+  linux上 pom.xml 文件中的依赖存放目录 →  cd /root/.m2/repository/
+
+1.数据库字段这个Timestamp，实体要用Date. 要不然序列化失败。 注意：定义的实体类必须跟数据库一致
 	
 2.D:/timg.jpg 访问本地路径   读取文件
             //File filePic = new File("D:/timg.jpg");
