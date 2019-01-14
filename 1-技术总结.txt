@@ -29,6 +29,9 @@ entity
  @Modifying
  @Transactional
  jdbc多个数据源实现：参照项目 → com/juniorchina/zhichi/zcserving/db/dao/DataSourceConfig.java
+
+ spring boot mysql 8小时连接超时 各种参数配置  https://blog.csdn.net/u013378306/article/details/78085366
+
 6.右键 Local History 查看本地修改版本
 
 7.查看字段注释  mysql yog 右键选择表 → 改变表 →再执行查询就有注释了
