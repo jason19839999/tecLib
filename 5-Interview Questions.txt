@@ -456,6 +456,14 @@
 41.Mybatis 中$与#的区别 https://www.cnblogs.com/hellokitty1/p/6007801.html
    Mybatis 和jpa的区别？
 
+42.如果几十万千万并发请求同时处理，可以考虑放到内存处理，数据库的行级锁可能就不行了？
+
+
+
+
+
+
+
 
 
 
