@@ -309,6 +309,7 @@
 
 19.分库分表  分表的思想 → 数据量大的情况：可以存储上ES/lucence上，供查询用，这个想法很好！
                           数据量小的情况：通过配置表按时间拆分；
+			                  按照id % 256 拆分；
 
 20.ThreadLocal 
 　　ThreadLocal一般称为线程本地变量，它是一种特殊的线程绑定机制，将变量与线程绑定在一起，为每一个线程维护一个独立的变量副本。通过ThreadLocal
@@ -445,7 +446,7 @@
 
 37.携程Apollo（阿波罗）安装部署以及java整合   https://blog.csdn.net/m0_37050600/article/details/79494568
    
-38.rabbitMQ 分布式事务处理
+38.rabbitMQ 分布式事务处理？ 阿里的rocketMQ已经实现了。。
 
 39.比如要删除正式数据的场景，改如何做？他主要考察的就是先逻辑删除，然后运行一段时间看看结果，之后的再逻辑删除。
    不要直接delete物理删除了。
@@ -453,6 +454,7 @@
 40.分布式架构中的日志如何查看？
 
 41.Mybatis 中$与#的区别 https://www.cnblogs.com/hellokitty1/p/6007801.html
+   Mybatis 和jpa的区别？
 
 
 
