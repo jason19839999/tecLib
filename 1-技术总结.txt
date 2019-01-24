@@ -315,7 +315,7 @@ sh hk_darkpool.sh start | stop | restart
 46.rsyslog、logrotate切割保存日志日期不准确的问题
    具体参照：https://blog.csdn.net/a_tu_/article/details/73558006?utm_source=blogxgwz6
 
-47.
+47.docker资料 → https://wiki.imooc.com/docker/helloworld.html
 
 48.
 
