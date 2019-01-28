@@ -92,23 +92,31 @@ JVM层GC调优
      G1 GC的回收顺序: 
      G1中提供了三种模式垃圾回收模式，young gc、mixed gc 和 full gc，在不同的条件下被触发。
        https://blog.csdn.net/moakun/article/details/80222150
-       young gc  回收Young区
-	  当eden region满了
-       mixed gc
+     ① young gc  回收Young区
+	  当eden region满了，触发回收Young区。
+     ② mixed gc
           执行过程有点类似cms
 	  -XX:+InitiatingHeapOccupancyPercent 当老年代大小占整个堆大小百分比达到该阈值时，会触发一次mixed gc。
 	      global concurrent marking 触发 并发标记处理的堆占有率.默认45%
               YoungGC执行完之后，当老年代大小占用比例大于45%就触发 并发标记。initial-mark
           -XX:+G1HeapWastePercent 默认为5% 也就是说并发标记执行完之后，达到这个值就会触发MixedGC.
-       full gc
+     ③ full gc
 	  如果对象内存分配速度过快，mixed gc来不及回收，导致老年代被填满，就会触发一次full gc，G1的full gc算法就是单线程执行的
 	  serial old gc，会导致异常长时间的暂停时间，需要进行不断的调优，尽可能的避免full gc.
 
+
      CMS GC回收顺序
-     ① ParNew 回收Young区
+     ① ParNew 如果eden region满了，触发回收Young区。  CMS开启之后它自动开启：-XX:+UseParNewGC  并发线程数：-XX:ParallelGCThreads
           采用多线程回收
      ② CMS 回收Old区 initial mark → concurrent-mark-start → concurrent-preclean-start →  remark 
                      → concurrent-sweep-start → concurrent-reset-start
+      触发条件
+	1、如果没有设置-XX:+UseCMSInitiatingOccupancyOnly，虚拟机会根据收集的数据决定是否触发（建议线上环境带上这个参数，
+	   不然会加大问题排查的难度）。
+	2、老年代使用率达到阈值 CMSInitiatingOccupancyFraction，默认92%。
+	3、永久代的使用率达到阈值 CMSInitiatingPermOccupancyFraction，默认92%，前提是开启 CMSClassUnloadingEnabled。
+	4、新生代的晋升担保失败。
+     ③ Full GC for CMS算法（应对核心的CMS GC某些时候的不赶趟，开销很大）；
 
      Parallal GC的回收顺序
      ① YoungGC 回收Young区
