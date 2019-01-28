@@ -284,6 +284,7 @@ sh hk_darkpool.sh start | stop | restart
 37.gc原理
 
 38.查看源码  Ctrl + N ，勾选上面的复选框，然后找到相应的类或者方法，然后再按回车，就进入到相应的类和方法了。
+             Shift + Ctrl + N 查找文件   
 
 39.查看当前代码执行情况 Debug → Evaluate Expression 右上角那个小方框
    比如输入：Thread.currentThread().getStackTrace() 推断当前线程执行了哪些操作。
