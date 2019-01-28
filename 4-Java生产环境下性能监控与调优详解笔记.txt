@@ -79,6 +79,12 @@ JVM层GC调优
   1. 2个重要指标  ① 吞吐量 花在垃圾收集的时间和花在应用的时间的占比。 -XX:GCTimeRatio = <n> 垃圾收集时间占比 1 / 1 + n
                   ② 响应（停顿）时间 → 垃圾收集器做垃圾回收中断应用执行的时间。-XX:MaxGCPauseMillis
 
+       java -Xms32G -Xmx32G -XX:NewRatio=4 -XX:PermSize=64M -XX:MaxPermSize=128M 
+       -cp /apps/svr/creeper/handler/handler_003_003/bin/creeper-jar-with-dependencies.jar
+       com.vip.creeper.handler.entry.Main -c /apps/svr/creeper/handler/handler_003_003/conf/
+       -XX:NewRatio：4表示新生代：老年代 = 1:4，即年轻代占堆的1/5.
+                     1表示新生代：老年代 = 1:1，即年轻代占堆的1/2. 以此类推。。。
+
   2. 设置GC打印日志相关参数
      -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
      -XX:+PrintGCDateStamps
