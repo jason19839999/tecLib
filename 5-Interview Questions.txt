@@ -433,7 +433,8 @@
    HTTPS：是以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。
    HTTPS协议的主要作用可以分为两种：一种是建立一个信息安全通道，来保证数据传输的安全；另一种就是确认网站的真实性。
   
-32.JVM如何加载class文件  平台无关性如何实现 什么是反射
+32.JVM如何加载class文件  平台无关性如何实现 什么是反射？JVM调优？
+   参照文档：https://www.cnblogs.com/lgqboke/p/5999650.html
  
 33.hapens-before之类的锁，最后讲讲线程类、线程池及其运行机制
 
