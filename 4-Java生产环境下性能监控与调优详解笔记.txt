@@ -61,12 +61,13 @@ jmap + MAT实战内存溢出
 jstack 实战死循环与死锁  
   CPU利用率高，定位线程(new runnable timed_waiting waiting blocked terminated)
   top 查看CPU占用情况，找出来pid
-  用 jps -l 查看pid 找出具体对应到底是哪个应用。
+  用 jps -l 查看pid 找出具体对应到底是哪个应用。或者用下面的方法
+  ps -ef | grep pid | grep -v grep 
   jstack pid > pid.txt
   sz pid.txt
 
   //打印pid下面的所有线程
-  top -p pid -H   找出占用%CPU最高的几个pid，用下面的转换成16进制
+  top -H -p pid    找出占用%CPU最高的几个pid，用下面的转换成16进制
   把pid十进制转换成16进制，因为导出的日志里面保存的是16进制
   printf "%x" 8247
   2037  然后在pid.txt里面查找2037即可，定位具体出问题的线程代码了。
