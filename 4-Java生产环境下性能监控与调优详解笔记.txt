@@ -89,15 +89,25 @@ JVM层GC调优
   3.GC日志分析工具： GCeasy http://gceasy.io/  GCViewer  https://github.com/chewiebug/GCViewer
      ※ FullGC其实就是 回收Old区 ，持续的时间比较长。
 
-     G1 GC的回收顺序:
-     ① YoungGC 回收Young区
-     ② global concurrent marking  -XX:+InitiatingHeapOccupancyPercent 触发 并发标记处理的堆占有率.默认45%
-       YoungGC执行完之后，剩下的堆内存占用比例大于45%就触发 并发标记。initial-mark
-     ③ MixedGC  -XX:+G1HeapWastePercent 默认为5% 也就是说并发标记执行完之后，达到这个值就会触发MixedGC.
+     G1 GC的回收顺序: 
+     G1中提供了三种模式垃圾回收模式，young gc、mixed gc 和 full gc，在不同的条件下被触发。
+       https://blog.csdn.net/moakun/article/details/80222150
+       young gc  回收Young区
+	  当eden region满了
+       mixed gc
+          执行过程有点类似cms
+	  -XX:+InitiatingHeapOccupancyPercent 当老年代大小占整个堆大小百分比达到该阈值时，会触发一次mixed gc。
+	      global concurrent marking 触发 并发标记处理的堆占有率.默认45%
+              YoungGC执行完之后，当老年代大小占用比例大于45%就触发 并发标记。initial-mark
+          -XX:+G1HeapWastePercent 默认为5% 也就是说并发标记执行完之后，达到这个值就会触发MixedGC.
+       full gc
+	  如果对象内存分配速度过快，mixed gc来不及回收，导致老年代被填满，就会触发一次full gc，G1的full gc算法就是单线程执行的
+	  serial old gc，会导致异常长时间的暂停时间，需要进行不断的调优，尽可能的避免full gc.
 
      CMS GC回收顺序
      ① ParNew 回收Young区
-     ② CMS 回收Old区 initial mark → concurrent-mark-start → concurrent-preclean-start →  remark  → concurrent-sweep-start → concurrent-reset-start
+     ② CMS 回收Old区 initial mark → concurrent-mark-start → concurrent-preclean-start →  remark 
+                     → concurrent-sweep-start → concurrent-reset-start
 
      Parallal GC的回收顺序
      ① YoungGC 回收Young区
