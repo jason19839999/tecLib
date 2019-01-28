@@ -106,6 +106,7 @@ JVM层GC调优
 
      CMS GC回收顺序
      ① ParNew 回收Young区
+          采用多线程回收
      ② CMS 回收Old区 initial mark → concurrent-mark-start → concurrent-preclean-start →  remark 
                      → concurrent-sweep-start → concurrent-reset-start
 
