@@ -311,7 +311,32 @@
                           数据量小的情况：通过配置表按时间拆分；
 			                  按照id % 256 拆分；
 
-20.ThreadLocal 
+20.ThreadLocal 最常见的ThreadLocal使用场景为 用来解决数据库连接、Session管理等。如：https://blog.csdn.net/sonny543/article/details/51336457
+   数据库连接：
+	private static ThreadLocal<Connection> connectionHolder = new ThreadLocal<Connection>() {  
+	    public Connection initialValue() {  
+		return DriverManager.getConnection(DB_URL);  
+	    }  
+	};  
+	  
+	public static Connection getConnection() {  
+	    return connectionHolder.get();  
+	}  
+   session管理：
+	private static final ThreadLocal threadSession = new ThreadLocal();  
+	public static Session getSession() throws InfrastructureException {  
+	    Session s = (Session) threadSession.get();  
+	    try {  
+		if (s == null) {  
+		    s = getSessionFactory().openSession();  
+		    threadSession.set(s);  
+		}  
+	    } catch (HibernateException ex) {  
+		throw new InfrastructureException(ex);  
+	    }  
+	    return s;  
+	}  
+
 　　ThreadLocal一般称为线程本地变量，它是一种特殊的线程绑定机制，将变量与线程绑定在一起，为每一个线程维护一个独立的变量副本。通过ThreadLocal
     可以将对象的可见范围限制在同一个线程内。
     而ThreadLocal则从另一个角度来解决多线程的并发访问。ThreadLocal会为每一个线程提供一个独立的变量副本，从而隔离了多个线程对数据的访问冲突。
