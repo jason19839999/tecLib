@@ -9,8 +9,7 @@
       1.######## logrotate everyday ########
 	0 0 * * * /usr/sbin/logrotate -f /etc/logrotate.d/creeper
      
-      2.crontab里面要执行的creeper文件
-	/apps/logs/creeper/handler/handler_*_*/*.log
+      2.crontab里面要执行的creeper文件 0 0 * * * /usr/sbin/logrotate -f /etc/logrotate.d/creeper
 	/apps/logs/creeper/fetcher/fetcher_*_*/*.log
 	/apps/logs/creeper/dispatcher/dispatcher_*_*/*.log
 	{
@@ -22,6 +21,7 @@
 	    dateext
 	    rotate 31
 	}
+
       3./etc/anacrontab
         # /etc/anacrontab: configuration file for anacron
 	# See anacron(8) and anacrontab(5) for details.
