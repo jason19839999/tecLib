@@ -525,6 +525,30 @@
 
 50.redis 中pipline,mset, mget使用对比  https://blog.csdn.net/think2me/article/details/77185723
    数据块的大小限制，比如：一次取出多少数据的大小
+   @Override
+    public List<String> getValuesByKeys(String[] keys, int db_index) {
+        return redisTemplate.execute(new RedisCallback<List<String>>() {
+            @Override
+            public List<String> doInRedis(RedisConnection redisConnection)
+                    throws DataAccessException {
+                redisConnection.select(db_index);
+                if (keys == null || keys.length == 0) {
+                    return null;
+                }
+                byte[][] arg = new byte[keys.length][];
+                for (int i = 0; i < keys.length; i++) {
+                    arg[i] = redisTemplate.getStringSerializer().serialize(keys[i]);
+                }
+                List<byte[]> ins = redisConnection.mGet(arg);
+                List<String> list = new ArrayList<>();
+                for (byte[] b : ins
+                        ) {
+                    list.add(redisTemplate.getStringSerializer().deserialize(b));
+                }
+                return list;
+            }
+        });
+    }
 
 51.spring boot 注解是怎么被识别的 @interface  https://www.jianshu.com/p/943a25dcbe96
 
