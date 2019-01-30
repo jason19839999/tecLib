@@ -523,7 +523,7 @@
 
 49.快速定位内存过高的问题
 
-50.redis mget 和 pipe 深度应用
+50.redis 中pipline,mset, mget使用对比  https://blog.csdn.net/think2me/article/details/77185723
 
 51.spring boot 注解是怎么被识别的 @interface
 
