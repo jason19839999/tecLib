@@ -327,8 +327,9 @@ sh hk_darkpool.sh start | stop | restart
 
 47.docker资料 → https://wiki.imooc.com/docker/helloworld.html
 
-48.
+48.rabbitMQ 每秒消费的消息量，即吞吐量？
 
-49.
+49.深入理解spring boot 注解原理？如何被识别并执行？
 
-50.
+50.处理高并发千万记住，除了数据库行级锁，redis分布式锁，最好的使用消息队列，即排队处理。比如12306等高并发访问网站？
+
