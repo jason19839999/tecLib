@@ -1,11 +1,35 @@
 遇到疑问或者问题要追查到底，彻底掌握了。。。
-  IDEA 常用搜索快捷键   https://jingyan.baidu.com/article/29697b9163ac7dab20de3cbf.html
+  ① IDEA 常用搜索快捷键   https://jingyan.baidu.com/article/29697b9163ac7dab20de3cbf.html
         添加jar包：File → ProjectStructure → Modules → 最右边 选 Dependencies → <Module source> → 点击最右边 "+" 即可添加 
 
-  linux上 pom.xml 文件中的依赖存放目录 →  cd /root/.m2/repository/  spring boot 文件 →  /root/.m2/repository/
+  ② linux上 pom.xml 文件中的依赖存放目录 →  cd /root/.m2/repository/  spring boot 文件 →  /root/.m2/repository/
      org/springframework/boot
 
-  IDEA中右键里面没有Git选项处理方法 → File → Settings → Version Control 右边 <Project> VCS 选择Git即可。
+  ③ IDEA中右键里面没有Git选项处理方法 → File → Settings → Version Control 右边 <Project> VCS 选择Git即可。
+
+  ④ IDEA 手动生成jar包  右键点击要打包的module(common) → 选择“Open Module Settings” → “Artifacts” → 点击中间区域的“+” JAR → From modules with dependencies.. 
+          选择要打包的module, 点击“OK”之后回添加了一个画面，在画面上做如下设置：
+	      右边 Name = product-common:jar 
+	      Type : JAR → Output directory : D:\tmp 指定生成jar包存放位置 → Available Elements 下面选择要打包的Module。
+	  最后 “Build” → “Build Artifacts”
+    参照项目：\spring cloud\spring-cloud\课程源代码\product\common
+
+  ⑤ IDEA 引入第三方的包 在需要引入包的Module下面建立一个lib文件夹，将jar包拷贝到此处，然后“File” → “Project Structure” → “Modules” 右侧区域选择 “Dependencies” 点击 最右边“+” 
+    添加刚才建立的lib文件下面的jar包即可。
+    参照项目：\spring cloud\spring-cloud\课程源代码\order\server\lib
+
+  ⑥ 引入maven 管理下的包的方法
+        <!--这里注意一下，这里的引入是保存在本地maven目录下面-->
+        <!--下面的依赖包groupId和artifactId就是依赖包所在项目里面的pom.xml文件里面的配置项 <groupId> 和 <artifactId>-->
+        <!--<groupId>com.imooc</groupId>-->
+        <!--<artifactId>product-client</artifactId>-->
+
+        <!--<dependency>-->
+            <!--<groupId>com.imooc</groupId>-->
+            <!--<artifactId>product-client</artifactId>-->
+        <!--</dependency>-->
+
+
 
 1.数据库字段这个Timestamp，实体要用Date. 要不然序列化失败。 注意：定义的实体类必须跟数据库一致
 	
