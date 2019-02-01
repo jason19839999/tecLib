@@ -7,14 +7,16 @@
 
   ③ IDEA中右键里面没有Git选项处理方法 → File → Settings → Version Control 右边 <Project> VCS 选择Git即可。
 
-  ④ IDEA 手动生成jar包  右键点击要打包的module(common) → 选择“Open Module Settings” → “Artifacts” → 点击中间区域的“+” JAR → From modules with dependencies.. 
+  ④ IDEA 手动生成jar包  右键点击要打包的module(common) → 选择“Open Module Settings” → “Artifacts” → 点击中间区域的“+” JAR → 
+    From modules with dependencies.. 
           选择要打包的module, 点击“OK”之后回添加了一个画面，在画面上做如下设置：
 	      右边 Name = product-common:jar 
 	      Type : JAR → Output directory : D:\tmp 指定生成jar包存放位置 → Available Elements 下面选择要打包的Module。
 	  最后 “Build” → “Build Artifacts”
     参照项目：\spring cloud\spring-cloud\课程源代码\product\common
 
-  ⑤ IDEA 引入第三方的包 在需要引入包的Module下面建立一个lib文件夹，将jar包拷贝到此处，然后“File” → “Project Structure” → “Modules” 右侧区域选择 “Dependencies” 点击 最右边“+” 
+  ⑤ IDEA 引入第三方的包 在需要引入包的Module下面建立一个lib文件夹，将jar包拷贝到此处，然后“File” → “Project Structure” → “Modules” 
+    右侧区域选择 “Dependencies” 点击 最右边“+” 
     添加刚才建立的lib文件下面的jar包即可。
     参照项目：\spring cloud\spring-cloud\课程源代码\order\server\lib
 
