@@ -102,7 +102,7 @@ JVM层GC调优
 
      Parallal GC的回收顺序
      ① YoungGC 回收Young区
-     ② Full Gc 回收Old区
+     ② Full GC 回收Old区
 
 
 
