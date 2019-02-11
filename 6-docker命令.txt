@@ -1,80 +1,139 @@
 参照菜鸟教程： http://www.runoob.com/docker/docker-command-manual.html
-docker build -t imagename/test .
-docker push imagename/test
+容器生命周期管理 →
 
-docker ps 查看运行中的容器
-docker ps -a 查看所有容器
-docker rm 容器id
+	创建一个新的容器并运行一个命令
+	docker run options image-name command args
+	docker run -d -p 127.0.0.1:80:8080/tcp ubuntu bash
+	docker run -it nginx:latest /bin/bash
 
-docker images
-docker rmi 镜像名称
+	容器的启动、停止、重启
+	docker start 容器id   启动一个或多个已经被停止的容器
+        docker stop 容器id n  停止一个运行中的容器
+	docker restart 容器id 重启容器
 
-docker run -d -p 8080:8080 镜像名称
-docker exec -it  container /bin/sh /root/runoob.sh
+	杀掉一个运行中的容器。
+	docker kill -s mynginx
 
-docker commit -m 'test' 容器id
-docker stop 容器id n  停止正在运行的容器
-docker start 容器id   启动已经停止的容器
-docker restart 容器id 重启正在运行的容器
+	删除一个或多少容器
+	docker rm -f -l -v  container1 container2
+	-f 强制删除一个运行的容器
+	-l 移除容器间的网络连接，而非容器本身
+	-v 删除与容器关联的卷
 
-docker run -d --name mynginx nginx:latest  command args
-docker run -d -p 80:80:80 nginx:latest
-docker run -d -p 80:80 -v /data:/data nginx:latest
+	暂停容器中所有的进程/恢复容器中所有的进程。
+	docker pause
+	docker unpause
 
-创建一个新的容器并运行一个命令
-docker run options image-name command args
-在容器中执行命令
-docker exec options container command args 
-docker run -d -p 127.0.0.1:80:8080/tcp ubuntu bash
-docker run -it nginx:latest /bin/bash
-主机端口：容器端口
---name 为容器指定一个名称
---dns -h 指定容器的hostname
--m 设置容器使用内存最大值
---net  --link --expose
-docker kill -s mynginx
-docker rm -f -l -v  container1 container2
--f 强制删除一个运行的容器
--l 移除容器间的网络连接，而非容器本身
--v 删除与容器关联的卷
-docker pause
-docker unpause
-创建一个新容器，但是不启动它
-docker create --name mynginx nginx:latest
-docker create options image command args
-在运行的容器中执行命令
-docker exec -d -it container command args
-docker ps -a -f --format -l -n -q -s
-获取容器/镜像的元数据
-docker inspect -f -s --type
-连接到正在运行中的容器
-docker attach -sig-proxy=false mynginx
-从服务器获取实时事件
-docker events -f --since --until
-查看容器日志
-docker logs -f mynginx
---since='2016-07-01' --tail=10 mynginx
-阻止运行直到容器停止，然后打印出它的退出代码
-docker wait container 
-将文件系统作为一个tar归档文件导出到std out.
-docker export options container
-列出指定的容器的端口的映射，或者查找将private_port nat
-docker port options container 
-从容器创建一个新的镜像
-用于容器与主机之间的数据拷贝
-docker cp options container:src_path dest_path
-docker cp options src_path - container:dest_path
-docker cp /www/runoob 容器id:/www/ 拷贝到www下面了
-docker cp /www/runoob 容器id:/www  重命名了给
-docker cp 容器id:/www /tmp/        拷贝到tmp下面了
-检查容器里文件结构的更改
-docker diff options container
-登录/退出镜像仓库
-docker login/logout
-docker login -u 用户名 -p 密码 image-name
-docker logout image-name
-从镜像仓库拉取或者更新指定镜像
-docker pull options name:tag @digest
+	创建一个新的容器但不启动它
+	docker create --name mynginx nginx:latest
+	docker create options image command args
 
+	在运行的容器中执行命令
+	docker exec -d -it container command args
 
+容器操作 →
 
+        列出容器
+	docker ps -a -f --format -l -n -q -s
+
+	获取容器/镜像的元数据
+	docker inspect -f -s --type
+
+	查看容器中运行的进程信息，支持 ps 命令参数。
+	docker top mymysql
+	查看所有运行容器的进程信息。
+	for i in  `docker ps |grep Up|awk '{print $1}'`;do echo \ &&docker top $i; done
+
+	连接到正在运行中的容器
+	docker attach -sig-proxy=false mynginx
+
+	从服务器获取实时事件
+	docker events -f --since --until
+
+	查看容器日志
+	docker logs -f mynginx
+	--since='2016-07-01' --tail=10 mynginx
+
+	阻止运行直到容器停止，然后打印出它的退出代码
+	docker wait container 
+
+	将文件系统作为一个tar归档文件导出到std out.
+	docker export options container
+	将id为a404c6c174a2的容器按日期保存为tar文件。
+	docker export -o mysql-`date +%Y%m%d`.tar a404c6c174a2
+
+	列出指定的容器的端口的映射，或者查找将private_port nat
+	docker port options container 
+
+容器rootfs命令 →
+
+	从容器创建一个新的镜像 
+	docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+	docker commit -a "runoob.com" -m "my apache" a404c6c174a2  mymysql:v1 
+
+	用于容器与主机之间的数据拷贝
+	docker cp options container:src_path dest_path
+	docker cp options src_path - container:dest_path
+	docker cp /www/runoob 容器id:/www/ 拷贝到www下面了
+	docker cp /www/runoob 容器id:/www  重命名了给
+	docker cp 容器id:/www /tmp/        拷贝到tmp下面了
+
+	检查容器里文件结构的更改
+	docker diff options container
+
+镜像仓库 →
+
+	登录/退出镜像仓库
+	docker login -u 用户名 -p 密码 image-name
+	docker logout image-name
+
+	从镜像仓库拉取或者更新指定镜像
+	docker pull options name:tag @digest
+
+	从将本地的镜像上传到镜像仓库,要先登陆到镜像仓库
+	docker push [OPTIONS] NAME[:TAG]
+	docker push myapache:v1
+
+	从docker hub查找镜像
+	docker search options term
+
+本地镜像管理 →
+	列出本地镜像。
+	docker images [OPTIONS] [REPOSITORY[:TAG]]
+	
+	删除本地一个或多少镜像。
+	docker rmi [OPTIONS] IMAGE [IMAGE...]
+
+	标记本地镜像，将其归入某一仓库。
+	docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]
+	将镜像ubuntu:15.10标记为 runoob/ubuntu:v3 镜像。
+        docker tag ubuntu:15.10 runoob/ubuntu:v3
+
+	命令用于使用 Dockerfile 创建镜像。
+	docker build [OPTIONS] PATH | URL | -
+	使用当前目录的 Dockerfile 创建镜像，标签为 runoob/ubuntu:v1。
+	docker build -t runoob/ubuntu:v1 . 
+	-f :指定要使用的Dockerfile路径；
+	$ docker build -t runoob/ubuntu:v1  -f /path/to/a/Dockerfile .
+
+	查看指定镜像的创建历史。
+	docker history [OPTIONS] IMAGE
+	docker history runoob/ubuntu:v3
+	
+	将指定镜像保存成 tar 归档文件。
+	docker save [OPTIONS] IMAGE [IMAGE...] -o :输出到的文件。
+	将镜像runoob/ubuntu:v3 生成my_ubuntu_v3.tar文档
+	docker save -o my_ubuntu_v3.tar runoob/ubuntu:v3
+
+	从归档文件中创建镜像。
+	docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]
+	从镜像归档文件my_ubuntu_v3.tar创建镜像，命名为runoob/ubuntu:v4
+	docker import  my_ubuntu_v3.tar runoob/ubuntu:v4  
+
+info|version →
+        
+	显示 Docker 系统信息，包括镜像和容器数。。
+	docker info [OPTIONS]
+
+	显示 Docker 版本信息。
+	docker version [OPTIONS]
