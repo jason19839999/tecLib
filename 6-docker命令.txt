@@ -5,6 +5,12 @@
 	docker run options image-name command args
 	docker run -d -p 127.0.0.1:80:8080/tcp ubuntu bash
 	docker run -it nginx:latest /bin/bash
+	※※※※※通过限制容器可用的物理内存，可以避免容器内服务异常导致大量消耗主机
+	内存的情况(此时让容器重启是较好的策略)，因此可以降低主机内存被耗尽带来的风险。
+	docker run -it -d --rm -m 300M --memory-swap=300M u-stress /bin/bash
+	※※※※※限制容器可使用cpu资源，一旦发生容器内程序异常使用cpu的情况，很可能吧整个主机
+	的cpu资源耗尽。
+	$ docker run -it --rm --cpus=2 u-stress:latest /bin/bash
 
 	容器的启动、停止、重启
 	docker start 容器id   启动一个或多个已经被停止的容器
