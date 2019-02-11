@@ -1,0 +1,80 @@
+参照菜鸟教程： http://www.runoob.com/docker/docker-command-manual.html
+docker build -t imagename/test .
+docker push imagename/test
+
+docker ps 查看运行中的容器
+docker ps -a 查看所有容器
+docker rm 容器id
+
+docker images
+docker rmi 镜像名称
+
+docker run -d -p 8080:8080 镜像名称
+docker exec -it  container /bin/sh /root/runoob.sh
+
+docker commit -m 'test' 容器id
+docker stop 容器id n  停止正在运行的容器
+docker start 容器id   启动已经停止的容器
+docker restart 容器id 重启正在运行的容器
+
+docker run -d --name mynginx nginx:latest  command args
+docker run -d -p 80:80:80 nginx:latest
+docker run -d -p 80:80 -v /data:/data nginx:latest
+
+创建一个新的容器并运行一个命令
+docker run options image-name command args
+在容器中执行命令
+docker exec options container command args 
+docker run -d -p 127.0.0.1:80:8080/tcp ubuntu bash
+docker run -it nginx:latest /bin/bash
+主机端口：容器端口
+--name 为容器指定一个名称
+--dns -h 指定容器的hostname
+-m 设置容器使用内存最大值
+--net  --link --expose
+docker kill -s mynginx
+docker rm -f -l -v  container1 container2
+-f 强制删除一个运行的容器
+-l 移除容器间的网络连接，而非容器本身
+-v 删除与容器关联的卷
+docker pause
+docker unpause
+创建一个新容器，但是不启动它
+docker create --name mynginx nginx:latest
+docker create options image command args
+在运行的容器中执行命令
+docker exec -d -it container command args
+docker ps -a -f --format -l -n -q -s
+获取容器/镜像的元数据
+docker inspect -f -s --type
+连接到正在运行中的容器
+docker attach -sig-proxy=false mynginx
+从服务器获取实时事件
+docker events -f --since --until
+查看容器日志
+docker logs -f mynginx
+--since='2016-07-01' --tail=10 mynginx
+阻止运行直到容器停止，然后打印出它的退出代码
+docker wait container 
+将文件系统作为一个tar归档文件导出到std out.
+docker export options container
+列出指定的容器的端口的映射，或者查找将private_port nat
+docker port options container 
+从容器创建一个新的镜像
+用于容器与主机之间的数据拷贝
+docker cp options container:src_path dest_path
+docker cp options src_path - container:dest_path
+docker cp /www/runoob 容器id:/www/ 拷贝到www下面了
+docker cp /www/runoob 容器id:/www  重命名了给
+docker cp 容器id:/www /tmp/        拷贝到tmp下面了
+检查容器里文件结构的更改
+docker diff options container
+登录/退出镜像仓库
+docker login/logout
+docker login -u 用户名 -p 密码 image-name
+docker logout image-name
+从镜像仓库拉取或者更新指定镜像
+docker pull options name:tag @digest
+
+
+
