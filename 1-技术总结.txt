@@ -359,3 +359,13 @@ sh hk_darkpool.sh start | stop | restart
 
 50.处理高并发千万记住，除了数据库行级锁，redis分布式锁，最好的使用消息队列，即排队处理。比如12306等高并发访问网站？
 
+51.spring cloud遇到的几个坑？
+   ① eureka-server 没有及时维护eureka-client端的状态，比如：client端下线了，没有及时剔除掉。
+     目前就是把时间设置的短一些。
+   ② eureka-client 拉取config-center的配置文件时报错，访问不了config-center,
+     拉取地址为：host名称:端口，应该为ip:端口
+     需要在eureka-client端增加配置项：
+     eureka:
+	  instance:
+	    prefer-ip-address: true
+   ③ properties.yml 改为 bootstrap.yml应用启动时要先执行这个，否则会报错。
