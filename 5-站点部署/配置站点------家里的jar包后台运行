@@ -1,5 +1,28 @@
-①  后台运行jar 包
-     nohup java -jar demo-0.0.1-SNAPSHOT.jar > demo.log &
+①  后台运行jar 包  
+     ① java -cp .:./lib/* datacenter.crudreposity.DemoApplication  
+       java -cp .:./config/:./lib/*  datacenter.crudreposity.DemoApplication 
+     直接在lib下面运行： java -cp .:./* datacenter.crudreposity.DemoApplication
+
+     ② nohup java -jar demo-0.0.1-SNAPSHOT.jar > demo.log &
+     
+     ③ maven中把依赖的JAR包一起打包
+      <plugins>
+            <!-- 编译插件 -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest> <mainClass>datacenter.crudreposity.DemoApplication</mainClass>
+                            </manifest >
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+
      通过start.sh文件来后台运行jar包
      cmd=nohup java -jar datacenter-0.0.1-SNAPSHOT.jar > /apps/logs/data-center.log &
      eval $cmd

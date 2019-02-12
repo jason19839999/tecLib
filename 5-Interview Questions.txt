@@ -2,6 +2,43 @@
     ① top 命令 load average后面三个数字分别代表不同时间段即一分钟、五分钟和十五分钟的系统平均负载；
     ② cat /proc/loadavg 第四个值的分子是正在运行的进程数，分母为总进程数；第五个值是最近运行的进程id；
     ③ ps aux --sort -rss 查看应用内存的使用情况；
+    ④ cat /proc/cpuinfo| grep "processor"| wc -l  查看cpu核数
+    ⑤ tail -f /var/log/cron   查看crontab日志信息
+    ⑥ Linux使用logrotate来切割日志文件  参照：https://www.cnblogs.com/Template/p/9082832.html
+      分为以下三步：每天凌晨0点执行一次
+      1.######## logrotate everyday ########
+	0 0 * * * /usr/sbin/logrotate -f /etc/logrotate.d/creeper
+     
+      2.crontab里面要执行的creeper文件 0 0 * * * /usr/sbin/logrotate -f /etc/logrotate.d/creeper
+	/apps/logs/creeper/fetcher/fetcher_*_*/*.log
+	/apps/logs/creeper/dispatcher/dispatcher_*_*/*.log
+	{
+	    compress
+	    delaycompress
+	    notifempty
+	    copytruncate
+	    daily
+	    dateext
+	    rotate 31
+	}
+
+      3./etc/anacrontab
+        # /etc/anacrontab: configuration file for anacron
+	# See anacron(8) and anacrontab(5) for details.
+	SHELL=/bin/sh
+	PATH=/sbin:/bin:/usr/sbin:/usr/bin
+	MAILTO=root
+	# the maximal random delay added to the base delay of the jobs
+	RANDOM_DELAY=9
+	# the jobs will be started during the following hours only
+	START_HOURS_RANGE=23-24
+
+	#period in days   delay in minutes   job-identifier   command
+	1	50	cron.daily		nice run-parts /etc/cron.daily
+	7	25	cron.weekly		nice run-parts /etc/cron.weekly
+	@monthly 45	cron.monthly		nice run-parts /etc/cron.monthly
+
+    ⑦ tail -f handler.log  查看动态日志文件
 
 2.ExecutorService ThreadPool →  动态维护线程池，什么场景下适合。
      newFixedThreadPool： LinkedBlockingQueue   
@@ -33,11 +70,13 @@
   解决幻读需要锁表
 
 5.基本数据类型和引用数据类型的区别
+   jvm调优：https://www.cnblogs.com/xingzc/p/5756119.html  →  包含基本数据类型和引用数据类型在内存中的分配
    区别:基本数据类型和引用类型的区别主要在于基本数据类型是分配在栈上的，而引用类型是分配在堆上的（需要java中的栈、堆概念），
    猜想：不论是基本数据类型还是引用类型，他们都会先在栈中分配一块内存，对于基本类型来说，这块区域包含的是基本类型的内容；
    而对于对象类型来说，这块区域包含的是指向真正内容的指针，真正的内容被手动的分配在堆上。
 
-6.mysql 索引方式，深入研究，建立索引，在where条件是否生效原理，深入研究； 总体规则就是就近生效原则：
+6.mysql 运用二叉查找树-运用B树-运用B+树-运用Hash以及BitMap等优化索引 https://blog.csdn.net/linbiaorui/article/details/72793527
+  索引方式，深入研究，建立索引，在where条件是否生效原理，深入研究； 总体规则就是就近生效原则：
   复合索引顺序：idx_table_name_object_table_name  
       存在断路原则，索引的先后顺序，a b c 如果where 后面没有 a ，则不生效，只要有就行，跟顺序没关系；加上or 都失效，除非每个都建立索引；
     ① 这种情况失效：EXPLAIN SELECT * FROM user_sub_table WHERE table_name LIKE '%user' 
@@ -62,6 +101,23 @@
     ⑧【null】              EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name = 'aa' OR table_name  = 'user'  
     如果出现=号，like也满足条件，那么=号的索引生效
     ⑨【idx_table_name】    EXPLAIN SELECT * FROM user_sub_table WHERE object_table_name LIKE 'aa%' AND table_name  = '%user' 
+  索引类型：
+	1.普通索引
+	2.唯一索引
+	3.主键索引
+	4.组合索引
+	5.全文索引
+  有student表，按照班级，统计班级的总人数，男生人数和女生人数分别是多少。
+  总结:网上搜索mysql面试题：
+       先看需要按按个字段分组，如果按班级就按班级分组，然后就可以按照任意字段进行统计了，SUM(case when then else end)  group by 
+    select stuClass,count(stuName) 班级人数,
+        sum(case when stuSex='男' then 1 else 0 end ) 男生人数,
+        sum(case when stuSex='女' then 1 else 0 end ) 女生人数  
+	from student  
+	group by stuClass  
+    新闻去重统计：
+    SELECT news_type,COUNT(DISTINCT b.title) --直接在字段前面加上DISTINCT即可。
+       FROM hot_news_classification b GROUP BY news_type 
 
 7.Synchronized 和 ReentrantLock 的区别  深入研究；轮训，可重入，中断，可以设置超时时间，如果超时会回到等待池。
       ReentrantLock实现原理
@@ -253,8 +309,34 @@
 
 19.分库分表  分表的思想 → 数据量大的情况：可以存储上ES/lucence上，供查询用，这个想法很好！
                           数据量小的情况：通过配置表按时间拆分；
+			                  按照id % 256 拆分；
 
-20.ThreadLocal 
+20.ThreadLocal 最常见的ThreadLocal使用场景为 用来解决数据库连接、Session管理等。如：https://blog.csdn.net/sonny543/article/details/51336457
+   数据库连接：
+	private static ThreadLocal<Connection> connectionHolder = new ThreadLocal<Connection>() {  
+	    public Connection initialValue() {  
+		return DriverManager.getConnection(DB_URL);  
+	    }  
+	};  
+	  
+	public static Connection getConnection() {  
+	    return connectionHolder.get();  
+	}  
+   session管理：
+	private static final ThreadLocal threadSession = new ThreadLocal();  
+	public static Session getSession() throws InfrastructureException {  
+	    Session s = (Session) threadSession.get();  
+	    try {  
+		if (s == null) {  
+		    s = getSessionFactory().openSession();  
+		    threadSession.set(s);  
+		}  
+	    } catch (HibernateException ex) {  
+		throw new InfrastructureException(ex);  
+	    }  
+	    return s;  
+	}  
+
 　　ThreadLocal一般称为线程本地变量，它是一种特殊的线程绑定机制，将变量与线程绑定在一起，为每一个线程维护一个独立的变量副本。通过ThreadLocal
     可以将对象的可见范围限制在同一个线程内。
     而ThreadLocal则从另一个角度来解决多线程的并发访问。ThreadLocal会为每一个线程提供一个独立的变量副本，从而隔离了多个线程对数据的访问冲突。
@@ -348,7 +430,7 @@
     ，所以捕捉不到，程序终止了），具体做法是让此方法返回错误信息给
    @Around(),在 @Around() 里面抛出异常即可。
 
-29.websocket 交互流程？ 参照课程：Netty入门之WebSocket初体验
+29.websocket spring boot 2.0才有的？ 交互流程？ 参照课程：Netty入门之WebSocket初体验
    ① 交互流程：
      http握手： 客户端发起一个http特殊请求（Connection-Upgrade  Upgrade-websocket),
                服务器端解析客户端传递过来的请求类型等信息，进行握手，然后建立一个tcp连接。
@@ -371,12 +453,14 @@
    http是超文本传输协议，信息是明文传输，https 则是具有安全性的ssl加密传输协议；
    http和https使用的是完全不同的连接方式用的端口也不一样,前者是80,后者是443；
    http的连接很简单,是无状态的。HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，要比http协议安全；
-   HTTP：是互联网上应用最为广泛的一种网络协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本地浏览器的传输协议，
+   HTTP：是互联网上应用最为广泛的一种网络协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本
+   地浏览器的传输协议，
    它可以使浏览器更加高效，使网络传输减少。
    HTTPS：是以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。
    HTTPS协议的主要作用可以分为两种：一种是建立一个信息安全通道，来保证数据传输的安全；另一种就是确认网站的真实性。
   
-32.JVM如何加载class文件  平台无关性如何实现 什么是反射
+32.JVM如何加载class文件  平台无关性如何实现 什么是反射？JVM调优？
+   参照文档：https://www.cnblogs.com/lgqboke/p/5999650.html
  
 33.hapens-before之类的锁，最后讲讲线程类、线程池及其运行机制
 
@@ -388,5 +472,94 @@
 36.BlockingQueue 深度学习
 
 37.携程Apollo（阿波罗）安装部署以及java整合   https://blog.csdn.net/m0_37050600/article/details/79494568
+   
+38.rabbitMQ 分布式事务处理？ 阿里的rocketMQ已经实现了。。
+
+39.比如要删除正式数据的场景，改如何做？他主要考察的就是先逻辑删除，然后运行一段时间看看结果，之后的再逻辑删除。
+   不要直接delete物理删除了。
+
+40.分布式架构中的日志如何查看？
+
+41.Mybatis 中$与#的区别 https://www.cnblogs.com/hellokitty1/p/6007801.html
+   ① mybatis缓存
+   ② SqlSession级别的缓存  → 一级缓存
+   ③ mapper级别的缓存      → 二级缓存
+    一级缓存是SqlSession级别的缓存，每个SqlSession对象都有一个哈希表用于缓存数据，不同SqlSession对象之间缓存不共享。
+    同一个SqlSession对象对象执行2遍相同的SQL查询，在第一次查询执行完毕后将结果缓存起来，这样第二遍查询就不用向数据
+    库查询了，直接返回缓存结果即可。MyBatis默认是开启一级缓存的。
+    二级缓存是mapper级别的缓存，二级缓存是跨SqlSession的，多个SqlSession对象可以共享同一个二级缓存。不同的SqlSession
+    对象执行两次相同的SQL语句，第一次会将查询结果进行缓存，第二次查询直接返回二级缓存中的结果即可。MyBatis默认是不开
+    启二级缓存的，可以在配置文件中使用如下配置来开启二级缓存：
+	<settings>
+	    <setting name="cacheEnabled" value="true"/>
+	</settings>
+
+    当SQL语句进行更新操作(删除/添加/更新)时，会清空对应的缓存，保证缓存中存储的都是最新的数据。MyBatis的二级缓存对细
+    粒度的数据级别的缓存实现不友好，比如如下需求：对商品信息进行缓存，由于商品信息查询访问量大，但是要求用户每次都能
+    查询最新的商品信息，此时如果使用mybatis的二级缓存就无法实现当一个商品变化时只刷新该商品的缓存信息而不刷新其它商品
+    的信息，因为mybaits的二级缓存区域以mapper为单位划分，当一个商品信息变化会将所有商品信息的缓存数据全部清空。解决此
+    类问题需要在业务层根据需求对数据有针对性缓存，具体业务具体实现。
+   Mybatis 和jpa的区别？
+
+42.如果几十万千万并发请求同时处理，可以考虑放到内存处理，数据库的行级锁可能就不行了？
+
+43.foreach 和 for循环的区别？
+   另外foreach不支持在循环中添加删除操作，因为在使用foreach循环的时候数组（集合）就已经被锁定不能被修改，否则会报出
+   java.util.ConcurrentModificationException异常
+   foreach适用于只是进行集合或数组遍历，for则在较复杂的循环中效率更高。
+　 foreach不能对数组或集合进行修改（添加删除操作），如果想要修改就要用for循环。
+   foreach虽然是for循环的简化版本，但是并不是说foreach就比for更好用，foreach适用于循环次数未知，或者计算循环次数比较
+   麻烦情况下使用效率更高，但是更为复杂的一些循环还是需要用到for循环效率更高。
+
+44.学习链表、单向链表、二叉树等数据结构？
+
+45.深入理解泛型
+
+46.java进程占用cpu过高的因素
+
+47.java进程占用内存过高的因素
+
+48.快速定位cpu过高的问题
+
+49.快速定位内存过高的问题
+
+50.redis 中pipline,mset, mget使用对比  https://blog.csdn.net/think2me/article/details/77185723
+   数据块的大小限制，比如：一次取出多少数据的大小
+   @Override
+    public List<String> getValuesByKeys(String[] keys, int db_index) {
+        return redisTemplate.execute(new RedisCallback<List<String>>() {
+            @Override
+            public List<String> doInRedis(RedisConnection redisConnection)
+                    throws DataAccessException {
+                redisConnection.select(db_index);
+                if (keys == null || keys.length == 0) {
+                    return null;
+                }
+                byte[][] arg = new byte[keys.length][];
+                for (int i = 0; i < keys.length; i++) {
+                    arg[i] = redisTemplate.getStringSerializer().serialize(keys[i]);
+                }
+                List<byte[]> ins = redisConnection.mGet(arg);
+                List<String> list = new ArrayList<>();
+                for (byte[] b : ins
+                        ) {
+                    list.add(redisTemplate.getStringSerializer().deserialize(b));
+                }
+                return list;
+            }
+        });
+    }
+
+51.spring boot 注解是怎么被识别的 @interface  https://www.jianshu.com/p/943a25dcbe96
+   ① aspect切面编程 来识别
+     具体参照：datacenter/crudreposity/aspect/AccessLimitNewAspect.java
+	       datacenter/crudreposity/aspect/AccessLimitNew.java
+   ② 通过反射       来识别
+     具体参照：datacenter/crudreposity/aapractise/reflection/ReflectionBootstrap.java
+   ③ MethodHandler  来识别
+     具体参照：datacenter/crudreposity/access/AccessInterceptor.java
+
+52.对于单个拍品，比如十万个请求过来，首先数据库行级锁是负担不了，用分布式锁也有点费劲，考虑放到rabbitMQ里面，排队处理
+   处理速度也很快。
 
 38.深入理解一下mybatis原理 #$的区别？
