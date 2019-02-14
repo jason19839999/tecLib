@@ -481,6 +481,7 @@
 40.分布式架构中的日志如何查看？
 
 41.Mybatis 中$与#的区别 https://www.cnblogs.com/hellokitty1/p/6007801.html
+    详解参照： https://blog.csdn.net/ITITII/article/details/79969447
    ① mybatis缓存
    ② SqlSession级别的缓存  → 一级缓存
    ③ mapper级别的缓存      → 二级缓存
