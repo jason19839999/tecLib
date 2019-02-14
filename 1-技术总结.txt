@@ -1,4 +1,39 @@
 遇到疑问或者问题要追查到底，彻底掌握了。。。
+******************************************************************************
+  ※※※特别注意的是，在install子module的时候，首先安装主module,也就是multi-module，再
+     安装子module...※※※
+  一.最重要的多module处理
+  参照：multi-module
+  第一步 → 先配置主pom.xml文件 把相关module加入进入 如下：
+    <groupId>com.example</groupId>
+    <artifactId>multi-module</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <modules>
+        <module>multi-server</module>
+        <module>multi-common</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <name>multi-module</name>
+    <description>Demo project for Spring Boot</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.2.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+  第二步 → 再具体配置子module配置文件 如下：
+    <parent>
+        <artifactId>multi-module</artifactId>
+        <groupId>com.example</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>multi-common</artifactId>
+
+******************************************************************************
+
   ① IDEA 常用搜索快捷键   https://jingyan.baidu.com/article/29697b9163ac7dab20de3cbf.html
         添加jar包：File → ProjectStructure → Modules → 最右边 选 Dependencies → <Module source> → 点击最右边 "+" 即可添加 
 
