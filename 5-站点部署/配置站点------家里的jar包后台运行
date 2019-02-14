@@ -1,11 +1,18 @@
-①  后台运行jar 包  
+①  后台运行jar 包  注意：① java -cp 需要把当前module相关jar包都放到一起，即：放在同一个Lib文件夹下面才行。
+                         具体参照datacenter/crudreposity/DemoApplication.java项目。
+			 ② java -jar 就不用，它读取本地的.m2下面的依赖。
+			 如果使用以上2个命令在pom文件的配置不一样，如果使用java -cp 那么就得按照datacenter项目的
+			 pom.xml打包设置来配置。
+
      ① java -cp .:./lib/* datacenter.crudreposity.DemoApplication  
        java -cp .:./config/:./lib/*  datacenter.crudreposity.DemoApplication 
+ nohup java -cp .:./config/:./lib/*  datacenter.crudreposity.DemoApplication -c /apps/svr/serving/test/crudreposity/config 1 1 >> test.log 2>&1 &
+
      直接在lib下面运行： java -cp .:./* datacenter.crudreposity.DemoApplication
 
      ② nohup java -jar demo-0.0.1-SNAPSHOT.jar > demo.log &
      
-     ③ maven中把依赖的JAR包一起打包
+     ③ maven中把依赖的JAR包一起打包，具体要参照seek项目。
       <plugins>
             <!-- 编译插件 -->
             <plugin>
