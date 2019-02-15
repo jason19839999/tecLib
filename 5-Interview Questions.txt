@@ -359,8 +359,11 @@
   依赖于monitor对象，这就是为什么只有在同步的块或者方法中才能调用wait/notify等方法，否则会抛出java.lang.IllegalMonitorStateException的异常
   的原因。
 
-22.hashmap在1.8中的性能提升在哪里，如何提升的
+22.hashmap在1.8中的性能提升在哪里，如何提升的 
+      1.8以前数据结构为 数组 + 链表 
+      1.8以后的数据结构为数组 + 链表 + 红黑树
    增加了红黑树的算法
+
 23.springmvc流程 ioc原理以及生命周期？  https://blog.csdn.net/javaxuexi123/article/details/80804800
 
 24.spring 哪些功能用模板方法，工厂，策略，责任链模式  https://www.cnblogs.com/baizhanshi/p/6187537.html
