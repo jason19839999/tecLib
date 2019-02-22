@@ -13,11 +13,17 @@ docker官网地址  https://www.docker.com/
 	查看某命令  help 信息	docker help [command]	docker help attach
 	查看 docker help 信息	docker --help	docker --help
 
+
+
+
 参照菜鸟教程： http://www.runoob.com/docker/docker-command-manual.html
 容器生命周期管理 →
 
 	创建一个新的容器并运行一个命令
 	docker run options image-name command args
+	//创建docker容器，外接配置文件方式
+	docker run -d -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=dev" --name rest-api dockerImage:latest
+
 	docker run -d --name mynginx  nginx:latest
 	docker run -d -p 127.0.0.1:80:8080/tcp ubuntu bash
 	docker run -d -it nginx:latest /bin/bash
