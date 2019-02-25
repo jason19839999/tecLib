@@ -423,4 +423,7 @@ sh hk_darkpool.sh start | stop | restart
 	  当使用 Spring Cloud 的时候，配置信息一般是从 config server 加载的，为了取得配置信息（比如密码等），你需要一
 	  些提早的或引导配置。因此，把 config server 信息放在 bootstrap.yml，用来加载真正需要的配置信息。
 
+52.如何在高并发分布式系统中生成全局唯一Id
+   https://blog.csdn.net/chenleixing/article/details/48153305
+
 
