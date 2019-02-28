@@ -426,4 +426,6 @@ sh hk_darkpool.sh start | stop | restart
 52.如何在高并发分布式系统中生成全局唯一Id
    https://blog.csdn.net/chenleixing/article/details/48153305
 
-
+53.在aspect里面获取post请求的body参数，这里需要注意的是通过阿里的fastjson →  body = JSONObject.toJSONString(joinPoint.getArgs());
+   参照代码： \myTools\SPRING BOOT & MYSQL\1-IdeaProjects\demo\src\main\java\com\example\demo\aspect\ServicelockAspect.java
+   ※※※※※ 还要注意，要进入相关详细代码深入查看是否有相关属性，比如：传入参数  JoinPoint中就有getArgs()方法。 ※※※※※
