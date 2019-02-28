@@ -429,3 +429,19 @@ sh hk_darkpool.sh start | stop | restart
 53.在aspect里面获取post请求的body参数，这里需要注意的是通过阿里的fastjson →  body = JSONObject.toJSONString(joinPoint.getArgs());
    参照代码： \myTools\SPRING BOOT & MYSQL\1-IdeaProjects\demo\src\main\java\com\example\demo\aspect\ServicelockAspect.java
    ※※※※※ 还要注意，要进入相关详细代码深入查看是否有相关属性，比如：传入参数  JoinPoint中就有getArgs()方法。 ※※※※※
+
+54.如果打开项目dependencies都有报错，那么可能是parent包版本有问题。
+   比如： <parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.4.RELEASE</version>
+	 </parent>
+	 2.0.4.RELEASE 这个版本可能有问题，那么可能改为 2.0.3.RELEASE就可以了。
+
+
+
+
+
+
+
+
