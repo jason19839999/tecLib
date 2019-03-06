@@ -438,6 +438,19 @@ sh hk_darkpool.sh start | stop | restart
 	 </parent>
 	 2.0.4.RELEASE 这个版本可能有问题，那么可能改为 2.0.3.RELEASE就可以了。
 
+55.服务端对请求参数校验： 利用Assert类库
+    @RequestBusinessLog(name="产品对比筛选API",code = "productVsFilterAPI")
+    @PostMapping("/price")
+    public BaseResponse price(@RequestBody ProductPriceParam productPriceParam) {
+        try {
+            Assert.hasText(productPriceParam.getInsuredGender(), "性别为空");
+            Assert.hasText(productPriceParam.getInsuredAge(), "年龄为空");
+            Assert.hasText(productPriceParam.getAmount(), "保额为空");
+            Assert.hasText(productPriceParam.getPayPeriod(), "缴费期间为空");
+            ...
+	    }
+
+
 
 
 
