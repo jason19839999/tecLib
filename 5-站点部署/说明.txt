@@ -6,6 +6,8 @@ start         :启动服务
 这里面的包是从git管理  配置环境生成而来
 一般也可以在这里直接打包发布
 
+nohup java -cp .:./config/:./lib/*   datacenter.crudreposity.DemoApplication -c /apps/svr/serving/test/crudreposity/config 1 1 >> test.log 2>&1 &
+
 java -cp .:myClass.jar packname.mainclassname   
 
 

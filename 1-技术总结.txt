@@ -1,4 +1,39 @@
-遇到疑问或者问题要追查到底，彻底掌握了。。。
+遇到疑问或者问题要追查到底，彻底掌握了。。。 -Dspring.profiles.active=dev
+******************************************************************************
+  ※※※特别注意的是，在install子module的时候，首先安装主module,也就是multi-module，再
+     安装子module...解决问题参照地址：https://www.oschina.net/question/143808_156035 ※※※
+  一.最重要的多module处理
+  参照：https://github.com/jason19839999/spring-cloud/blob/master/practise/multi-module → multi-module
+  第一步 → 先配置主pom.xml文件 把相关module加入进入 如下：
+    <groupId>com.example</groupId>
+    <artifactId>multi-module</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <modules>
+        <module>multi-server</module>
+        <module>multi-common</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <name>multi-module</name>
+    <description>Demo project for Spring Boot</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.2.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+  第二步 → 再具体配置子module配置文件 如下：
+    <parent>
+        <artifactId>multi-module</artifactId>
+        <groupId>com.example</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>multi-common</artifactId>
+
+******************************************************************************
+
   ① IDEA 常用搜索快捷键   https://jingyan.baidu.com/article/29697b9163ac7dab20de3cbf.html
         添加jar包：File → ProjectStructure → Modules → 最右边 选 Dependencies → <Module source> → 点击最右边 "+" 即可添加 
 
@@ -31,6 +66,11 @@
             <!--<artifactId>product-client</artifactId>-->
         <!--</dependency>-->
 
+  ⑦ shell教程 http://www.runoob.com/linux/linux-shell.html
+
+  ⑧ 监控 pinpoint是开源在github上的一款APM监控工具，它是用Java编写的，用于大规模分布式系统监控。它对性能的影响最小（只增加约3％资源利用率），
+    安装agent是无侵入式的，只需要在被测试的Tomcat中加上3句话，打下探针，就可以监控整套程序了。这篇Blog主要是想记录一下它安装的过程，
+    方便日后查阅。
 
 
 1.数据库字段这个Timestamp，实体要用Date. 要不然序列化失败。 注意：定义的实体类必须跟数据库一致
@@ -382,5 +422,39 @@ sh hk_darkpool.sh start | stop | restart
 	为何需要把 config server 的信息放在 bootstrap.yml 里？
 	  当使用 Spring Cloud 的时候，配置信息一般是从 config server 加载的，为了取得配置信息（比如密码等），你需要一
 	  些提早的或引导配置。因此，把 config server 信息放在 bootstrap.yml，用来加载真正需要的配置信息。
+
+52.如何在高并发分布式系统中生成全局唯一Id
+   https://blog.csdn.net/chenleixing/article/details/48153305
+
+53.在aspect里面获取post请求的body参数，这里需要注意的是通过阿里的fastjson →  body = JSONObject.toJSONString(joinPoint.getArgs());
+   参照代码： \myTools\SPRING BOOT & MYSQL\1-IdeaProjects\demo\src\main\java\com\example\demo\aspect\ServicelockAspect.java
+   ※※※※※ 还要注意，要进入相关详细代码深入查看是否有相关属性，比如：传入参数  JoinPoint中就有getArgs()方法。 ※※※※※
+
+54.如果打开项目dependencies都有报错，那么可能是parent包版本有问题。
+   比如： <parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.4.RELEASE</version>
+	 </parent>
+	 2.0.4.RELEASE 这个版本可能有问题，那么可能改为 2.0.3.RELEASE就可以了。
+
+55.服务端对请求参数校验： 利用Assert类库
+    @RequestBusinessLog(name="产品对比筛选API",code = "productVsFilterAPI")
+    @PostMapping("/price")
+    public BaseResponse price(@RequestBody ProductPriceParam productPriceParam) {
+        try {
+            Assert.hasText(productPriceParam.getInsuredGender(), "性别为空");
+            Assert.hasText(productPriceParam.getInsuredAge(), "年龄为空");
+            Assert.hasText(productPriceParam.getAmount(), "保额为空");
+            Assert.hasText(productPriceParam.getPayPeriod(), "缴费期间为空");
+            ...
+	    }
+
+
+
+
+
+
+
 
 

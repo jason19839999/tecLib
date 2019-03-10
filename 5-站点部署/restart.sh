@@ -3,6 +3,11 @@
 ps -ef | grep com.juniorchina.Application | grep -v grep| awk '{print $2}' | xargs kill -9
 nohup java -cp .:./config/:./lib/* -Dspring.profiles.active=test-2 com.juniorchina.Application >> serving.log 2>&1 &
 
+//将日志统一输出到日志文件
+ps -ef | grep com.juniorchina.Application | grep -v grep| awk '{print $2}' | xargs kill -9
+nohup java -cp .:./config/:./lib/* -Dspring.profiles.active=prod com.juniorchina.Application >> /apps/logs/serving/serving.log 2>&1 &
+
+
 在家里配置站点，修改了环境变量还是不行最后用 nohup java -jar demo-0.0.1-SNAPSHOT.jar > demo.log &
 
 注意：***踩过的坑  Error: Could not find or load main class com.imooc.demo.GirlApplication

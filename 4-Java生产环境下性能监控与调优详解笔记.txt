@@ -55,6 +55,8 @@ jmap + MAT实战内存溢出
   jmap -help
   jmap -dump:format=b,file=heap.hprof 16940
 
+  jmap -heap pid  查看jvm内存分配情况
+
    MAT分析内存溢出
    将导出的内存溢出映像.hprof文件，用MAT打开分析，定位内存溢出代码。
 
