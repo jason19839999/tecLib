@@ -450,6 +450,12 @@ sh hk_darkpool.sh start | stop | restart
             ...
 	    }
 
+56.JWT 深入了解？
+
+57.Oauther2.0平台统一用户身份验证和授权管理？
+
+58.java Security权限认证实现？ 参照 → 慕课网ES搜索实践课程--后台管理系统的实现
+
 
 
 
