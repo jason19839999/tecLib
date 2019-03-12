@@ -459,7 +459,39 @@ sh hk_darkpool.sh start | stop | restart
 59.springboot使用hibernate validator校验
     http://www.cnblogs.com/mr-yang-localhost/p/7812038.html
     http://docs.jboss.org/hibernate/validator/4.2/reference/zh-CN/html_single/#validator-gettingstarted
+    上代码：
+    @PostMapping("/updateProspectusStatus")
+    public BaseResponse updateProspectusStatus(@RequestBody @Valid ProspectusUpdateInfoDto prospectusUpdateInfo,
+    		BindingResult result, HttpServletRequest request) {
 
+    	if (result.hasErrors()){
+    		return new BaseResponse(400,result.getFieldError().getDefaultMessage());
+    	}
+    	try {
+
+    		prospectusConfigService.updateProspectusStatus(prospectusUpdateInfo, request.getHeader("orgId").toString());
+
+    	} catch(IllegalArgumentException e) {
+    		e.printStackTrace();
+    		return new BaseResponse(400,e.getMessage());
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		return new BaseResponse(400,"系统异常，请联系系统管理员");
+    	}
+    	return new BaseResponse(200,"操作成功");
+    }
+
+     /**
+       * 计划书信息
+     */
+    public class ProspectusUpdateInfoDto {
+    //计划书数组
+    @NotEmpty(message="计划书ID不能为空")
+    private String[] prospectusIds;
+    
+    @NotEmpty(message="商户ID不能为空")
+	private String orgId;
+    }
 
 
 
