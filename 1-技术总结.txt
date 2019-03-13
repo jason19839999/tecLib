@@ -496,8 +496,14 @@ sh hk_darkpool.sh start | stop | restart
 60.生成业务主键或者唯一码
    参照代码：\src\apiserver\apiserver\src\main\java\com\lima\apiserver\common\IdGen\IdKeyWorkerConfiguration.java
 
-
-
+61.  //String 转 JSONObject
+     JSONObject jsonObject = JSON.parseObject(JSONObject.toJSONString(shareRecordVo.getShareParamJson()));
+     添加依赖如下：
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+       		<version>1.2.47</version>
+        </dependency>
 
 
 
