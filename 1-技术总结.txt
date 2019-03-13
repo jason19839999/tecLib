@@ -493,6 +493,8 @@ sh hk_darkpool.sh start | stop | restart
 	private String orgId;
     }
 
+60.生成业务主键或者唯一码
+   参照代码：\src\apiserver\apiserver\src\main\java\com\lima\apiserver\common\IdGen\IdKeyWorkerConfiguration.java
 
 
 
