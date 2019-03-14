@@ -505,5 +505,24 @@ sh hk_darkpool.sh start | stop | restart
        		<version>1.2.47</version>
         </dependency>
 
+62.bean注入问题：
+   2019-03-14 10:39:36 [WARN] [org.apache.commons.logging.impl.Jdk14Logger:87] - Exception encountered during context initialization - cancelling refresh attempt: 
+   org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'openApiShareManager': Unsatisfied dependency expressed through field 'iShareRecordService'; 
+   nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'shareRecordServiceImpl': 
+   Unsatisfied dependency expressed through field 'shareRecordMapper'; 
+   nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: 
+   No qualifying bean of type 'com.lima.apiserver.shareCenter.dao.ShareRecordMapper' available: expected at least 1 bean which qualifies as autowire candidate. 
+   Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)} 
+   解决办法：将注入的类所在的包进行添加扫描即可。
+	@SpringBootApplication
+	@EnableFeignClients
+	@MapperScan(basePackages={"com.lima.apiserver.currentCenter.dao","com.lima.apiserver.shareCenter.dao"})
+	public class ApiserverApplication {
+
+	    public static void main(String[] args) {
+		SpringApplication.run(ApiserverApplication.class, args);
+	    }
+	}
+
 
 
