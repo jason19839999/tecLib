@@ -524,5 +524,14 @@ sh hk_darkpool.sh start | stop | restart
 	    }
 	}
 
+63. 返回实体字段自定义返回格式  @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	public class CustomerInfoVo {
+	    private String name;
+	    
+	    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	    private Date visitDate;
+	    private String headImgUrl;
+	    private int visitTimes;
+	    }
 
 
