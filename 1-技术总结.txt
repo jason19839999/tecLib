@@ -534,4 +534,23 @@ sh hk_darkpool.sh start | stop | restart
 	    private int visitTimes;
 	    }
 
+64.Object未知的对象实体，转化成json串，然后转换成JsonObject类型，就可以随意获取里面的值了。
+            @Around(value = "@annotation(com.example.demo.aspect.MaiDaianRequest)")
+	    public Object around(ProceedingJoinPoint joinPoint) throws InterruptedException {
+		Object obj = null;
+		try {
+		    obj = joinPoint.proceed();
+		    String json = JSONObject.toJSONString(obj);//将java对象转换为json对象
+		    JSONObject jsonObject = JSONObject.parseObject(json);
+		    JSONObject data = jsonObject.getJSONObject("data");
+		    String total = data.getString("total");
+		    total = "";
+		} catch (Throwable e) {
+		    e.printStackTrace();
+		}
+		return obj;
+	    }
+
+
+
 
