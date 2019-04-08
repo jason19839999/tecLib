@@ -551,6 +551,40 @@ sh hk_darkpool.sh start | stop | restart
 		return obj;
 	    }
 
+65.JSON.toJSONString(jdSmsDto)的时候要指定序列化顺序，否则可能和其他人对接的时候传参不一致。
+        比如：JSON.toJSONString(jdSmsDto)是一个顺序，Post Body的时候又是一个顺序，这样可能导致不一致。
+	举例说明：
+	 //加签内容：body体（json字符串）+ unix时间戳（13位）+ 渠道ID + 盐（双方约定）。摘要放入请求头digest参数中
+            String digest = Md5Encrypt.getMD5String(JSON.toJSONString(jdSmsDto) + timestamp + jdchannelId + jdSsalt);
+            log.info("加密之前的报文： " + JSON.toJSONString(jdSmsDto) + timestamp + jdchannelId + jdSsalt);
+            response = WebClient.create()
+                    .post()
+                    .uri(jdUrl)
+                    .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                    .header(HttpHeaders.AUTHORIZATION, authorization)
+                    .header("salt", jdSsalt)
+                    .header("cid", cid)
+                    .header("timestamp", timestamp)
+                    .header("channelId", jdchannelId)
+                    .header("digest", digest)
+                    .syncBody(jdSmsDto)
+                    .retrieve()
+                    .bodyToMono(String.class);
 
+	package com.lima.sms.entity;
+	import com.alibaba.fastjson.annotation.JSONType;
+	import lombok.Data;
+	import java.util.List;
+	@Data
+	@JSONType(orders={"phone","smsId","param"})
+	public class JdSmsDto {
+
+	    private String phone;
+
+	    private String smsId;
+
+	    private List<String> param;
+
+	}
 
 
