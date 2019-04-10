@@ -640,7 +640,8 @@ sh hk_darkpool.sh start | stop | restart
 		where prd_id = #{productId,jdbcType=VARCHAR}
 	    </select>
 
-
+68.logback日志
+   参照：F:/0-workspace/src/autumn-new/product-shop-autumn
 
 
 
