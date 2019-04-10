@@ -587,4 +587,69 @@ sh hk_darkpool.sh start | stop | restart
 
 	}
 
+66.服务设计的原则  服务的目的 稳定，快速
+     产品方案
+     技术方案
+     错误处理  先写异常处理代码(如果错了，如何继续？)，再写核心逻辑代码
+   ① 损失最小化
+   ② 最大化持续运营的能力
+   单元测试
+   从外部的角度来审视自己
+
+67.单条数据，返回字段名和value,设置返回值类型为Map即可  →  resultType="java.util.Map"
+	 <select id="getDetail_100000" resultType="java.util.Map" parameterType="java.lang.String">
+		select
+		  pp.product_id         as productId,
+		  pp.product_name       as productName,
+		  oi.org_cname          as company,
+		  oi.logo_srcpath       as logo,
+		  oi.registered_capital as capital,
+		  oi.org_telephone      as telephone,
+		  pi.maj_ill_amt        as majIllAmt,
+		  pi.maj_ill_cnt        as majIllCnt,
+		  pi.maj_ill_grp        as majIllGrp,
+		  pi.maj_ill_paycnt     as majIllPaycnt,
+		  pi.maj_ill_int        as majIllInt,
+		  pi.med_ill_amt        as medIllAmt,
+		  pi.med_ill_cnt        as medIllCnt,
+		  pi.med_ill_grp        as medIllGrp,
+		  pi.med_ill_paycnt     as medIllPaycnt,
+		  pi.med_ill_int        as medIllInt,
+		  pi.sli_ill_amt        as sliIllAmt,
+		  pi.sli_ill_cnt        as sliIllCnt,
+		  pi.sli_ill_grp        as sliIllGrp,
+		  pi.sli_ill_paycnt     as sliIllPaycnt,
+		  pi.sli_ill_int        as sliIllInt,
+		  pi.end_bef_b18        as endBefB18,
+		  pi.end_bef_g18        as endBefG18,
+		  pi.spe_ill_bef        as speIllBef,
+		  pi.dis_bef            as disBef,
+		  pi.ill_end_per        as illEndPer,
+		  pi.ins_period         as insPeriods,
+		  pi.waiting_period     as waitingPeriod,
+		  pi.insured_exm        as insuredExm,
+		  pi.holder_exm         as holderExm,
+		  pi.memo               as memo
+		from prd_product pp
+		  inner join prdcmp_illness pi on pi.prd_id = pp.product_id
+		  left join org_info oi on oi.org_id = pp.product_brand_id
+		where prd_id = #{productId,jdbcType=VARCHAR}
+	    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
