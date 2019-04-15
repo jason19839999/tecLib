@@ -644,7 +644,11 @@ sh hk_darkpool.sh start | stop | restart
    参照：F:/0-workspace/src/autumn-new/product-shop-autumn
          F:/0-workspace/src/apiserver/apiserver
 
-
+69.创建索引
+	ALTER TABLE用来创建普通索引、UNIQUE索引或PRIMARY KEY索引。
+	ALTER TABLE table_name ADD INDEX index_name (column_list)
+	ALTER TABLE table_name ADD UNIQUE (column_list)
+	ALTER TABLE table_name ADD PRIMARY KEY (column_list)
 
 
 
