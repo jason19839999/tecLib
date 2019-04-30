@@ -632,6 +632,20 @@ sh hk_darkpool.sh start | stop | restart
 71.mysql中的字段类型为json时候，获取里面的具体json对象值，参照如下：
   JSON_UNQUOTE(JSON_EXTRACT( share_param, '$.productTitle' )) AS share_param,
 
+72.各种工具类参照：F:/0-workspace/src/autumn-new/product-shop-autumn
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.3</version>
+        </dependency>
+
+
+
+
 
 
 
