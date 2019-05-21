@@ -643,7 +643,8 @@ sh hk_darkpool.sh start | stop | restart
             <version>1.9.3</version>
         </dependency>
 
-
+73.linux上post请求(带参数的)
+   time curl -H "Content-Type:application/json" -X POST --data '{"phoneNumbers":"18513871894","params":["测试1","测试2","测试3","测试4","测试5"],"orgId":"1057112830597791744","smsType":6}' http://rdtest.bj1.lima.com:10087/smsNew
 
 
 
