@@ -646,8 +646,15 @@ sh hk_darkpool.sh start | stop | restart
 73.linux上post请求(带参数的)
    time curl -H "Content-Type:application/json" -X POST --data '{"phoneNumbers":"18513871894","params":["测试1","测试2","测试3","测试4","测试5"],"orgId":"1057112830597791744","smsType":6}' http://rdtest.bj1.lima.com:10087/smsNew
 
+74.任意指定打包名称 F:/0-workspace/src/fee-service/fee-service
+        <build>
+        <finalName>fee-service</finalName>
+	   ....
+	</build>
 
-
+75.极客时间  → java性能调优日记
+   ① 什么情况下调优，有哪些可优化的项？
+   ② 手段是什么？
 
 
 
