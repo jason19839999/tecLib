@@ -656,6 +656,10 @@ sh hk_darkpool.sh start | stop | restart
    ① 什么情况下调优，有哪些可优化的项？
    ② 手段是什么？
 
+76.Assert.hasText() notNull() isTrue()  isNull()
+   F:\0-workspace\src\grain-buds\grain-buds\grain-buds-policy\src\main\java\com\lima\grainbuds\policy\service\impl\OfflinePolicyServiceImpl.java
+   private void checkNotNull(OfflinePolicy offlinePolicy) {}
+
 
 
 
