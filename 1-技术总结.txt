@@ -660,6 +660,9 @@ sh hk_darkpool.sh start | stop | restart
    \grain-buds\grain-buds-policy\src\main\java\com\lima\grainbuds\policy\service\impl\OfflinePolicyServiceImpl.java
    private void checkNotNull(OfflinePolicy offlinePolicy) {}
 
+77.mybatis 通用单条记录查询  根据实体名称和字段名称和字段值获取唯一记录 where ${propertyName} = '${value}'
+   参照：queryOrgIdByInnerCode → com/lima/grainbuds/organization/controller/OrgInfoController.java
+
 
 
 
