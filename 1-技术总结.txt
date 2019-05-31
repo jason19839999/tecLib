@@ -663,6 +663,10 @@ sh hk_darkpool.sh start | stop | restart
 77.mybatis 通用单条记录查询  根据实体名称和字段名称和字段值获取唯一记录 where ${propertyName} = '${value}'
    参照：queryOrgIdByInnerCode → com/lima/grainbuds/organization/controller/OrgInfoController.java
 
+78.微信扫描（带参数）二维码事件回调配置 参照项目：com/lima/grainbuds/shop/controller/XinyuanbaoController.java  →   @RequestMapping("/message/custom")
+   在微信公众号后台配置：
+       基本配置 → 服务器配置 即可https://dev.zhongbaolianmeng.com/market/xinyuanbao/message/custom
+
 
 
 
