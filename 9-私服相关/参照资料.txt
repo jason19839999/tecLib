@@ -1,1 +1,5 @@
 https://blog.csdn.net/fenglixiong123/article/details/77844397
+
+将settings.xml放到C:\Users\dell\.m2，
+settings.xml里面设置私服相关配置项
+
