@@ -667,6 +667,9 @@ sh hk_darkpool.sh start | stop | restart
    在微信公众号后台配置：
        基本配置 → 服务器配置 即可https://dev.zhongbaolianmeng.com/market/xinyuanbao/message/custom
 
+79.xmind 破解 https://www.jianshu.com/p/e1693dad4dde
+
+
 
 
 
