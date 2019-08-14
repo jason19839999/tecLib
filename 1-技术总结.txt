@@ -669,6 +669,44 @@ sh hk_darkpool.sh start | stop | restart
 
 79.xmind 破解 https://www.jianshu.com/p/e1693dad4dde
 
+80.将文件http地址转化成 MultipartFile 文件流
+    String mediaPath;
+        switch (key) {
+            case RedisKey.MEDIAID_COMMUNICATION:
+                mediaPath = "http://zx.zhongxiaokj.com/pic/miniprogram/media/communication.png";
+                break;
+            case RedisKey.MEDIAID_CUSTOMERSERVICE:
+                mediaPath = "http://zx.zhongxiaokj.com/pic/miniprogram/media/customerservice.png";
+                break;
+            case RedisKey.MEDIAID_SHADOUBAO_MINIPROGRAM_KEFU:
+                mediaPath = "待上传";
+                break;
+            default:
+                mediaPath = null;
+                break;
+        }
+        if (mediaPath != null) {
+            Resource mediaResource = resourceLoader.getResource(mediaPath);
+            FileItem fileItem = new DiskFileItemFactory().createItem("media", MediaType.TEXT_PLAIN_VALUE, true, mediaResource.getFilename());
+            try (InputStream is = mediaResource.getInputStream(); OutputStream os = fileItem.getOutputStream()) {
+                IOUtils.copy(is, os);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Invalid file: " + e, e);
+            }
+            MultipartFile media = new CommonsMultipartFile(fileItem);
+            String mediaId = "";
+            //判断是否是永久上传key
+            if(key.equals(RedisKey.MEDIAID_SHADOUBAO_MINIPROGRAM_KEFU)){
+                mediaId = this.uploadPermanentMedia("image", media);
+            }else{
+                mediaId = this.uploadMedia("image", media);
+            }
+            redisTemplate.opsForValue().set(key, mediaId);
+            return mediaId;
+        } else {
+            return null;
+        }
+
 
 
 
