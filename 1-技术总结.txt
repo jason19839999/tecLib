@@ -707,7 +707,20 @@ sh hk_darkpool.sh start | stop | restart
             return null;
         }
 
+81.DecimalFormat的使用，格式化2位小数
+       String fee = formatFee("1785200"); 17,852
+     
+       public static String formatFee(String fee){
+        BigInteger b = new BigInteger(fee);
+        double result = b.doubleValue()/100;
 
+        //有小数保留2位，并且第二位如果是0那么不显示，如果2位小数都是0就都不显示
+        //包含千分位
+        DecimalFormat df = new DecimalFormat("");
+        //不包含千分位
+        //DecimalFormat df = new DecimalFormat("###.##");
+        return df.format(result);
+      }
 
 
 
