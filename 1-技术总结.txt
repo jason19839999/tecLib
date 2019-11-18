@@ -732,6 +732,10 @@ sh hk_darkpool.sh start | stop | restart
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String endTime= sdf.format(c.getTime()); //上月最后一天
 
+83.String 转  float/double
+   Float.parseFloat(str)/Double.valueOf(str)
+   保留2位小数，不够用0填充 →    DecimalFormat df = new DecimalFormat("###.00");
+                                 String total = df222.format(float/double);
 
 
 
