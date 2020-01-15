@@ -773,7 +773,12 @@ sh hk_darkpool.sh start | stop | restart
         }
    }
 
-
+85.sql批量处理主键生成逻辑
+     SET @n = 20000;
+     INSERT  INTO `scm_settlement_rules_ref` (rules_ref_id,`type`,`ref_id`,`rules_id`,`valid_starttime`,`valid_endtime`,`status`,`creator`,`editor`,`created_time`,`updated_time`) 
+     SELECT (@n := @n + 1),  2,temp.spu_id,'100003',NOW(),NULL,1,'System','System',NOW(),NOW() FROM ( SELECT  rs.spu_id  FROM repository_spu rs 
+     INNER JOIN  product_spu ps ON rs.spu_id = ps.spu_id  
+     WHERE rs.issuance IN (2,4)  AND ps.insure_org_id IN ('800000000000000065','930751210678423552' )) temp;
 
 
 
