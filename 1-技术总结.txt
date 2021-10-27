@@ -782,7 +782,24 @@ sh hk_darkpool.sh start | stop | restart
 
 86.压缩/解压缩 参照： https://gitee.com/haust_lyb/HTTPFTP/tree/master  
 
+87.nginx反向代理配置
+nginx安装根目录 ./conf/conf.d/nginx-8080.conf
+具体内容：注意：默认nginx配置文件有http模块，要把upstream放到里面。
+#后端服务地址
+upstream tomcatserver{
+    sever 128.196.97.191:8081;
+}
 
+#后端服务地址映射
+server{
+
+     location /api/sdbn{
+         proxy_pass   http://tomcatserver;  #指向后端服务地址
+     
+     }
+      
+      
+}
 
 
 
