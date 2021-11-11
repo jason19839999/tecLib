@@ -1,3 +1,37 @@
+※ IDEA 项目里面引入jar包，比如：通过pom依赖添加不了的
+   第一步： 在项目根目录创建 lib目录
+   第二部： 修改pom文件
+          <dependency>
+            <groupId>com.github.wumpz</groupId>
+            <artifactId>diffutils</artifactId>
+            <scope>system</scope>
+            <version>3.0</version>
+            <systemPath>${pom.basedir}/lib/diffutils-3.0.jar</systemPath>
+         </dependency>
+	 
+	 <resource>
+                <directory>${pom.basedir}/lib</directory>
+                <targetPath>/BOOT-INF/lib/</targetPath>
+                <includes>
+                    <include>**/*.jar</include>
+                </includes>
+         </resource>
+	 
+	 <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                    <compilerArguments>
+                        <extdirs>./lib</extdirs>
+                    </compilerArguments>
+                </configuration>
+         </plugin>
+
+
+
+
 遇到疑问或者问题要追查到底，彻底掌握了。。。 -Dspring.profiles.active=dev
 ******************************************************************************
   ※※※特别注意的是，在install子module的时候，首先安装主module,也就是multi-module，再
